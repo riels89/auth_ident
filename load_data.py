@@ -304,7 +304,7 @@ def get_dataset_pairs(batch_size, seed=13):
 #
 # for batch in dataset.take(1):
 #     print(batch)
-pair_authors_fast(1e7)
+pair_authors_fast(1e6)
 # print("Embedding time: " + str(sum(embedding_times) / tf.shape(embedding_times)[0]))
 # print("Get file time: " + str(sum(get_file_times) / tf.shape(get_file_times)[0]))
 # print(embedding_times)
