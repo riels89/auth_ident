@@ -1,0 +1,3 @@
+,optimizer,loss,epochs,dropout,batch_size,binary_encoding,val_accuracy,val_loss
+0,adam,binary_crossentropy,1,0.0,512,True,0.458984375,4.007246494293213
+1,adam,binary_crossentropy,1,0.2,512,True,0.541015625,1.2195271253585815

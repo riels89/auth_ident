@@ -1,0 +1,1 @@
+{"optimizer":"adam","loss":"binary_crossentropy","epochs":1,"dropout":0.0,"batch_size":512,"binary_encoding":true,"val_accuracy":0.458984375,"val_loss":4.0072464943}

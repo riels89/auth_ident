@@ -1,2 +1,7 @@
 gcj/
 gcj.zip
+checkpoints/
+__pycache__/
+train/
+validation/
+projector_config.pbtxt
