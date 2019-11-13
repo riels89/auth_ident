@@ -5,7 +5,6 @@ sys.path.append(os.path.join(os.path.dirname(__file__),'../..'))
 import tensorflow.keras as keras
 from tensorflow.keras import layers
 from src.preprocessing import load_data
-import talos as ta
 
 class simpleNN():
 

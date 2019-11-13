@@ -4,5 +4,5 @@
   "epochs": [1],
   "dropout": [0, 0.2],
   "batch_size": [512],
-  "binary_encoding": [true]
+  "binary_encoding": [false]
 }
