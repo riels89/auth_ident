@@ -15,14 +15,15 @@ from datetime import datetime
 import pandas as pd
 import numpy as np
 from src.preprocessing import load_data
-from src import TRAIN_LEN, VAL_LEN
+from src import TRAIN_LEN, VAL_LEN, SL
 
 
 class trainer:
 
-    def __init__(self, model, expirement_name, expirement_num, date=datetime.now().strftime("%m-%d-%y")):
+    def __init__(self, model, expirement_name, expirement_num,
+                 date=datetime.now().strftime("%m-%d-%y")):
 
-        self.logdir = "models\\" + model.name + "\\EXP" + str(expirement_num) + '-' \
+        self.logdir = "models" + SL + model.name + SL + "EXP" + str(expirement_num) + '-' \
                       + expirement_name + '-' + date
 
         assert os.path.isdir(self.logdir), "Dir " + self.logdir + " doesn't exist"
@@ -47,7 +48,7 @@ class trainer:
         parameters["val_loss"] = np.nan
 
         for index in range(len(self.params)):
-            curr_log_dir = self.logdir + "\\combination-" + str(index)
+            curr_log_dir = self.logdir + SL + "combination-" + str(index)
             os.makedirs(curr_log_dir, exist_ok=True)
             os.makedirs(curr_log_dir + '/checkpoints', exist_ok=True)
             logger = self.create_logger(curr_log_dir, index=index)
@@ -69,7 +70,7 @@ class trainer:
         parameters.to_csv(self.logdir + "/hyperparameter_matrix.csv")
 
     def train_one(self, index, logger):
-        curr_log_dir = self.logdir + "\\combination-" + str(index)
+        curr_log_dir = self.logdir + SL + "combination-" + str(index)
         logger.info("Current log dir: " + curr_log_dir)
 
         model = self.model.create_model(self.params, index, logger)
