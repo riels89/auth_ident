@@ -210,8 +210,6 @@ def create_and_save_dataset():
     np.save('data/paired_file_paths/test_pairs.npy', test_pairs, allow_pickle=True)
     np.save('data/paired_file_paths/test_labels.npy', test_labels, allow_pickle=True)
 
-# create_and_save_dataset()
-# load_paired_file_paths()
 # print(load_paired_file_paths()[0].shape)
 # dataset,_ = get_dataset_pairs(512, binary_encoding=True)
 # i = 0

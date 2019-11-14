@@ -17,7 +17,6 @@ import numpy as np
 from src.preprocessing import load_data
 from src import TRAIN_LEN, VAL_LEN, SL
 
-
 class trainer:
 
     def __init__(self, model, expirement_name, expirement_num,
@@ -114,5 +113,5 @@ class trainer:
         return logger
 
 
-trainer(simple_lstm(), "first_runs", 1, date="11-10-19").train()
-# trainer(simpleNN(), "testing_trainer", 2, date="11-10-19").train()
+trainer(simple_lstm(), "first_runs", 1, date="13-10-19").train()
+# trainer(simpleNN(), "testing_new_dataset", 1).train()
