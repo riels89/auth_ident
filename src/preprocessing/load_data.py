@@ -9,7 +9,7 @@ import math
 import sys
 import os
 sys.path.append(os.path.join(os.path.dirname(__file__),'../..'))
-from src import TRAIN_LEN
+from src import TRAIN_LEN, SL
 from src.preprocessing.pair_authors import pair_authors
 
 chars_to_encode = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM\n\r\t " + r"1234567890-=!@#$%^&*()_+[]{}|;':\",./<>?"
@@ -43,7 +43,7 @@ def make_csv():
     for root, _, files in os.walk("data/raw/gcj"):
         for file in files:
             filepaths.append(os.path.join(root, file))
-            usernames.append(root.split("\\")[2])
+            usernames.append(root.split(SL)[2])
 
     filepaths = pd.DataFrame({"username": usernames, "filepath": filepaths})
     filepaths.to_csv("refrences/gcj.csv")
