@@ -8,5 +8,4 @@ validation/
 projector_config.pbtxt
 .spyproject/
 .idea/
-models/
 auth_ident.sublime-project
