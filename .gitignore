@@ -9,4 +9,4 @@ projector_config.pbtxt
 .spyproject/
 .idea/
 models/
-sub_proj.sublime-project
+auth_ident.sublime-project
