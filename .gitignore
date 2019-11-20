@@ -1,7 +1,12 @@
 gcj/
 gcj.zip
+data/
 checkpoints/
 __pycache__/
 train/
 validation/
 projector_config.pbtxt
+.spyproject/
+.idea/
+models/
+sub_proj.sublime-project

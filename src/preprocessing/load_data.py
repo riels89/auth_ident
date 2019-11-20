@@ -42,7 +42,7 @@ def make_csv():
     counter = 0
     for root, _, files in os.walk("data/raw/gcj"):
         for file in files:
-            filepaths.append(os.path.join(root, file))
+            filepaths.append(os.path.join(root, file).replace("\\", "/"))
             usernames.append(root.split(SL)[2])
 
     filepaths = pd.DataFrame({"username": usernames, "filepath": filepaths})
@@ -100,7 +100,7 @@ def encode_to_binary(code_to_embed):
 def get_dataset(batch_size, seed=13):
 
     def encode(code_to_embed, username):
-        return encode_to_one_hot(encoding), username
+        return encode_to_one_hot(code_to_embed), username
 
     def get_file(file):
         # start = tf.timestamp(name=None)
@@ -128,7 +128,7 @@ def get_dataset(batch_size, seed=13):
     return dataset
 
 
-def get_dataset_pairs(batch_size, binary_encoding=False, seed=13):
+def get_dataset_pairs(batch_size, binary_encoding=False, input_shape="conacat", seed=13):
 
     if binary_encoding:
         len_encoding = binary_encoding_len
@@ -156,15 +156,27 @@ def get_dataset_pairs(batch_size, binary_encoding=False, seed=13):
 
     def concat_files(file1, file2, label):
         return tf.squeeze(tf.concat([file1, tf.ones([1, len_encoding], dtype=file1.dtype), file2], axis=0)), label
-
-    def set_shape(files, labels):
+    
+    def stack_files(file1, file2, label):
+        return tf.stack([file1, file2]), label
+    
+    def set_shape_concat(files, label):
         files.set_shape((max_code_length * 2 + 1, len_encoding))
-        return files, labels
+        return files, label
+    
+    def set_shape_split(file1, file2, label):
+        file1.set_shape((max_code_length, len_encoding))
+        file2.set_shape((max_code_length, len_encoding))
+
+        return file1, file2, label
+
+    
 
     def create_dataset(pairs, labels):
         # TODO: Do speed test comparing one large map vs many smaller maps
 
         dataset = tf.data.Dataset.from_tensor_slices((pairs, labels))
+        
         dataset = dataset.shuffle(4096, seed)
         dataset = dataset.repeat()
         dataset = dataset.map(get_file, tf.data.experimental.AUTOTUNE)
@@ -174,8 +186,14 @@ def get_dataset_pairs(batch_size, binary_encoding=False, seed=13):
         else:
             dataset = dataset.map(encode_one_hot, tf.data.experimental.AUTOTUNE)
 
-        dataset = dataset.map(concat_files, tf.data.experimental.AUTOTUNE)
-        dataset = dataset.map(set_shape, tf.data.experimental.AUTOTUNE)
+        if input_shape == "concat":
+            dataset = dataset.map(concat_files, tf.data.experimental.AUTOTUNE)
+            dataset = dataset.map(set_shape_concat, tf.data.experimental.AUTOTUNE)
+        elif input_shape == "split":
+            dataset = dataset.map(set_shape_split, tf.data.experimental.AUTOTUNE)
+        else:
+            raise ValueError('input_shape was not valid')
+
         # dataset = dataset.map(tf_file_stats)
 
         dataset = dataset.batch(batch_size)
@@ -209,6 +227,10 @@ def create_and_save_dataset():
     np.save('data/paired_file_paths/val_labels.npy', val_labels, allow_pickle=True)
     np.save('data/paired_file_paths/test_pairs.npy', test_pairs, allow_pickle=True)
     np.save('data/paired_file_paths/test_labels.npy', test_labels, allow_pickle=True)
+
+
+# create_and_save_dataset()
+# load_paired_file_paths()
 
 # print(load_paired_file_paths()[0].shape)
 # dataset,_ = get_dataset_pairs(512, binary_encoding=True)

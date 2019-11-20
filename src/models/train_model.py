@@ -1,6 +1,6 @@
 import sys
 import os
-sys.path.append(os.path.join(os.path.dirname(__file__),'../..'))
+sys.path.append(os.path.join(os.path.dirname(__file__), '../..'))
 
 import matplotlib.pyplot as plt
 import tensorflow as tf
@@ -10,12 +10,13 @@ import logging
 from itertools import product
 import json
 from simpleNN import simpleNN
-from lstm import simple_lstm
+from simple_lstm import simple_lstm
 from datetime import datetime
 import pandas as pd
 import numpy as np
 from src.preprocessing import load_data
 from src import TRAIN_LEN, VAL_LEN, SL
+
 
 class trainer:
 
@@ -80,7 +81,8 @@ class trainer:
         save_model_callback = ModelCheckpoint(curr_log_dir + "/checkpoints/model.{epoch:02d}-{val_accuracy:.2f}.hdf5")
 
         training_dataset, val_dataset = load_data.get_dataset_pairs(self.params[index]['batch_size'],
-                                                                    binary_encoding=self.params[index]['binary_encoding'])
+                                                                    binary_encoding=self.params[index]['binary_encoding'],
+                                                                    input_shape=self.model.input_shape)
 
         model.compile(optimizer=self.params[index]['optimizer'],
                       loss=self.params[index]['loss'],
