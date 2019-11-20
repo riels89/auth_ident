@@ -9,3 +9,4 @@ projector_config.pbtxt
 .spyproject/
 .idea/
 auth_ident.sublime-project
+auth_ident.sublime-workspace
