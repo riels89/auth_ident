@@ -23,7 +23,7 @@ class simple_lstm():
                                     load_data.len_encoding),
                              name='code')
         model = Dense(256, name='embedding')(inputs)
-        model = LSTM(512, name='lstm')(model)
+        model = LSTM(256, name='lstm')(model)
         outputs = Dense(1, activation='sigmoid', name='predictions')(model)
 
         return keras.Model(inputs=inputs, outputs=outputs, name=self.name + "-" + str(index))
