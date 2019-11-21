@@ -17,8 +17,6 @@ import numpy as np
 from src.preprocessing import load_data
 from src import TRAIN_LEN, VAL_LEN, SL
 
-run_opts = tf.RunOptions(report_tensor_allocations_upon_oom=True)
-
 
 class trainer:
 
@@ -89,7 +87,6 @@ class trainer:
         model.compile(optimizer=self.params[index]['optimizer'],
                       loss=self.params[index]['loss'],
                       metrics=['accuracy'])
-
         logger.info('Fit model on training data')
 
         history = model.fit(training_dataset,
