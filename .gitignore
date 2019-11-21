@@ -1,6 +1,6 @@
 gcj/
 gcj.zip
-data/
+data/raw
 checkpoints/
 __pycache__/
 train/
