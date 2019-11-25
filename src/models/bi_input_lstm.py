@@ -20,7 +20,7 @@ class bi_input_lstm():
     def create_model(self, params, index, logger):
 
         inputs = keras.Input(shape=(params[index]["max_code_length"] * 2 + 1,
-                                    load_data.len_encoding),
+                                    params[index]['dataset'].len_encoding),
                              name='code')
         
         dense1 = Dense(256, name='embedding')(inputs[:load_data.max_code_length])

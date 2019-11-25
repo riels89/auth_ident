@@ -16,7 +16,7 @@ class simpleNN():
     def create_model(self, params, index, logger):
 
         inputs = keras.Input(shape=(params[index]["max_code_length"] * 2 + 1,
-                                    load_data.binary_encoding_len),
+                                    params[index]['dataset'].len_encoding),
                              name='code')
         x = layers.Flatten()(inputs)
         x = layers.Dense(512, activation='relu', name='dense_1')(x)

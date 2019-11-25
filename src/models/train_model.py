@@ -78,14 +78,14 @@ class trainer:
         curr_log_dir = self.logdir + SL + "combination-" + str(index)
         logger.info("Current log dir: " + curr_log_dir)
 
+        training_dataset, val_dataset = self.map_dataset(self.model.dataset_type, index)
+
         model = self.model.create_model(self.params, index, logger)
 
         tensorboard_callback = TensorBoard(log_dir=curr_log_dir,
                                            update_freq='batch', embeddings_freq=1)
 
         save_model_callback = ModelCheckpoint(curr_log_dir + "/checkpoints/model.{epoch:02d}-{val_accuracy:.2f}.hdf5")
-
-        training_dataset, val_dataset = self.map_dataset(self.model.dataset_type, index)
 
         model.compile(optimizer=self.params[index]['optimizer'],
                       loss=self.params[index]['loss'],
@@ -126,8 +126,9 @@ class trainer:
             dataset = split_dataset(max_code_length=self.params[index]["max_code_length"],
                                     batch_size=self.params[index]['batch_size'],
                                     binary_encoding=self.params[index]['binary_encoding'])
-
+        self.params[index]['dataset'] = dataset
         return dataset.get_dataset()
+
 
 # trainer(simple_lstm(), "first_runs", 1, date="13-10-19").train()
 # trainer(simpleNN(), "testing_dataset_api", 3, date="11-24-19").train()

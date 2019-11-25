@@ -20,7 +20,7 @@ class simple_lstm():
     def create_model(self, params, index, logger):
 
         inputs = keras.Input(shape=(params[index]["max_code_length"] * 2 + 1,
-                                    load_data.len_encoding),
+                                    params[index]['dataset'].len_encoding),
                              name='input')
         model = Dense(256, name='embedding')(inputs)
         model = LSTM(256, name='lstm')(model)

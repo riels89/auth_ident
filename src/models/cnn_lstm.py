@@ -20,10 +20,10 @@ class cnn_lstm():
     def create_model(self, params, index, logger):
 
         input1 = keras.Input(batch_shape=(params[index]["batch_size"], params[index]["max_code_length"],
-                             load_data.binary_encoding_len),
+                             params[index]['dataset'].len_encoding),
                              name='input_1')
         input2 = keras.Input(batch_shape=(params[index]["batch_size"], params[index]["max_code_length"],
-                             load_data.binary_encoding_len),
+                             params[index]['dataset'].len_encoding),
                              name='input_2')
 
         conv1 = Conv1D(255, 47, strides=47, name='embedding')(input1)
