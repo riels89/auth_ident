@@ -19,10 +19,10 @@ class cnn_lstm():
         
     def create_model(self, params, index, logger):
 
-        input1 = keras.Input(batch_shape=(params[index]["batch_size"], load_data.max_code_length,
+        input1 = keras.Input(batch_shape=(params[index]["batch_size"], params[index]["max_code_length"],
                              load_data.binary_encoding_len),
                              name='input_1')
-        input2 = keras.Input(batch_shape=(params[index]["batch_size"], load_data.max_code_length,
+        input2 = keras.Input(batch_shape=(params[index]["batch_size"], params[index]["max_code_length"],
                              load_data.binary_encoding_len),
                              name='input_2')
 

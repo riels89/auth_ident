@@ -1,0 +1,9 @@
+{
+  "optimizer": ["adam"],
+  "loss": ["binary_crossentropy"],
+  "epochs": [1],
+  "dropout": [0.5],
+  "batch_size": [512],
+  "binary_encoding": [true],
+  "max_code_length": [6000]
+}
