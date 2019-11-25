@@ -10,11 +10,12 @@ class simpleNN():
 
     def __init__(self):
         self.name = "simpleNN"
+        self.dataset_type = "combined"
 
 
     def create_model(self, params, index, logger):
 
-        inputs = keras.Input(shape=(load_data.max_code_length * 2 + 1,
+        inputs = keras.Input(shape=(params[index]["max_code_length"] * 2 + 1,
                                     load_data.binary_encoding_len),
                              name='code')
         x = layers.Flatten()(inputs)

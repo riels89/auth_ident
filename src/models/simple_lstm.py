@@ -15,13 +15,13 @@ class simple_lstm():
     def __init__(self):
 
         self.name = "simple_lstm"
-        self.input_shape = "concat"
+        self.dataset_type = "combined"
 
     def create_model(self, params, index, logger):
 
-        inputs = keras.Input(shape=(load_data.max_code_length * 2 + 1,
+        inputs = keras.Input(shape=(params[index]["max_code_length"] * 2 + 1,
                                     load_data.len_encoding),
-                             name='code')
+                             name='input')
         model = Dense(256, name='embedding')(inputs)
         model = LSTM(256, name='lstm')(model)
         outputs = Dense(1, activation='sigmoid', name='predictions')(model)

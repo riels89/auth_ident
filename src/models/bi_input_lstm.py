@@ -19,17 +19,17 @@ class bi_input_lstm():
         
     def create_model(self, params, index, logger):
 
-        inputs = keras.Input(shape=(2, load_data.max_code_length,
+        inputs = keras.Input(shape=(params[index]["max_code_length"] * 2 + 1,
                                     load_data.len_encoding),
                              name='code')
         
-        model1 = Dense(256, name='embedding')(inputs[0])
-        model2 = Dense(256, name='embedding')(inputs[1])
+        dense1 = Dense(256, name='embedding')(inputs[:load_data.max_code_length])
+        dense2 = Dense(256, name='embedding')(inputs[load_data.max_code_length + 1:])
 
-        model1 = LSTM(512, name='lstm')(model1)
-        model2 = LSTM(512, name='lstm')(model2)
+        lstm1 = LSTM(512, name='lstm')(dense1)
+        lstm2 = LSTM(512, name='lstm')(dense2)
 
-        concat = layers.concat([model1, model2])
+        concat = layers.concat([lstm1, lstm2])
         outputs = Dense(1, activation='sigmoid', name='predictions')(concat)
 
         return keras.Model(inputs=inputs, outputs=outputs, name=self.name + "-" + str(index))
