@@ -10,6 +10,7 @@ class simpleNN():
 
     def __init__(self):
         self.name = "simpleNN"
+        self.dataset_type = "combined"
 
 
     def create_model(self, params, index, logger):

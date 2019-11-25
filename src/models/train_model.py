@@ -11,10 +11,14 @@ from itertools import product
 import json
 from simpleNN import simpleNN
 from simple_lstm import simple_lstm
+from cnn_lstm import cnn_lstm
 from datetime import datetime
 import pandas as pd
 import numpy as np
 from src.preprocessing import load_data
+from src.preprocessing.combined_dataset import combined_dataset
+from src.preprocessing.split_dataset import split_dataset
+
 from src import TRAIN_LEN, VAL_LEN, SL
 
 
@@ -70,6 +74,7 @@ class trainer:
         parameters.to_csv(self.logdir + "/hyperparameter_matrix.csv")
 
     def train_one(self, index, logger):
+
         curr_log_dir = self.logdir + SL + "combination-" + str(index)
         logger.info("Current log dir: " + curr_log_dir)
 
@@ -80,9 +85,7 @@ class trainer:
 
         save_model_callback = ModelCheckpoint(curr_log_dir + "/checkpoints/model.{epoch:02d}-{val_accuracy:.2f}.hdf5")
 
-        training_dataset, val_dataset = load_data.get_dataset_pairs(self.params[index]['batch_size'],
-                                                                    binary_encoding=self.params[index]['binary_encoding'],
-                                                                    input_shape=self.model.input_shape)
+        training_dataset, val_dataset = self.map_dataset(self.model.dataset_type, index)
 
         model.compile(optimizer=self.params[index]['optimizer'],
                       loss=self.params[index]['loss'],
@@ -113,6 +116,20 @@ class trainer:
         logger.addHandler(file_handler)
         return logger
 
+    def map_dataset(self, dataset_type, index):
 
-trainer(simple_lstm(), "first_runs", 1, date="13-10-19").train()
-# trainer(simpleNN(), "testing_new_dataset", 1).train()
+        if dataset_type == "combined":
+            dataset = combined_dataset(max_code_length=self.params[index]["max_code_length"],
+                                       batch_size=self.params[index]['batch_size'],
+                                       binary_encoding=self.params[index]['binary_encoding'])
+        elif dataset_type == "split":
+            dataset = split_dataset(max_code_length=self.params[index]["max_code_length"],
+                                    batch_size=self.params[index]['batch_size'],
+                                    binary_encoding=self.params[index]['binary_encoding'])
+
+        return dataset.get_dataset()
+
+# trainer(simple_lstm(), "first_runs", 1, date="13-10-19").train()
+# trainer(simpleNN(), "testing_dataset_api", 3, date="11-24-19").train()
+trainer(cnn_lstm(), "first_runs", 1).train()
+
