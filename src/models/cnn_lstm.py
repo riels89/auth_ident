@@ -26,11 +26,17 @@ class cnn_lstm():
                              params[index]['dataset'].len_encoding),
                              name='input_2')
 
-        conv1 = Conv1D(255, 47, strides=47, name='embedding')(input1)
-        conv2 = Conv1D(255, 47, strides=47, name='embedding')(input2)
+        conv1 = Conv1D(128, 150, strides=49, name='hidden_1')(input1)
+        conv1 = Conv1D(256, 117, strides=1, name='hidden_1')(conv1)
+        conv1 = keras.backend.squeeze(conv1)
 
-        lstm1 = LSTM(255, name='lstm1')(input1, initial_state=conv1)
-        lstm2 = LSTM(255, name='lstm2')(input2, initial_state=conv2)
+        conv2 = Conv1D(128, 150, strides=49, name='hidden_2')(input2)
+        conv2 = Conv1D(256, 117, strides=1, name='hidden_2')(conv2)
+        conv2 = keras.backend.squeeze(conv2)
+
+
+        lstm1 = LSTM(256, name='lstm1')(input1, initial_state=[conv1, conv1])
+        lstm2 = LSTM(256, name='lstm2')(input2, initial_state=[conv2, conv2])
 
         concat = layers.concatenate([lstm1, lstm2])
         outputs = Dense(1, activation='sigmoid', name='predictions')(concat)
