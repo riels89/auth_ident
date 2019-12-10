@@ -20,7 +20,7 @@ from src.preprocessing.combined_dataset import combined_dataset
 from src.preprocessing.split_dataset import split_dataset
 from src.preprocessing.by_line_dataset import by_line_dataset
 from split_cnn import split_cnn
-
+from largeNN import largeNN
 
 from src import TRAIN_LEN, VAL_LEN, SL
 
@@ -141,5 +141,6 @@ class trainer:
 # trainer(simple_lstm(), "first_runs", 1, date="13-10-19").train()
 # trainer(simpleNN(), "testing_dataset_api", 3, date="11-24-19").train()
 # trainer(cnn_lstm(), "first_runs", 1, "11-25-19").train()
-trainer(split_cnn(), "first_runs", 1, "12-9-19").train()
+# trainer(split_cnn(), "first_runs", 1, "12-9-19").train()
+trainer(largeNN(), "first_runs", 1, "12-10-19").train()
 
