@@ -139,8 +139,8 @@ class trainer:
 
 
 # trainer(simple_lstm(), "first_runs", 1, date="13-10-19").train()
-# trainer(simpleNN(), "testing_dataset_api", 3, date="11-24-19").train()
+trainer(simpleNN(), "real_attempt", 4, date="12-10-19").train()
 # trainer(cnn_lstm(), "first_runs", 1, "11-25-19").train()
 # trainer(split_cnn(), "first_runs", 1, "12-9-19").train()
-trainer(largeNN(), "first_runs", 1, "12-10-19").train()
+# trainer(largeNN(), "first_runs", 1, "12-10-19").train()
 
