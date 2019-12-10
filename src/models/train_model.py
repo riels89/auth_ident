@@ -18,6 +18,9 @@ import numpy as np
 from src.preprocessing import load_data
 from src.preprocessing.combined_dataset import combined_dataset
 from src.preprocessing.split_dataset import split_dataset
+from src.preprocessing.by_line_dataset import by_line_dataset
+from split_cnn import split_cnn
+
 
 from src import TRAIN_LEN, VAL_LEN, SL
 
@@ -126,11 +129,17 @@ class trainer:
             dataset = split_dataset(max_code_length=self.params[index]["max_code_length"],
                                     batch_size=self.params[index]['batch_size'],
                                     binary_encoding=self.params[index]['binary_encoding'])
+        elif dataset_type == 'by_line':
+            dataset = by_line_dataset(max_lines=self.params[index]["max_lines"],
+                                      max_line_length=self.params[index]["max_line_length"],
+                                      batch_size=self.params[index]['batch_size'],
+                                      binary_encoding=self.params[index]['binary_encoding'])
         self.params[index]['dataset'] = dataset
         return dataset.get_dataset()
 
 
 # trainer(simple_lstm(), "first_runs", 1, date="13-10-19").train()
 # trainer(simpleNN(), "testing_dataset_api", 3, date="11-24-19").train()
-trainer(cnn_lstm(), "first_runs", 1).train()
+# trainer(cnn_lstm(), "first_runs", 1, "11-25-19").train()
+trainer(split_cnn(), "first_runs", 1, "12-9-19").train()
 
