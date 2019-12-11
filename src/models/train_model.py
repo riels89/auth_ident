@@ -98,8 +98,8 @@ class trainer:
         history = model.fit(training_dataset,
                             validation_data=val_dataset,
                             epochs=self.params[index]['epochs'],
-                            steps_per_epoch=int(TRAIN_LEN / self.params[index]['batch_size'] + 1),
-                            validation_steps=int(VAL_LEN / self.params[index]['batch_size'] + 1),
+                            steps_per_epoch=TRAIN_LEN // self.params[index]['batch_size'],
+                            validation_steps=VAL_LEN // self.params[index]['batch_size'],
                             callbacks=[tensorboard_callback, save_model_callback])
         return history.history
 
