@@ -86,7 +86,7 @@ class trainer:
         model = self.model.create_model(self.params, index, logger)
 
         tensorboard_callback = TensorBoard(log_dir=curr_log_dir,
-                                           update_freq='batch', embeddings_freq=1)
+                                           update_freq='batch', embeddings_freq=1, profile_batch=0)
 
         save_model_callback = ModelCheckpoint(curr_log_dir + "/checkpoints/model.{epoch:02d}-{val_accuracy:.2f}.hdf5")
 
@@ -139,7 +139,7 @@ class trainer:
 
 
 # trainer(simple_lstm(), "first_runs", 1, date="13-10-19").train()
-trainer(simpleNN(), "real_attempt", 4, date="12-10-19").train()
+trainer(simpleNN(), "dropout_onehot", 5, date="12-10-19").train()
 # trainer(cnn_lstm(), "first_runs", 1, "11-25-19").train()
 # trainer(split_cnn(), "first_runs", 1, "12-9-19").train()
 # trainer(largeNN(), "first_runs", 1, "12-10-19").train()
