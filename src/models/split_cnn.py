@@ -44,9 +44,10 @@ class split_cnn():
 
         concat = layers.concatenate([conv1, conv2])
         dense1 = Dense(1024, activation='relu', name="dense_1")(concat)
-        dense2 = Dense(512, activation='relu', name="dense_3")(dense1)
+        dense2 = Dense(1024, activation='relu', name="dense_2")(dense1)
+        dense3 = Dense(512, activation='relu', name="dense_3")(dense2)
 
-        outputs = Dense(1, activation='sigmoid', name='predictions')(dense2)
+        outputs = Dense(1, activation='sigmoid', name='predictions')(dense3)
 
         model = keras.Model(inputs=(input1, input2), outputs=outputs, name=self.name + "-" + str(index))
         model.summary()
