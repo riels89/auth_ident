@@ -22,19 +22,20 @@ class split_NN():
         input1 = keras.Input(batch_shape=(params[index]["batch_size"], params[index]["max_code_length"],
                              params[index]['dataset'].len_encoding),
                              name='input_1')
-        input1 = layers.Flatten()(input1)
+        input1_flat = layers.Flatten()(input1)
+
         input2 = keras.Input(batch_shape=(params[index]["batch_size"], params[index]["max_code_length"],
                              params[index]['dataset'].len_encoding),
                              name='input_2')
-        input2 = layers.Flatten()(input2)
+        input2_flat = layers.Flatten()(input2)
 
-        dense1 = layers.Dense(1024, activation='relu', name='dense1_1')(input1)
+        dense1 = layers.Dense(1024, activation='relu', name='dense1_1')(input1_flat)
         dense1 = keras.layers.Dropout(params[index]['dropout'])(dense1)
         dense1 = layers.Dense(1024, activation='relu', name='dense1_2')(dense1)
         dense1 = keras.layers.Dropout(params[index]['dropout'])(dense1)
         dense1 = layers.Dense(1024, activation='relu', name='dense1_3')(dense1)
 
-        dense2 = layers.Dense(1024, activation='relu', name='dense2_1')(input2)
+        dense2 = layers.Dense(1024, activation='relu', name='dense2_1')(input2_flat)
         dense2 = keras.layers.Dropout(params[index]['dropout'])(dense2)
         dense2 = layers.Dense(1024, activation='relu', name='dense2_2')(dense2)
         dense2 = keras.layers.Dropout(params[index]['dropout'])(dense2)
