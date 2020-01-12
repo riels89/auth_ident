@@ -141,6 +141,6 @@ class trainer:
 # trainer(simple_lstm(), "first_runs", 1, date="13-10-19").train()
 # trainer(simpleNN(), "dropout_onehot", 5, date="12-10-19").train()
 # trainer(cnn_lstm(), "first_runs", 1, "11-25-19").train()
-trainer(split_cnn(), "bigger_dense_layer", 3, "1-11-20").train()
+trainer(split_cnn(), "smaller_cnn", 4, "1-11-20").train()
 # trainer(largeNN(), "first_runs", 1, "12-10-19").train()
 
