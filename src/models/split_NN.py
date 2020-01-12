@@ -30,17 +30,17 @@ class split_NN():
         dense1 = keras.layers.Dropout(params[index]['dropout'])(dense1)
         dense1 = layers.Dense(1024, activation='relu', name='dense1_2')(dense1)
         dense1 = keras.layers.Dropout(params[index]['dropout'])(dense1)
-        dense1 = layers.Dense(1024, activation='relu', name='dense1_3')(dense1)
+        dense1 = layers.Dense(512, activation='relu', name='dense1_3')(dense1)
 
         dense2 = layers.Dense(1024, activation='relu', name='dense2_1')(input2)
         dense2 = keras.layers.Dropout(params[index]['dropout'])(dense2)
         dense2 = layers.Dense(1024, activation='relu', name='dense2_2')(dense2)
         dense2 = keras.layers.Dropout(params[index]['dropout'])(dense2)
-        dense2 = layers.Dense(1024, activation='relu', name='dense2_3')(dense2)
+        dense2 = layers.Dense(512, activation='relu', name='dense2_3')(dense2)
 
 
         concat = layers.concatenate([dense1, dense2])
-        dense1 = Dense(2048, activation='relu', name="dense3_1")(concat)
+        dense1 = Dense(1024, activation='relu', name="dense3_1")(concat)
         dense2 = Dense(1024, activation='relu', name="dense3_2")(dense1)
         dense3 = Dense(512, activation='relu', name="dense3_3")(dense2)
         dense4 = Dense(256, activation='relu', name="dense3_4")(dense3)
