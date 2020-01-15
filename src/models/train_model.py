@@ -151,4 +151,4 @@ class trainer:
 # trainer(cnn_lstm(), "first_runs", 1, "11-25-19").train()
 # trainer(split_cnn(), "smaller_cnn", 4, "1-11-20").train()
 # trainer(largeNN(), "first_runs", 1, "12-10-19").train()
-trainer(split_NN(), "first_runs", 1, "1-12-20").train()
+trainer(split_NN(), "testing_odd_batch", 2, "1-15-20").train()
