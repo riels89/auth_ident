@@ -22,6 +22,7 @@ from src.preprocessing.by_line_dataset import by_line_dataset
 from split_cnn import split_cnn
 from largeNN import largeNN
 from split_NN import split_NN
+from keras.callbacks import LambdaCallback
 
 from src import TRAIN_LEN, VAL_LEN, SL
 
@@ -87,9 +88,15 @@ class trainer:
         model = self.model.create_model(self.params, index, logger)
 
         tensorboard_callback = TensorBoard(log_dir=curr_log_dir,
-                                           update_freq='batch', embeddings_freq=1, profile_batch=0)
+                                           update_freq='batch', embeddings_freq=1, profile_batch=1)
 
         save_model_callback = ModelCheckpoint(curr_log_dir + "/checkpoints/model.{epoch:02d}-{val_accuracy:.2f}.hdf5")
+
+        def batchOutput(batch, logs):
+            logger.info("Finished batch: " + str(batch))
+            logger.info(logs)
+
+        log_stats_callback = LambdaCallback(on_batch_end=batchOutput)
 
         model.compile(optimizer=self.params[index]['optimizer'],
                       loss=self.params[index]['loss'],
@@ -101,7 +108,7 @@ class trainer:
                             epochs=self.params[index]['epochs'],
                             steps_per_epoch=TRAIN_LEN // self.params[index]['batch_size'],
                             validation_steps=VAL_LEN // self.params[index]['batch_size'],
-                            callbacks=[tensorboard_callback, save_model_callback])
+                            callbacks=[tensorboard_callback, save_model_callback, log_stats_callback])
         return history.history
 
     def generate_param_grid(self, params):
