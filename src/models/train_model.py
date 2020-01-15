@@ -92,11 +92,11 @@ class trainer:
 
         save_model_callback = ModelCheckpoint(curr_log_dir + "/checkpoints/model.{epoch:02d}-{val_accuracy:.2f}.hdf5")
 
-        def batchOutput(batch, logs):
-            logger.info("Finished batch: " + str(batch))
-            logger.info(logs)
+        # def batchOutput(batch, logs):
+        #     logger.info("Finished batch: " + str(batch))
+        #     logger.info(logs)
 
-        log_stats_callback = LambdaCallback(on_batch_end=batchOutput)
+        # log_stats_callback = LambdaCallback(on_batch_end=batchOutput)
 
         model.compile(optimizer=self.params[index]['optimizer'],
                       loss=self.params[index]['loss'],
@@ -108,7 +108,7 @@ class trainer:
                             epochs=self.params[index]['epochs'],
                             steps_per_epoch=TRAIN_LEN // self.params[index]['batch_size'],
                             validation_steps=VAL_LEN // self.params[index]['batch_size'],
-                            callbacks=[tensorboard_callback, save_model_callback, log_stats_callback])
+                            callbacks=[tensorboard_callback, save_model_callback])
         return history.history
 
     def generate_param_grid(self, params):
