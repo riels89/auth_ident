@@ -22,7 +22,7 @@ from src.preprocessing.by_line_dataset import by_line_dataset
 from split_cnn import split_cnn
 from largeNN import largeNN
 from split_NN import split_NN
-from keras.callbacks import LambdaCallback
+from tensorflow.keras.callbacks import LambdaCallback
 
 from src import TRAIN_LEN, VAL_LEN, SL
 
