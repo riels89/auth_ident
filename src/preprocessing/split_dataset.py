@@ -107,7 +107,7 @@ class split_dataset:
         
         dataset = dataset.shuffle(4096)
         dataset = dataset.repeat()
-        dataset = dataset.batch(self.batch_size)
+        
         dataset = dataset.map(get_file, tf.data.experimental.AUTOTUNE)
         dataset = dataset.map(truncate_files, tf.data.experimental.AUTOTUNE)
         if self.binary_encoding:
@@ -118,7 +118,7 @@ class split_dataset:
         dataset = dataset.map(set_shape, tf.data.experimental.AUTOTUNE)
 
         # dataset = dataset.map(tf_file_stats)
-        
+        dataset = dataset.batch(self.batch_size)
         dataset = dataset.prefetch(tf.data.experimental.AUTOTUNE)
 
         return dataset
