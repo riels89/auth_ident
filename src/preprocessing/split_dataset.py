@@ -17,7 +17,9 @@ class split_dataset:
     def __init__(self, max_code_length, batch_size, binary_encoding=False):
 
         chars_to_encode = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM\n\r\t " + r"1234567890-=!@#$%^&*()_+[]{}|;':\",./<>?"
-        chars_to_encode = list(chars_to_encode)
+        self.start = "<start>"
+        self.end = "<end>"
+        chars_to_encode = [self.start, self.end] + list(chars_to_encode)
         self.len_encoding = len(chars_to_encode)
         chars_index = [i for i in range(self.len_encoding)]
         self.binary_encoding_len = 8
@@ -48,7 +50,7 @@ class split_dataset:
 
         code_length = tf.shape(encoding)[0]
         padding = [[0, self.max_code_length - code_length], [0, 0]]
-        encoding = tf.pad(encoding, padding, 'CONSTANT', constant_values=0)
+        encoding = tf.pad(encoding, padding, 'CONSTANT', constant_values=1)
 
         # end = tf.timestamp(name=None)
         # tf.print("Embedding time: ", [end - start])
@@ -63,7 +65,7 @@ class split_dataset:
 
         code_length = tf.shape(unpacked)[0]
         padding = [[0, self.max_code_length - code_length], [0, 0]]
-        encoding = tf.pad(unpacked, padding, 'CONSTANT', constant_values=0)
+        encoding = tf.pad(unpacked, padding, 'CONSTANT', constant_values=1)
 
         return encoding
 
@@ -87,20 +89,22 @@ class split_dataset:
         def truncate_files(files, label):
             # start = tf.timestamp(name=None)
 
-            files["input_1"] = tf.strings.substr(files["input_1"], pos=0,
-                                                 len=tf.math.minimum(tf.strings.length(files["input_1"]),
-                                                 self.max_code_length))
-            files["input_2"] = tf.strings.substr(files["input_2"], pos=0,
-                                                 len=tf.math.minimum(tf.strings.length(files["input_2"]),
-                                                 self.max_code_length))
+            files["input_1"] = tf.concat([[self.start], tf.strings.substr(files["input_1"], pos=0,
+                                         len=tf.math.minimum(tf.strings.length(files["input_1"]),
+                                         self.max_code_length)),
+                                         [self.end]], axis=0)
+            files["input_2"] = tf.concat([[self.start], tf.strings.substr(files["input_2"], pos=0,
+                                         len=tf.math.minimum(tf.strings.length(files["input_2"]),
+                                         self.max_code_length)),
+                                         [self.end]], axis=0)
             # end = tf.timestamp(name=None)
             # tf.print("Get file time: ", [end - start])
 
             return files, label
 
         def set_shape(files, label):
-            files["input_1"].set_shape((self.max_code_length, self.len_encoding))
-            files["input_2"].set_shape((self.max_code_length, self.len_encoding))
+            files["input_1"].set_shape((self.max_code_length + 2, self.len_encoding))
+            files["input_2"].set_shape((self.max_code_length + 2, self.len_encoding))
             return files, label
              
         dataset = tf.data.Dataset.from_tensor_slices(({"input_1": pairs[:, 0], "input_2": pairs[:, 1]}, labels))
