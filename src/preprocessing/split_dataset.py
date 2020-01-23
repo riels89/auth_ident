@@ -88,17 +88,14 @@ class split_dataset:
 
         def truncate_files(files, label):
             # start = tf.timestamp(name=None)
-            tf.print(tf.strings.substr(files["input_1"], pos=0,
+
+            files["input_1"] = tf.concat([[self.start], tf.squeeze(tf.strings.substr(files["input_1"], pos=0,
                                          len=tf.math.minimum(tf.strings.length(files["input_1"]),
-                                         self.max_code_length)), output_stream=sys.stderr)
-            
-            files["input_1"] = tf.concat([[self.start], tf.strings.substr(files["input_1"], pos=0,
-                                         len=tf.math.minimum(tf.strings.length(files["input_1"]),
-                                         self.max_code_length)),
+                                         self.max_code_length))),
                                          [self.end]], axis=0)
-            files["input_2"] = tf.concat([[self.start], tf.strings.substr(files["input_2"], pos=0,
+            files["input_2"] = tf.concat([[self.start], tf.squeeze(tf.strings.substr(files["input_2"], pos=0,
                                          len=tf.math.minimum(tf.strings.length(files["input_2"]),
-                                         self.max_code_length)),
+                                         self.max_code_length))),
                                          [self.end]], axis=0)
             # end = tf.timestamp(name=None)
             # tf.print("Get file time: ", [end - start])
