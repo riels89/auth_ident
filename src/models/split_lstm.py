@@ -27,11 +27,11 @@ class split_lstm():
                              params[index]['dataset'].len_encoding),
                              name='input_2')
 
-        dense1 = Dense(256, name='embedding')(input1)
-        dense2 = Dense(256, name='embedding')(input2)
+        dense1 = Dense(256, name='embedding1')(input1)
+        dense2 = Dense(256, name='embedding2')(input2)
 
-        lstm1 = LSTM(512, name='lstm')(dense1)
-        lstm2 = LSTM(512, name='lstm')(dense2)
+        lstm1 = LSTM(512, name='lstm1')(dense1)
+        lstm2 = LSTM(512, name='lstm2')(dense2)
 
         concat = layers.concatenate([lstm1, lstm2])
         outputs = Dense(1, activation='sigmoid', name='predictions')(concat)
