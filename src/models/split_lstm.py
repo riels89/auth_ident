@@ -22,15 +22,13 @@ class split_lstm():
         input1 = keras.Input(batch_shape=(params[index]["batch_size"], params[index]["max_code_length"],
                              params[index]['dataset'].len_encoding),
                              name='input_1')
-        input1_flat = layers.Flatten()(input1)
 
         input2 = keras.Input(batch_shape=(params[index]["batch_size"], params[index]["max_code_length"],
                              params[index]['dataset'].len_encoding),
                              name='input_2')
-        input2_flat = layers.Flatten()(input2)
 
-        dense1 = Dense(256, name='embedding')(input1_flat)
-        dense2 = Dense(256, name='embedding')(input2_flat)
+        dense1 = Dense(256, name='embedding')(input1)
+        dense2 = Dense(256, name='embedding')(input2)
 
         lstm1 = LSTM(512, name='lstm')(dense1)
         lstm2 = LSTM(512, name='lstm')(dense2)
