@@ -49,7 +49,7 @@ class split_dataset:
         encoding = tf.reshape(tf.squeeze(tf.one_hot(encoding, self.len_encoding)), (-1, self.len_encoding))
 
         code_length = tf.shape(encoding)[0]
-        padding = [[0, self.max_code_length - code_length], [0, 0]]
+        padding = [[0, self.max_code_length + 2 - code_length], [0, 0]]
         encoding = tf.pad(encoding, padding, 'CONSTANT', constant_values=1)
 
         # end = tf.timestamp(name=None)
