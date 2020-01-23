@@ -19,12 +19,18 @@ class split_lstm():
         
     def create_model(self, params, index, logger):
 
-        inputs = keras.Input(shape=(params[index]["max_code_length"] * 2 + 1,
-                                    params[index]['dataset'].len_encoding),
-                             name='code')
-        
-        dense1 = Dense(256, name='embedding')(inputs[:load_data.max_code_length])
-        dense2 = Dense(256, name='embedding')(inputs[load_data.max_code_length + 1:])
+        input1 = keras.Input(batch_shape=(params[index]["batch_size"], params[index]["max_code_length"],
+                             params[index]['dataset'].len_encoding),
+                             name='input_1')
+        input1_flat = layers.Flatten()(input1)
+
+        input2 = keras.Input(batch_shape=(params[index]["batch_size"], params[index]["max_code_length"],
+                             params[index]['dataset'].len_encoding),
+                             name='input_2')
+        input2_flat = layers.Flatten()(input2)
+
+        dense1 = Dense(256, name='embedding')(input1_flat)
+        dense2 = Dense(256, name='embedding')(input2_flat)
 
         lstm1 = LSTM(512, name='lstm')(dense1)
         lstm2 = LSTM(512, name='lstm')(dense2)
@@ -32,7 +38,7 @@ class split_lstm():
         concat = layers.concat([lstm1, lstm2])
         outputs = Dense(1, activation='sigmoid', name='predictions')(concat)
 
-        return keras.Model(inputs=inputs, outputs=outputs, name=self.name + "-" + str(index))
+        return keras.Model(inputs=[input1, input2], outputs=outputs, name=self.name + "-" + str(index))
 
 
 
