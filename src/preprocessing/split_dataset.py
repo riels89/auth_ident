@@ -44,7 +44,7 @@ class split_dataset:
     def encode_to_one_hot(self, code_to_embed):
         # start = tf.timestamp(name=None)
 
-        reshaped = tf.strings.unicode_split(code_to_embed, 'UTF-8')
+        reshaped = tf.concat([[self.start], tf.strings.unicode_split(code_to_embed, 'UTF-8'), [self.end]])
         encoding = self.table.lookup(reshaped)
         encoding = tf.reshape(tf.squeeze(tf.one_hot(encoding, self.len_encoding)), (-1, self.len_encoding))
 
@@ -89,14 +89,13 @@ class split_dataset:
         def truncate_files(files, label):
             # start = tf.timestamp(name=None)
 
-            files["input_1"] = tf.stack([self.start, tf.strings.substr(files["input_1"], pos=0,
+            files["input_1"] = tf.strings.substr(files["input_1"], pos=0,
                                          len=tf.math.minimum(tf.strings.length(files["input_1"]),
-                                         self.max_code_length)),
-                                         self.end], axis=0)
-            files["input_2"] = tf.stack([self.start, tf.strings.substr(files["input_2"], pos=0,
+                                         self.max_code_length))
+
+            files["input_2"] = tf.strings.substr(files["input_2"], pos=0,
                                          len=tf.math.minimum(tf.strings.length(files["input_2"]),
-                                         self.max_code_length)),
-                                         self.end], axis=0)
+                                         self.max_code_length))
             # end = tf.timestamp(name=None)
             # tf.print("Get file time: ", [end - start])
 
