@@ -10,11 +10,11 @@ from tensorflow.keras.layers import LSTM
 sys.path.append(os.path.join(os.path.dirname(__file__), '../..'))
 
 
-class bi_input_lstm():
+class split_lstm():
 
     def __init__(self):
 
-        self.name = "bi_input_lstm"
+        self.name = "split_lstm"
         self.input_shape = "split"
         
     def create_model(self, params, index, logger):

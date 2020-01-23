@@ -23,6 +23,7 @@ from split_cnn import split_cnn
 from largeNN import largeNN
 from split_NN import split_NN
 from tensorflow.keras.callbacks import LambdaCallback
+from split_lstm import split_lstm
 
 from src import TRAIN_LEN, VAL_LEN, SL
 
@@ -151,4 +152,5 @@ class trainer:
 # trainer(cnn_lstm(), "first_runs", 1, "11-25-19").train()
 # trainer(split_cnn(), "smaller_cnn", 4, "1-11-20").train()
 # trainer(largeNN(), "first_runs", 1, "12-10-19").train()
-trainer(split_NN(), "test_optimizations", 4, "1-16-20").train()
+# trainer(split_NN(), "test_optimizations", 4, "1-16-20").train()
+trainer(split_lstm(), "first_runs", "1-23-23")

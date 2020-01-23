@@ -119,7 +119,7 @@ class split_dataset:
 
         # dataset = dataset.map(tf_file_stats)
         dataset = dataset.batch(self.batch_size)
-        dataset = dataset.prefetch(10)
+        dataset = dataset.prefetch(2)
 
         return dataset
 
