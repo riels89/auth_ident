@@ -89,11 +89,11 @@ class split_dataset:
         def truncate_files(files, label):
             # start = tf.timestamp(name=None)
 
-            files["input_1"] = tf.concat([self.start, tf.strings.substr(files["input_1"], pos=0,
+            files["input_1"] = tf.stack([self.start, tf.strings.substr(files["input_1"], pos=0,
                                          len=tf.math.minimum(tf.strings.length(files["input_1"]),
                                          self.max_code_length)),
                                          [self.end]], axis=0)
-            files["input_2"] = tf.concat([self.start, tf.strings.substr(files["input_2"], pos=0,
+            files["input_2"] = tf.stack([self.start, tf.strings.substr(files["input_2"], pos=0,
                                          len=tf.math.minimum(tf.strings.length(files["input_2"]),
                                          self.max_code_length)),
                                          self.end], axis=0)
