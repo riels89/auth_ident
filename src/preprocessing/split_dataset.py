@@ -92,7 +92,7 @@ class split_dataset:
             files["input_1"] = tf.stack([self.start, tf.strings.substr(files["input_1"], pos=0,
                                          len=tf.math.minimum(tf.strings.length(files["input_1"]),
                                          self.max_code_length)),
-                                         [self.end]], axis=0)
+                                         self.end], axis=0)
             files["input_2"] = tf.stack([self.start, tf.strings.substr(files["input_2"], pos=0,
                                          len=tf.math.minimum(tf.strings.length(files["input_2"]),
                                          self.max_code_length)),
