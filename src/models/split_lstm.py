@@ -15,7 +15,7 @@ class split_lstm():
     def __init__(self):
 
         self.name = "split_lstm"
-        self.input_shape = "split"
+        self.dataset_type = "split"
         
     def create_model(self, params, index, logger):
 
