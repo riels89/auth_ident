@@ -44,7 +44,7 @@ class split_dataset:
     def encode_to_one_hot(self, code_to_embed):
         # start = tf.timestamp(name=None)
 
-        reshaped = tf.concat([[self.start], tf.strings.unicode_split(code_to_embed, 'UTF-8'), [self.end]], axis=1)
+        reshaped = tf.concat([[self.start], tf.strings.unicode_split(code_to_embed, 'UTF-8'), [self.end]], axis=0)
         encoding = self.table.lookup(reshaped)
         encoding = tf.reshape(tf.squeeze(tf.one_hot(encoding, self.len_encoding)), (-1, self.len_encoding))
 
