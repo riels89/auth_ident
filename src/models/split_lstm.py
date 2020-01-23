@@ -33,7 +33,7 @@ class split_lstm():
         lstm1 = LSTM(512, name='lstm')(dense1)
         lstm2 = LSTM(512, name='lstm')(dense2)
 
-        concat = layers.concat([lstm1, lstm2])
+        concat = layers.concatenate([lstm1, lstm2])
         outputs = Dense(1, activation='sigmoid', name='predictions')(concat)
 
         return keras.Model(inputs=[input1, input2], outputs=outputs, name=self.name + "-" + str(index))
