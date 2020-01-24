@@ -86,6 +86,8 @@ class trainer:
 
         training_dataset, val_dataset = self.map_dataset(self.model.dataset_type, index)
 
+        self.map_optimizer(index)
+
         model = self.model.create_model(self.params, index, logger)
 
         tensorboard_callback = TensorBoard(log_dir=curr_log_dir,
@@ -145,6 +147,15 @@ class trainer:
                                       binary_encoding=self.params[index]['binary_encoding'])
         self.params[index]['dataset'] = dataset
         return dataset.get_dataset()
+
+    def map_optimizer(self, index):
+        if self.params[index]['optimizer'] == 'adam':
+            if 'clipvalue' in self.params[index]:
+                self.params[index]['optimizer'] = keras.optimizers.Adam(clipvalue=self.params[index]['clipvalue'])
+            elif 'clipnorm' in self.params[index]:
+                self.params[index]['optimizer'] = keras.optimizers.Adam(clipvalue=self.params[index]['clipnorm'])
+
+
 
 
 # trainer(simple_lstm(), "first_runs", 1, date="13-10-19").train()

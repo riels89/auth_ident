@@ -1,5 +1,6 @@
 {
   "optimizer": ["adam"],
+  "clipvalue": [0.5],
   "loss": ["binary_crossentropy"],
   "epochs": [2],
   "batch_size": [64],
