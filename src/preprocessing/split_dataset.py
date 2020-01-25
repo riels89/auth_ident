@@ -111,14 +111,14 @@ class split_dataset:
         dataset = dataset.shuffle(4096)
         dataset = dataset.repeat()
         
-        dataset = dataset.map(get_file, tf.data.experimental.AUTOTUNE)
-        dataset = dataset.map(truncate_files, tf.data.experimental.AUTOTUNE)
+        dataset = dataset.map(get_file, 120)
+        dataset = dataset.map(truncate_files, 120)
         if self.binary_encoding:
-            dataset = dataset.map(encode_binary, tf.data.experimental.AUTOTUNE)
+            dataset = dataset.map(encode_binary, 120)
         else:
-            dataset = dataset.map(encode_one_hot, tf.data.experimental.AUTOTUNE)
+            dataset = dataset.map(encode_one_hot, 120)
 
-        dataset = dataset.map(set_shape, tf.data.experimental.AUTOTUNE)
+        dataset = dataset.map(set_shape, 120)
 
         # dataset = dataset.map(tf_file_stats)
         dataset = dataset.batch(self.batch_size)
