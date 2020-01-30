@@ -27,8 +27,8 @@ class split_lstm():
                              params[index]['dataset'].len_encoding),
                              name='input_2')
 
-        dense1 = Dense(32, name='embedding1', activation='relu')(input1)
-        dense2 = Dense(32, name='embedding2', activation='relu')(input2)
+        dense1 = Dense(32, name='embedding1')(input1)
+        dense2 = Dense(32, name='embedding2')(input2)
 
         lstm1 = LSTM(512, name='lstm1')(dense1)
         lstm2 = LSTM(512, name='lstm2')(dense2)
