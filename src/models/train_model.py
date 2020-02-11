@@ -166,4 +166,4 @@ class trainer:
 # trainer(largeNN(), "first_runs", 1, "12-10-19").train()
 # trainer(split_NN(), "test_optimizations", 4, "1-16-20").train()
 # trainer(split_lstm(), "300_input_size", 3, "1-30-20").train()
-trainer(split_bilstm(), "first_runs", 3, "2-11-20").train()
+trainer(split_bilstm(), "first_runs", 1, "2-11-20").train()
