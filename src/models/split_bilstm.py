@@ -30,8 +30,8 @@ class split_bilstm():
         dense1 = Dense(32, name='embedding1')(input1)
         dense2 = Dense(32, name='embedding2')(input2)
 
-        lstm1 = Bidirectional(LSTM(512, name='lstm1')(dense1))
-        lstm2 = Bidirectional(LSTM(512, name='lstm2')(dense2))
+        lstm1 = Bidirectional(LSTM(512, name='lstm1'))(dense1)
+        lstm2 = Bidirectional(LSTM(512, name='lstm2'))(dense2)
 
         concat = layers.concatenate([lstm1, lstm2])
         outputs = Dense(1, activation='sigmoid', name='predictions')(concat)
