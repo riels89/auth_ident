@@ -94,7 +94,8 @@ class trainer:
         tensorboard_callback = TensorBoard(log_dir=curr_log_dir,
                                            update_freq=100, profile_batch=1)
 
-        save_model_callback = ModelCheckpoint(curr_log_dir + "/checkpoints/model.{epoch:02d}-{val_accuracy:.2f}.hdf5")
+        save_model_callback = ModelCheckpoint(curr_log_dir + "/checkpoints/model.{epoch:02d}-{val_loss:.2f}.hdf5", 
+                                              monitor='val_loss', save_best_only=True, mode='min')
 
         # def batchOutput(batch, logs):
         #     logger.info("Finished batch: " + str(batch))
@@ -166,4 +167,4 @@ class trainer:
 # trainer(largeNN(), "first_runs", 1, "12-10-19").train()
 # trainer(split_NN(), "test_optimizations", 4, "1-16-20").train()
 # trainer(split_lstm(), "300_input_size", 3, "1-30-20").train()
-trainer(split_bilstm(), "first_runs", 1, "2-11-20").train()
+trainer(split_bilstm(), "rdm_siamese", 2, "2-16-20").train()

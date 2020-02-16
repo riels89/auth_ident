@@ -27,13 +27,18 @@ class split_bilstm():
                              params[index]['dataset'].len_encoding),
                              name='input_2')
 
-        dense1 = Dense(32, name='embedding1')(input1)
-        dense2 = Dense(32, name='embedding2')(input2)
+        embedding = Dense(32, name='embedding1')
+        
+        dense1 = embedding(input1)
+        dense2 = embedding(input2)
 
-        lstm1 = Bidirectional(LSTM(512, name='lstm1'))(dense1)
-        lstm2 = Bidirectional(LSTM(512, name='lstm2'))(dense2)
+        lstm = Bidirectional(LSTM(512, name='lstm1'))
+
+        lstm1 = lstm(dense1)
+        lstm2 = lstm(dense2)
 
         concat = layers.concatenate([lstm1, lstm2])
+        dense1 = Dense(256, activation='relu')(concat)
         outputs = Dense(1, activation='sigmoid', name='predictions')(concat)
 
         return keras.Model(inputs=[input1, input2], outputs=outputs, name=self.name + "-" + str(index))
