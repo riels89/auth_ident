@@ -93,9 +93,9 @@ class split_dataset:
             len2 = tf.strings.length(files["input_2"])
 
             pos1 = tf.random.uniform(1, minval=0, 
-                                     maxval=tf.math.maxmum(len1 - self.max_code_length, 0))
+                                     maxval=tf.math.maximum(len1 - self.max_code_length, 0))
             pos2 = tf.random.uniform(1, minval=0, 
-                                     maxval=tf.math.maxmum(len2 - self.max_code_length, 0))
+                                     maxval=tf.math.maximum(len2 - self.max_code_length, 0))
 
             files["input_1"] = tf.strings.substr(files["input_1"], pos=pos1,
                                          len=tf.math.minimum(len1,
