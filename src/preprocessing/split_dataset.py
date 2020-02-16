@@ -88,24 +88,26 @@ class split_dataset:
 
         def truncate_files(files, label):
             # start = tf.timestamp(name=None)
-
             len1 = tf.strings.length(files["input_1"])
             len2 = tf.strings.length(files["input_2"])
 
-            pos1 = tf.random.uniform([1], minval=0, 
-                                     maxval=tf.math.maximum(len1 - self.max_code_length, 0),
-                                     dtype=tf.int32)[0]
-            pos2 = tf.random.uniform([1], minval=0, 
-                                     maxval=tf.math.maximum(len2 - self.max_code_length, 0),
-                                     dtype=tf.int32)[0]
+            if(len1 - self.max_code_length > 0):
+                pos1 = tf.random.uniform([1], minval=0, 
+                             maxval=len1 - self.max_code_length,
+                             dtype=tf.int32)[0]
 
-            files["input_1"] = tf.strings.substr(files["input_1"], pos=pos1,
-                                         len=tf.math.minimum(len1,
-                                         self.max_code_length))
+                files["input_1"] = tf.strings.substr(files["input_1"], pos=pos1,
+                                             len=tf.math.minimum(len1,
+                                             self.max_code_length))
 
-            files["input_2"] = tf.strings.substr(files["input_2"], pos=pos2,
-                                         len=tf.math.minimum(len2,
-                                         self.max_code_length))
+            if(len2 - self.max_code_length > 0):
+                pos2 = tf.random.uniform([1], minval=0, 
+                                         maxval=len2 - self.max_code_length,
+                                         dtype=tf.int32)[0]
+
+                files["input_2"] = tf.strings.substr(files["input_2"], pos=pos2,
+                                             len=tf.math.minimum(len2,
+                                             self.max_code_length))
             # end = tf.timestamp(name=None)
             # tf.print("Get file time: ", [end - start])
 
