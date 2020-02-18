@@ -116,6 +116,7 @@ class split_dataset:
         def set_shape(files, label):
             files["input_1"].set_shape((self.max_code_length + 2, self.len_encoding))
             files["input_2"].set_shape((self.max_code_length + 2, self.len_encoding))
+            label = {"predictions":label, "tf_op_layer_Neg":label}
             return files, label
              
         dataset = tf.data.Dataset.from_tensor_slices(({"input_1": pairs[:, 0], "input_2": pairs[:, 1]}, labels))

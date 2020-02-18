@@ -25,6 +25,7 @@ from split_NN import split_NN
 from tensorflow.keras.callbacks import LambdaCallback
 from split_lstm import split_lstm
 from split_bilstm import split_bilstm
+from contrastive_bilstm import contrastive_bilstm
 
 from src import TRAIN_LEN, VAL_LEN, SL
 
@@ -102,10 +103,15 @@ class trainer:
         #     logger.info(logs)
 
         # log_stats_callback = LambdaCallback(on_batch_end=batchOutput)
+        def contrastive_loss(y_true, y_pred):
+           return y_true * (1-y_pred) * (1 - y_true) * (1+y_pred)
 
         model.compile(optimizer=self.params[index]['optimizer'],
-                      loss=self.params[index]['loss'],
+                      loss={"predictions": self.params[index]['loss'], "tf_op_layer_Neg": contrastive_loss},
                       metrics=['accuracy'])
+
+        model.summary()
+
         logger.info('Fit model on training data')
 
         history = model.fit(training_dataset,
@@ -167,4 +173,4 @@ class trainer:
 # trainer(largeNN(), "first_runs", 1, "12-10-19").train()
 # trainer(split_NN(), "test_optimizations", 4, "1-16-20").train()
 # trainer(split_lstm(), "300_input_size", 3, "1-30-20").train()
-trainer(split_bilstm(), "rdm_siamese", 2, "2-16-20").train()
+trainer(contrastive_bilstm(), "first_runs", 1, "2-17-20").train()
