@@ -104,7 +104,7 @@ class trainer:
 
         # log_stats_callback = LambdaCallback(on_batch_end=batchOutput)
         def contrastive_loss(y_true, y_pred):
-           return y_true * (1-y_pred) * (1 - y_true) * (1+y_pred)
+           return y_true * (1-y_pred) + (1 - y_true) * (1+y_pred)
 
         model.compile(optimizer=self.params[index]['optimizer'],
                       loss={"predictions": self.params[index]['loss'], "tf_op_layer_Neg": contrastive_loss},
