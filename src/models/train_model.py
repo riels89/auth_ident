@@ -108,7 +108,7 @@ class trainer:
 
         model.compile(optimizer=self.params[index]['optimizer'],
                       loss={"predictions": self.params[index]['loss'], "tf_op_layer_Sum": contrastive_loss},
-                      metrics={"predictions":'accuracy'})
+                      metrics={"predictions": 'accuracy'})
 
         model.summary()
 
@@ -173,4 +173,4 @@ class trainer:
 # trainer(largeNN(), "first_runs", 1, "12-10-19").train()
 # trainer(split_NN(), "test_optimizations", 4, "1-16-20").train()
 # trainer(split_lstm(), "300_input_size", 3, "1-30-20").train()
-trainer(contrastive_bilstm(), "first_runs", 1, "2-17-20").train()
+trainer(contrastive_bilstm(), "fixing_error", 2, "2-18-20").train()
