@@ -98,7 +98,7 @@ class trainer:
         model = self.model.create_model(self.params, index, logger)
 
         tensorboard_callback = TensorBoard(log_dir=curr_log_dir,
-                                           update_freq=100, profile_batch=1)
+                                           update_freq=100, profile_batch=0)
 
         save_model_callback = ModelCheckpoint(curr_log_dir + "/checkpoints/model.{epoch:02d}-{val_loss:.2f}.hdf5", 
                                               monitor='val_loss', save_best_only=True, mode='min')
