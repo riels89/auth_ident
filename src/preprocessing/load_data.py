@@ -11,6 +11,7 @@ import os
 sys.path.append(os.path.join(os.path.dirname(__file__),'../..'))
 from src import TRAIN_LEN, SL
 from src.preprocessing.pair_authors import pair_authors
+# from src.preprocessing.contrastive_author_comb import pair_authors as contrastive_pair
 
 # max = 102400
 max_chars = 0
@@ -70,6 +71,41 @@ def create_and_save_dataset():
     np.save('data/paired_file_paths/val_labels.npy', val_labels, allow_pickle=True)
     np.save('data/paired_file_paths/test_pairs.npy', test_pairs, allow_pickle=True)
     np.save('data/paired_file_paths/test_labels.npy', test_labels, allow_pickle=True)
+
+def create_file_csv():
+    pa = contrastive_pair("refrences/gcj.csv")
+    train_pairs, val_pairs, test_pairs = pa.generate_pairs()
+    files = pd.read_csv("refrences/gcj.csv", keep_default_na=False)
+    authors = list(set(files['username']))
+    auth_to_idx = {authors[i]: i for i in range(len(authors))}
+
+    def make_file_csv(pair_set):
+        files = np.empty([pair_set.shape[0], 4], dtype='object, object, i8, i8')
+
+        for i in range(pair_set.shape[0]):
+            with open(pair_set[i][0], 'r') as file:
+                code = file.read()
+                files[i, 0] = code
+            with open(pair_set[i][1], 'r') as file:
+                code = file.read()
+                files[i, 1] = code
+            files[i, 2] = auth_to_idx[pair_set[i][0].split(SL)[2]]
+            files[i, 3] = auth_to_idx[pair_set[i][1].split(SL)[2]]
+
+        return pd.DataFrame(data=files, columns=["file1, file2, author1", "author2"])
+
+    train_df = make_file_csv(train_pairs)
+    train_df.to_csv('data/paired_file_paths/contrastive_train_pairs.csv')
+
+    val_df = make_file_csv(val_pairs)
+    val_df.to_csv('data/paired_file_paths/contrastive_val_pairs.csv')
+
+    test_df = make_file_csv(test_pairs)
+    test_df.to_csv('data/paired_file_paths/contrastive_test_pairs.csv')
+
+            
+
+# create_file_csv()
 
 
 # create_and_save_dataset()

@@ -26,6 +26,9 @@ from tensorflow.keras.callbacks import LambdaCallback
 from split_lstm import split_lstm
 from split_bilstm import split_bilstm
 from contrastive_bilstm import contrastive_bilstm
+from contrastive_bilstm_v2 import contrastive_bilstm_v2
+
+from tensorflow.keras import backend as K
 
 from src import TRAIN_LEN, VAL_LEN, SL
 
@@ -52,6 +55,8 @@ class trainer:
 
         self.model = model
         self.params = self.generate_param_grid(self.params)
+
+        self.margin = 1
 
     def train(self):
 
@@ -88,7 +93,7 @@ class trainer:
 
         training_dataset, val_dataset = self.map_dataset(self.model.dataset_type, index)
 
-        self.map_optimizer(index)
+        self.map_params(index)
 
         model = self.model.create_model(self.params, index, logger)
 
@@ -103,12 +108,17 @@ class trainer:
         #     logger.info(logs)
 
         # log_stats_callback = LambdaCallback(on_batch_end=batchOutput)
-        def contrastive_loss(y_true, y_pred):
-           return - tf.math.log(1 - (y_true * (1-y_pred) + (1 - y_true) * (1+y_pred)) / 2)
+        # def contrastive_loss(y_true, y_pred):
+        #    return - tf.math.log(1 - (y_true * (1-y_pred) + (1 - y_true) * (1+y_pred)) / 2)
+        # , "tf_op_layer_Sum": contrastive_loss
+        def accuracy(y_true, y_pred):
+            '''Compute classification accuracy with a fixed threshold on distances.
+            '''
+            return K.mean(K.equal(y_true, K.cast(y_pred < 0.5, y_true.dtype)))
 
         model.compile(optimizer=self.params[index]['optimizer'],
-                      loss={"predictions": self.params[index]['loss'], "tf_op_layer_Sum": contrastive_loss},
-                      metrics={"predictions": 'accuracy'})
+                      loss=self.params[index]['loss'],
+                      metrics=[accuracy])
 
         model.summary()
 
@@ -149,19 +159,38 @@ class trainer:
                                     batch_size=self.params[index]['batch_size'],
                                     binary_encoding=self.params[index]['binary_encoding'])
         elif dataset_type == 'by_line':
-            dataset = by_line_dataset(max_lines=self.params[index]["max_lines"],
+            if self.params[index]['loss'] == 'contrastive':
+                dataset = by_line_dataset(max_lines=self.params[index]["max_lines"],
                                       max_line_length=self.params[index]["max_line_length"],
                                       batch_size=self.params[index]['batch_size'],
-                                      binary_encoding=self.params[index]['binary_encoding'])
+                                      binary_encoding=self.params[index]['binary_encoding'], flip_labels=True)
+            else:
+                dataset = by_line_dataset(max_lines=self.params[index]["max_lines"],
+                                          max_line_length=self.params[index]["max_line_length"],
+                                          batch_size=self.params[index]['batch_size'],
+                                          binary_encoding=self.params[index]['binary_encoding'])
         self.params[index]['dataset'] = dataset
         return dataset.get_dataset()
 
-    def map_optimizer(self, index):
+    def map_params(self, index):
         if self.params[index]['optimizer'] == 'adam':
             if 'clipvalue' in self.params[index]:
                 self.params[index]['optimizer'] = keras.optimizers.Adam(clipvalue=self.params[index]['clipvalue'])
             elif 'clipnorm' in self.params[index]:
                 self.params[index]['optimizer'] = keras.optimizers.Adam(clipvalue=self.params[index]['clipnorm'])
+        if self.params[index]['loss'] == 'contrastive':
+            self.params[index]['loss'] = self.contrastive_loss
+            if 'margin' in self.params[index]:
+                self.margin = self.params[index]['margin']
+
+
+    def contrastive_loss(self, y_true, y_pred):
+        '''Contrastive loss from Hadsell-et-al.'06
+        http://yann.lecun.com/exdb/publis/pdf/hadsell-chopra-lecun-06.pdf
+        '''
+        square_pred = K.square(y_pred)
+        margin_square = K.square(K.maximum(self.margin - y_pred, 0))
+        return K.mean(y_true * square_pred + (1 - y_true) * margin_square)
 
 
 
@@ -173,4 +202,5 @@ class trainer:
 # trainer(largeNN(), "first_runs", 1, "12-10-19").train()
 # trainer(split_NN(), "test_optimizations", 4, "1-16-20").train()
 # trainer(split_lstm(), "300_input_size", 3, "1-30-20").train()
-trainer(contrastive_bilstm(), "fixing_error", 2, "2-18-20").train()
+# trainer(contrastive_bilstm(), "fixing_error", 2, "2-18-20").train()
+trainer(contrastive_bilstm_v2(), "first_runs", 1, "4-5-20").train()

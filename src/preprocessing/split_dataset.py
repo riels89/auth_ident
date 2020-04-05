@@ -14,7 +14,7 @@ from src.preprocessing import load_data
 
 class split_dataset:
 
-    def __init__(self, max_code_length, batch_size, binary_encoding=False):
+    def __init__(self, max_code_length, batch_size, binary_encoding=False, flip_labels=False):
 
         chars_to_encode = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM\n\r\t " + r"1234567890-=!@#$%^&*()_+[]{}|;':\",./<>?"
         self.start = "<start>"
@@ -37,6 +37,7 @@ class split_dataset:
 
         self.bits = tf.constant((128, 64, 32, 16, 8, 4, 2, 1), dtype=tf.uint8)
 
+        self.flip_labels = flip_labels
         # max = 102400
         # max_chars = 0
         # counter = 0
@@ -68,6 +69,13 @@ class split_dataset:
         encoding = tf.pad(unpacked, padding, 'CONSTANT', constant_values=1)
 
         return encoding
+
+    def flip_labels(self, files, label):
+        if label == 0:
+            label = 1
+        else:
+            label = 1
+        return files, label
 
     def create_dataset(self, pairs, labels):
 
@@ -130,7 +138,9 @@ class split_dataset:
             dataset = dataset.map(encode_binary, 120)
         else:
             dataset = dataset.map(encode_one_hot, 120)
-
+        if self.flip_labels:
+            dataset = dataset.map(self.flip_labels, 120)
+            
         dataset = dataset.map(set_shape, 120)
 
         # dataset = dataset.map(tf_file_stats)
