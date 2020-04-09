@@ -124,7 +124,7 @@ class split_dataset:
         def set_shape(files, label):
             files["input_1"].set_shape((self.max_code_length + 2, self.len_encoding))
             files["input_2"].set_shape((self.max_code_length + 2, self.len_encoding))
-            label = {"predictions":label, "tf_op_layer_Sum":label}
+            label = label
             return files, label
              
         dataset = tf.data.Dataset.from_tensor_slices(({"input_1": pairs[:, 0], "input_2": pairs[:, 1]}, labels))
@@ -140,7 +140,7 @@ class split_dataset:
             dataset = dataset.map(encode_one_hot, 120)
         if self.flip_labels:
             dataset = dataset.map(self.flip_labels, 120)
-            
+
         dataset = dataset.map(set_shape, 120)
 
         # dataset = dataset.map(tf_file_stats)

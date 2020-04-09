@@ -8,7 +8,7 @@ import math
 
 import sys
 import os
-sys.path.append(os.path.join(os.path.dirname(__file__),'../..'))
+sys.path.append(os.path.join(os.path.dirname(__file__), '../..'))
 from src import TRAIN_LEN, SL
 from src.preprocessing.pair_authors import pair_authors
 # from src.preprocessing.contrastive_author_comb import pair_authors as contrastive_pair

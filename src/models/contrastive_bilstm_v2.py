@@ -10,7 +10,7 @@ from tensorflow.keras.losses import cosine_similarity
 from tensorflow.keras import backend
 import tensorflow as tf
 from tensorflow.keras import layers
-
+import numpy as np
 sys.path.append(os.path.join(os.path.dirname(__file__), '../..'))
 
 def euclidean_distance(vects):
@@ -21,7 +21,12 @@ def euclidean_distance(vects):
 
 def eucl_dist_output_shape(shapes):
     shape1, shape2 = shapes
-    return (shape1[0], 1)
+    return [shape1[0], 1]
+
+def test(tensors):
+    x, y = tensors
+    sum_square = K.sum(K.square(x - y), axis=1, keepdims=True)
+    return K.sqrt(K.maximum(sum_square, K.epsilon()))
 
 class contrastive_bilstm_v2():
 
@@ -45,7 +50,7 @@ class contrastive_bilstm_v2():
         dense1 = embedding(input1)
         dense2 = embedding(input2)
 
-        lstm = Bidirectional(LSTM(512, name='lstm1'))
+        lstm = Bidirectional(LSTM(512, name='lstm'))
 
         lstm1 = lstm(dense1)
         lstm2 = lstm(dense2)
@@ -53,10 +58,16 @@ class contrastive_bilstm_v2():
         output_embedding1 = Dense(512, name="output_embedding1")(lstm1)
         output_embedding2 = Dense(512, name="output_embedding2")(lstm2)
 
+        # testT = Lambda(test)([output_embedding1, output_embedding2])
+
+        # concat = layers.concatenate([output_embedding1, output_embedding2])
+        # distance = Dense(1, activation='sigmoid', name='predictions')(concat)
+
         # dense1 = Dense(256, activation='relu')(concat)
         distance = Lambda(euclidean_distance,
-                          output_shape=eucl_dist_output_shape)([output_embedding1, output_embedding2])
+                          output_shape=eucl_dist_output_shape, name='distance')([output_embedding1, output_embedding2])
 
+        # distance = euclidean_distance([output_embedding1, output_embedding2])
 
         return keras.Model(inputs=[input1, input2], outputs=distance, name=self.name + "-" + str(index))
 
