@@ -3,8 +3,8 @@
   "clipvalue": [0.5],
   "loss": ["contrastive"],
   "margin": [1],
-  "epochs": [30],
+  "epochs": [10],
   "batch_size": [64],
   "binary_encoding": [false],
-  "max_code_length": [600]
+  "max_code_length": [600, 1200, 2400]
 }
