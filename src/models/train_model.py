@@ -203,4 +203,4 @@ class trainer:
 # trainer(split_NN(), "test_optimizations", 4, "1-16-20").train()
 # trainer(split_lstm(), "300_input_size", 3, "1-30-20").train()
 # trainer(contrastive_bilstm(), "fixing_error", 2, "2-18-20").train()
-trainer(contrastive_bilstm_v2(), "diff_max_char", 2, "4-15-20").train()
+trainer(contrastive_bilstm_v2(), "1200_char_again", 3, "4-16-20").train()
