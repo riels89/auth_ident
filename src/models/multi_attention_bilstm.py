@@ -48,7 +48,7 @@ class multi_attention_bilstm():
         dense2 = embedding(input2)
 
         lstm = Bidirectional(LSTM(512, name='lstm', return_sequences=True))
-        attention = MultiHeadAttention(head_num=4, name="multi_head_attention")
+        attention = MultiHeadAttention(head_num=2, name="multi_head_attention")
 
         lstm1 = lstm(dense1)
         lstm2 = lstm(dense2)
