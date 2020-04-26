@@ -1,0 +1,12 @@
+{
+  "optimizer": ["adam"],
+  "clipvalue": [0.5],
+  "loss": ["contrastive"],
+  "margin": [1],
+  "epochs": [4],
+  "batch_size": [64],
+  "binary_encoding": [false],
+  "max_code_length": [300],
+  "attention": [true, false],
+  "extra_runs": [1, 2]
+}
