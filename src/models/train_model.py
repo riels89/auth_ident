@@ -205,5 +205,5 @@ class trainer:
 # trainer(split_NN(), "test_optimizations", 4, "1-16-20").train()
 # trainer(split_lstm(), "300_input_size", 3, "1-30-20").train()
 # trainer(contrastive_bilstm(), "fixing_error", 2, "2-18-20").train()
-trainer(contrastive_bilstm_v2(), "extra_dense", 4, "4-19-20").train()
-# trainer(multi_attention_bilstm(), "first_runs", 1, "4-19-20").train()
+# trainer(contrastive_bilstm_v2(), "extra_dense", 4, "4-19-20").train()
+trainer(multi_attention_bilstm(), "smaller_input", 2, "4-25-20").train()

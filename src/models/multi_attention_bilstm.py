@@ -48,16 +48,20 @@ class multi_attention_bilstm():
         dense2 = embedding(input2)
 
         lstm = Bidirectional(LSTM(512, name='lstm', return_sequences=True))
-        attention = MultiHeadAttention(head_num=1, name="multi_head_attention")
+
+        if params[index]["attention"]: 
+            attention = MultiHeadAttention(head_num=2, name="multi_head_attention")
 
         lstm1 = lstm(dense1)
         lstm2 = lstm(dense2)
 
-        attention1 = Flatten()(attention(lstm1))
-        attention2 = Flatten()(attention(lstm2))
 
-        output_embedding1 = Dense(512, name="output_embedding1")(attention1)
-        output_embedding2 = Dense(512, name="output_embedding2")(attention2)
+        if params[index]["attention"]: 
+            lstm1 = Flatten()(attention(lstm1))
+            lstm2 = Flatten()(attention(lstm2))
+
+        output_embedding1 = Dense(512, name="output_embedding1")(lstm1)
+        output_embedding2 = Dense(512, name="output_embedding2")(lstm2)
 
         distance = Lambda(euclidean_distance,
                           output_shape=eucl_dist_output_shape, name='distance')([output_embedding1, output_embedding2])
