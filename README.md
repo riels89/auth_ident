@@ -64,6 +64,9 @@ This is the current iteration of our contrastive loss and has obtained great res
 * `contrastive_stacked_blistm` was tried, but unfortuantly did not fit on the character size tried (600)
 * `multi_attention_bisltm` This is a bilstm with multi-headed attention stacked on top (2 heads). This model does not fit at 600 characters, but does with 300 characters. Either the size of the model or the small character limit (or both) caused a lot of stablility issues to the point where it could not learn. Lowering the learning rate to  `0.00001`and adding decay at a rate of `0.0000025` per step has seemingly fixed these issues. This is still training, but after 4 epochs it has reached almost 85% accuracy. 
 
+To view these expirements run `nohup tensorboard --logdir models/model_name &> tensorboard.out &` on Zemenar.
+
+
 ## ToDo
 * Get more compute!!!
 * Currently accuracy is clacluated in a rather naive way, we want to compare every testing file with everyother testing file to get a more comprehensive view of our open set accuracy. This is not trivial and would likely consist of the following steps:
