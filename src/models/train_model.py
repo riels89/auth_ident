@@ -176,10 +176,17 @@ class trainer:
 
     def map_params(self, index):
         if self.params[index]['optimizer'] == 'adam':
+            kwargs = {}
+            if 'lr' in self.params[index]:
+                kwargs['lr'] = self.params[index]['lr']
             if 'clipvalue' in self.params[index]:
-                self.params[index]['optimizer'] = keras.optimizers.Adam(clipvalue=self.params[index]['clipvalue'])
+                kwargs['clipvalue'] = self.params[index]['clipvalue']
             elif 'clipnorm' in self.params[index]:
-                self.params[index]['optimizer'] = keras.optimizers.Adam(clipvalue=self.params[index]['clipnorm'])
+                kwargs['clipnorm'] = self.params[index]['clipnorm']
+            if 'decay' in self.params[index]:
+                kwargs['decay'] = self.params[index]['decay']
+            self.params[index]['optimizer'] = keras.optimizers.Adam(**kwargs)
+
         if self.params[index]['loss'] == 'contrastive':
             self.params[index]['loss'] = self.contrastive_loss
             if 'margin' in self.params[index]:
@@ -206,4 +213,4 @@ class trainer:
 # trainer(split_lstm(), "300_input_size", 3, "1-30-20").train()
 # trainer(contrastive_bilstm(), "fixing_error", 2, "2-18-20").train()
 # trainer(contrastive_bilstm_v2(), "extra_dense", 4, "4-19-20").train()
-trainer(multi_attention_bilstm(), "smaller_input_1", 3, "4-26-20").train()
+trainer(multi_attention_bilstm(), "smaller_lr", 4, "5-6-20").train()
