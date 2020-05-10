@@ -29,7 +29,7 @@ from contrastive_bilstm import contrastive_bilstm
 from contrastive_bilstm_v2 import contrastive_bilstm_v2
 from contrastive_stacked_bilstm import contrastive_stacked_bilstm
 from multi_attention_bilstm import multi_attention_bilstm
-
+from contrastive_cnn import contrastive_cnn
 from tensorflow.keras import backend as K
 
 from src import TRAIN_LEN, VAL_LEN, SL
@@ -213,4 +213,5 @@ class trainer:
 # trainer(split_lstm(), "300_input_size", 3, "1-30-20").train()
 # trainer(contrastive_bilstm(), "fixing_error", 2, "2-18-20").train()
 # trainer(contrastive_bilstm_v2(), "extra_dense", 4, "4-19-20").train()
-trainer(multi_attention_bilstm(), "smaller_lr", 4, "5-6-20").train()
+# trainer(multi_attention_bilstm(), "smaller_lr", 4, "5-6-20").train()
+trainer(contrastive_cnn(), "first_runs", 1, "5-10-20").train()
