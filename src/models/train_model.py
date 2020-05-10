@@ -214,4 +214,4 @@ class trainer:
 # trainer(contrastive_bilstm(), "fixing_error", 2, "2-18-20").train()
 # trainer(contrastive_bilstm_v2(), "extra_dense", 4, "4-19-20").train()
 # trainer(multi_attention_bilstm(), "smaller_lr", 4, "5-6-20").train()
-trainer(contrastive_cnn(), "first_runs", 1, "5-10-20").train()
+trainer(contrastive_cnn(), "fixing_filter_num", 2, "5-10-20").train()

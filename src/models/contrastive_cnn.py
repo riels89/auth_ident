@@ -33,16 +33,19 @@ class contrastive_cnn():
                      params[index]['dataset'].len_encoding),
                      name='place_holder_input')
 
-        conv = Conv1D(31, 128, strides=1, padding="same", activation="relu", name='conv_1')(input)
+        conv = Conv1D(128, 63, strides=1, padding="same", activation="relu", name='conv_1')(input)
         if params[index]['BN']:
             conv = BatchNormalization()(conv)
-        conv = Conv1D(30, 128, strides=2, padding="same", activation="relu", name='conv_2')(conv)
+        conv = Conv1D(128, 31, strides=2, padding="same", activation="relu", name='conv_2')(conv)
         if params[index]['BN']:
             conv = BatchNormalization()(conv)
-        conv = Conv1D(15, 128, strides=1, padding="same", activation="relu", name='conv_3')(conv)
+        conv = Conv1D(128, 30, strides=2, padding="same", activation="relu", name='conv_3')(conv)
         if params[index]['BN']:
             conv = BatchNormalization()(conv)
-        conv = Conv1D(7, 128, strides=1, padding="same", activation="relu", name='conv_4')(conv)
+        conv = Conv1D(128, 15, strides=1, padding="same", activation="relu", name='conv_4')(conv)
+        if params[index]['BN']:
+            conv = BatchNormalization()(conv)
+        conv = Conv1D(128, 7, strides=1, padding="same", activation="relu", name='conv_5')(conv)
         if params[index]['BN']:
             conv = BatchNormalization()(conv)
 
