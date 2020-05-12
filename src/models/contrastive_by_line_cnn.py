@@ -36,7 +36,7 @@ class contrastive_by_line_cnn():
                             name='place_holder_input')
 
         conv = Conv2D(128, [5, params[index]["max_line_length"]], strides=params[index]["max_line_length"], padding="same", activation="relu", name='conv_1')(input)
-        conv = Reshape([params[index]["batch_size"], 128, 1])(conv)
+        conv = Reshape([64, 128, 1])(conv)
 
         if params[index]['BN']:
             conv = BatchNormalization()(conv)
