@@ -45,11 +45,11 @@ class by_line_dataset:
 
         reshaped = tf.strings.unicode_split(code_to_embed, 'UTF-8').to_tensor('\0')
         encoding = self.table.lookup(reshaped)
-        encoding = tf.reshape(tf.squeeze(tf.one_hot(encoding, self.len_encoding)), (-1, self.len_encoding))
+        encoding = tf.squeeze(tf.one_hot(encoding, self.len_encoding))
 
         code_length = tf.shape(encoding)[0]
         line_length = tf.strings.length(code_to_embed)
-        padding = [[0, self.max_lines - code_length], [0, self.max_line_length - line_length], [0, 0]]
+        padding = [[0, self.max_lines - code_length], [0, 0], [0, 0]]
         encoding = tf.pad(encoding, padding, 'CONSTANT', constant_values=0)
 
         # end = tf.timestamp(name=None)
@@ -112,8 +112,8 @@ class by_line_dataset:
             return files, label
 
         def set_shape(files, label):
-            files["input_1"].set_shape((self.max_code_length, self.len_encoding))
-            files["input_2"].set_shape((self.max_code_length, self.len_encoding))
+            files["input_1"].set_shape((self.max_lines, self.max_line_length, self.len_encoding))
+            files["input_2"].set_shape((self.max_lines, self.max_line_length, self.len_encoding))
             return files, label
              
         dataset = tf.data.Dataset.from_tensor_slices(({"input_1": pairs[:, 0], "input_2": pairs[:, 1]}, labels))
