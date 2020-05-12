@@ -55,11 +55,15 @@ class contrastive_bilstm_v2():
         lstm1 = lstm(dense1)
         lstm2 = lstm(dense2)
 
-        dense1 = Dense(512, name="dense1")(lstm1)
-        dense2 = Dense(512, name="dense2")(lstm2)
+        dense = Dense(512, name="dense")
 
-        output_embedding1 = Dense(512, name="output_embedding1")(dense1)
-        output_embedding2 = Dense(512, name="output_embedding2")(dense2)
+        dense1 = dense(lstm1)
+        dense2 = dense(lstm2)
+
+        output_embedding = Dense(512, name="output_embedding")
+
+        output_embedding1 = output_embedding(dense1)
+        output_embedding2 = output_embedding(dense2)
 
         # testT = Lambda(test)([output_embedding1, output_embedding2])
 

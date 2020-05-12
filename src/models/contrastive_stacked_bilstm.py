@@ -23,11 +23,6 @@ def eucl_dist_output_shape(shapes):
     shape1, shape2 = shapes
     return [shape1[0], 1]
 
-def test(tensors):
-    x, y = tensors
-    sum_square = K.sum(K.square(x - y), axis=1, keepdims=True)
-    return K.sqrt(K.maximum(sum_square, K.epsilon()))
-
 class contrastive_stacked_bilstm():
 
     def __init__(self):

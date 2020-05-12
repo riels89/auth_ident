@@ -60,8 +60,10 @@ class multi_attention_bilstm():
             lstm1 = Flatten()(attention(lstm1))
             lstm2 = Flatten()(attention(lstm2))
 
-        output_embedding1 = Dense(512, name="output_embedding1")(lstm1)
-        output_embedding2 = Dense(512, name="output_embedding2")(lstm2)
+        output_embedding = Dense(512, name="output_embedding")
+
+        output_embedding1 = output_embedding(lstm1)
+        output_embedding2 = output_embedding(lstm2)
 
         distance = Lambda(euclidean_distance,
                           output_shape=eucl_dist_output_shape, name='distance')([output_embedding1, output_embedding2])

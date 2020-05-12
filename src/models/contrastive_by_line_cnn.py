@@ -71,8 +71,10 @@ class contrastive_by_line_cnn():
         cnn1 = cnn(input1)
         cnn2 = cnn(input2)
 
-        output_embedding1 = Dense(params[index]['embedding_size'], name="output_embedding1")(cnn1)
-        output_embedding2 = Dense(params[index]['embedding_size'], name="output_embedding2")(cnn2)
+        output_embedding = Dense(512, name="output_embedding")
+
+        output_embedding1 = output_embedding(cnn1)
+        output_embedding2 = output_embedding(cnn2)
 
         distance = Lambda(euclidean_distance,
                         output_shape=eucl_dist_output_shape, name='distance')([output_embedding1, output_embedding2])
