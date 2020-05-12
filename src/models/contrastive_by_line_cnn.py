@@ -5,7 +5,7 @@ from tensorflow.keras import layers
 from src.preprocessing import load_data
 from tensorflow.keras.layers import Dense, Dropout
 from tensorflow.keras.layers import Embedding
-from tensorflow.keras.layers import LSTM, Conv1D, Flatten, BatchNormalization, Lambda, Conv2D
+from tensorflow.keras.layers import LSTM, Conv1D, Flatten, BatchNormalization, Lambda, Conv2D, Reshape
 from tensorflow.keras import backend as K
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '../..'))
@@ -36,7 +36,7 @@ class contrastive_by_line_cnn():
                             name='place_holder_input')
 
         conv = Conv2D(128, [5, params[index]["max_line_length"]], strides=params[index]["max_line_length"], padding="same", activation="relu", name='conv_1')(input)
-        conv = Flatten()(conv)
+        conv = Reshape([params[index]["batch_size"], 128, 1])(conv)
 
         if params[index]['BN']:
             conv = BatchNormalization()(conv)
