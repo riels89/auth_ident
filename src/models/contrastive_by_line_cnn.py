@@ -35,7 +35,9 @@ class contrastive_by_line_cnn():
                                          params[index]['dataset'].len_encoding),
                             name='place_holder_input')
 
-        conv = Conv2D(128, [5, params[index]["max_line_length"]], strides=1, padding="same", activation="relu", name='conv_1')(input)
+        conv = Conv2D(128, [5, params[index]["max_line_length"]], strides=params[index]["max_line_length"], padding="same", activation="relu", name='conv_1')(input)
+        conv = Flatten()(conv)
+
         if params[index]['BN']:
             conv = BatchNormalization()(conv)
         conv = Conv1D(128, 10, strides=1, padding="same", activation="relu", name='conv_2')(conv)
