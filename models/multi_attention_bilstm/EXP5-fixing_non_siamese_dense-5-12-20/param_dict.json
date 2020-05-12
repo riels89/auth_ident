@@ -9,5 +9,5 @@
   "batch_size": [64],
   "binary_encoding": [false],
   "max_code_length": [300],
-  "attention": [true],
+  "attention": [true]
 }
