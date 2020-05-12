@@ -31,6 +31,7 @@ from contrastive_stacked_bilstm import contrastive_stacked_bilstm
 from multi_attention_bilstm import multi_attention_bilstm
 from contrastive_cnn import contrastive_cnn
 from tensorflow.keras import backend as K
+from contrastive_by_line_cnn import contrastive_by_line_cnn
 
 from src import TRAIN_LEN, VAL_LEN, SL
 
@@ -163,9 +164,9 @@ class trainer:
         elif dataset_type == 'by_line':
             if self.params[index]['loss'] == 'contrastive':
                 dataset = by_line_dataset(max_lines=self.params[index]["max_lines"],
-                                      max_line_length=self.params[index]["max_line_length"],
-                                      batch_size=self.params[index]['batch_size'],
-                                      binary_encoding=self.params[index]['binary_encoding'], flip_labels=True)
+                                          max_line_length=self.params[index]["max_line_length"],
+                                          batch_size=self.params[index]['batch_size'],
+                                          binary_encoding=self.params[index]['binary_encoding'])
             else:
                 dataset = by_line_dataset(max_lines=self.params[index]["max_lines"],
                                           max_line_length=self.params[index]["max_line_length"],
@@ -214,4 +215,5 @@ class trainer:
 # trainer(contrastive_bilstm(), "fixing_error", 2, "2-18-20").train()
 # trainer(contrastive_bilstm_v2(), "extra_dense", 4, "4-19-20").train()
 # trainer(multi_attention_bilstm(), "smaller_lr", 4, "5-6-20").train()
-trainer(contrastive_cnn(), "fixing_filter_num", 2, "5-10-20").train()
+# trainer(contrastive_cnn(), "fixing_filter_num", 2, "5-10-20").train()
+trainer(contrastive_by_line_cnn(), "first_runs", 1, "5-12-20").train()
