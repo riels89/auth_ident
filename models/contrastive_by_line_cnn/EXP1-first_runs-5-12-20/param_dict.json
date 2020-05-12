@@ -8,6 +8,7 @@
   "epochs": [5],
   "batch_size": [64],
   "max_line_length": [120],
+  "embedding_size": [256],
   "max_lines": [50],
   "binary_encoding": [false],
   "BN": [false, true]
