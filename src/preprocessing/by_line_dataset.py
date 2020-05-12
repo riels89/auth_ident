@@ -49,7 +49,7 @@ class by_line_dataset:
 
         code_length = tf.shape(encoding)[0]
         line_length = tf.strings.length(code_to_embed)
-        padding = [[0, self.max_lines - code_length], [0, 0], [0, 0]]
+        padding = [[0, self.max_lines - code_length], [0, self.max_line_length - line_length], [0, 0]]
         encoding = tf.pad(encoding, padding, 'CONSTANT', constant_values=0)
 
         # end = tf.timestamp(name=None)
