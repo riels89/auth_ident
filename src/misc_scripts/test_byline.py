@@ -6,4 +6,4 @@ dataset = by_line_dataset(max_lines=1000, max_line_length=120, batch_size=64, bi
 train, val = dataset.get_dataset()
 
 for batch in train:
-	print("batch"+batch[0])
+	print("batch"+str(batch[0]))
