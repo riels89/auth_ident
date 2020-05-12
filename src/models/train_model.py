@@ -101,7 +101,7 @@ class trainer:
         model = self.model.create_model(self.params, index, logger)
 
         tensorboard_callback = TensorBoard(log_dir=curr_log_dir,
-                                           update_freq=100, profile_batch=0)
+                                           update_freq=64, profile_batch=0)
 
         save_model_callback = ModelCheckpoint(curr_log_dir + "/checkpoints/model.{epoch:02d}-{val_loss:.2f}.hdf5", 
                                               monitor='val_loss', save_best_only=True, mode='min')
@@ -216,4 +216,4 @@ class trainer:
 # trainer(contrastive_bilstm_v2(), "extra_dense", 4, "4-19-20").train()
 # trainer(multi_attention_bilstm(), "smaller_lr", 4, "5-6-20").train()
 # trainer(contrastive_cnn(), "fixing_filter_num", 2, "5-10-20").train()
-trainer(contrastive_by_line_cnn(), "first_runs", 1, "5-12-20").train()
+trainer(contrastive_by_line_cnn(), "fixing_OOM", 2, "5-12-20").train()
