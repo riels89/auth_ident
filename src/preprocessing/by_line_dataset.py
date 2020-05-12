@@ -90,7 +90,7 @@ class by_line_dataset:
         def split_files(files, label):
             files["input_1"] = tf.strings.split(files["input_1"], '\n')
             files["input_2"] = tf.strings.split(files["input_2"], '\n')
-            tf.print(files["input_1"][:self.max_lines])
+            # tf.print(files["input_1"][:self.max_lines])
             # tf.print("test", tf.strings.length(files["input_1"][:self.max_lines]))
 
             return files, label
