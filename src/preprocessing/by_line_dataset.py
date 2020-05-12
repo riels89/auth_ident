@@ -43,14 +43,14 @@ class by_line_dataset:
     def encode_to_one_hot(self, code_to_embed):
         # start = tf.timestamp(name=None)
 
-        reshaped = tf.strings.unicode_split(code_to_embed, 'UTF-8').to_tensor('\0')
+        reshaped = tf.strings.unicode_split(code_to_embed, 'UTF-8').to_tensor('\0', shape=[self.max_lines, self.max_line_length])
         encoding = self.table.lookup(reshaped)
         encoding = tf.squeeze(tf.one_hot(encoding, self.len_encoding))
 
-        code_length = tf.shape(encoding)[0]
-        line_length = tf.strings.length(code_to_embed)
-        padding = [[0, self.max_lines - code_length], [0, self.max_line_length - line_length], [0, 0]]
-        encoding = tf.pad(encoding, padding, 'CONSTANT', constant_values=0)
+        # code_length = tf.shape(encoding)[0]
+        # line_length = tf.strings.length(code_to_embed)
+        # padding = [[0, self.max_lines - code_length], [0, self.max_line_length - line_length], [0, 0]]
+        # encoding = tf.pad(encoding, padding, 'CONSTANT', constant_values=0)
 
         # end = tf.timestamp(name=None)
         # tf.print("Embedding time: ", [end - start])
