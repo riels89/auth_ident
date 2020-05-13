@@ -70,7 +70,10 @@ class trainer:
         for index in range(len(self.params)):
             curr_log_dir = self.logdir + SL + "combination-" + str(index)
             os.makedirs(curr_log_dir, exist_ok=True)
+            assert os.path.isdir(curr_log_dir), "Dir " + curr_log_dir + "doesn't exist"
             os.makedirs(curr_log_dir + '/checkpoints', exist_ok=True)
+            assert os.path.isdir(curr_log_dir + '/checkpoints'), "Dir " + curr_log_dir + "doesn't exist"
+
             logger = self.create_logger(curr_log_dir, index=index)
             logger.addHandler(self.root_handler)
 
