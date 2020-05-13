@@ -5,10 +5,11 @@
   "lr": [0.00001],
   "decay": [0.0000025],
   "margin": [1],
-  "epochs": [4],
-  "batch_size": [64],
-  "binary_encoding": [false],
-  "max_code_length": [600],
+  "epochs": [5],
+  "batch_size": [54],
+  "max_line_length": [120],
   "embedding_size": [256],
+  "max_lines": [50],
+  "binary_encoding": [false],
   "BN": [false]
 }
