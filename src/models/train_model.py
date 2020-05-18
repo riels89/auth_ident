@@ -219,5 +219,5 @@ class trainer:
 # trainer(contrastive_bilstm_v2(), "fixing_non_siamese_dense", 5, "5-12-20").train()
 # trainer(multi_attention_bilstm(), "fixing_non_siamese_dense", 5, "5-12-20").train()
 # trainer(contrastive_cnn(), "fixing_non_siamese_dense", 3, "5-12-20").train()
-# trainer(contrastive_by_line_cnn(), "fixing_non_siamese_dense", 3, "5-12-20").train()
+trainer(contrastive_by_line_cnn(), "testing_speed", 4, "5-18-20").train()
 trainer(contrastive_1D_to_2D(), "first_runs", 1, "5-18-20").train()
