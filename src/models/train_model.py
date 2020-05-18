@@ -32,7 +32,7 @@ from multi_attention_bilstm import multi_attention_bilstm
 from contrastive_cnn import contrastive_cnn
 from tensorflow.keras import backend as K
 from contrastive_by_line_cnn import contrastive_by_line_cnn
-
+from contrastive_1D_to_2D import contrastive_1D_to_2D
 from src import TRAIN_LEN, VAL_LEN, SL
 
 
@@ -218,5 +218,6 @@ class trainer:
 # trainer(contrastive_bilstm(), "fixing_error", 2, "2-18-20").train()
 # trainer(contrastive_bilstm_v2(), "fixing_non_siamese_dense", 5, "5-12-20").train()
 # trainer(multi_attention_bilstm(), "fixing_non_siamese_dense", 5, "5-12-20").train()
-trainer(contrastive_cnn(), "fixing_non_siamese_dense", 3, "5-12-20").train()
-trainer(contrastive_by_line_cnn(), "fixing_non_siamese_dense", 3, "5-12-20").train()
+# trainer(contrastive_cnn(), "fixing_non_siamese_dense", 3, "5-12-20").train()
+# trainer(contrastive_by_line_cnn(), "fixing_non_siamese_dense", 3, "5-12-20").train()
+trainer(contrastive_1D_to_2D(), "first_runs", 1, "5-18-20").train()

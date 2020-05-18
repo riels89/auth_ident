@@ -5,7 +5,7 @@ from tensorflow.keras import layers
 from src.preprocessing import load_data
 from tensorflow.keras.layers import Dense, Dropout
 from tensorflow.keras.layers import Embedding
-from tensorflow.keras.layers import LSTM, Conv1D, Flatten, BatchNormalization, Lambda, Conv2D, Reshape
+from tensorflow.keras.layers import LSTM, Conv1D, Flatten, BatchNormalization, Lambda, Conv2D, Reshape, MaxPool1D
 from tensorflow.keras import backend as K
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '../..'))
@@ -21,11 +21,11 @@ def eucl_dist_output_shape(shapes):
     return [shape1[0], 1]
 
 
-class contrastive_by_line_cnn():
+class contrastive_1D_to_2D():
 
     def __init__(self):
 
-        self.name = "contrastive_by_line_cnn"
+        self.name = "contrastive_1D_to_2D"
         self.dataset_type = "by_line"
 
     def create_cnn(self, params, index):
@@ -35,22 +35,22 @@ class contrastive_by_line_cnn():
                                          params[index]['dataset'].len_encoding),
                             name='place_holder_input')
 
-        conv = Conv2D(128, [5, params[index]["max_line_length"]], strides=[1, params[index]["max_line_length"]], padding="same", activation="relu", name='conv_1')(input)
+        conv = Conv2D(128, [1, 30], strides=[1, 1], padding="same", activation="relu", name='conv_1')(input)
+
+        conv = Conv2D(128, [1, 15], strides=[1, 2], padding="same", activation="relu", name='conv_2')(conv)
+
+        conv = Conv2D(128, [1, 7], strides=[1, 2], padding="same", activation="relu", name='conv_3')(conv)
+
+        conv = Conv2D(128, [5, 30], strides=[1, 999], padding="same", activation="relu", name='conv_4')(conv)
+
         conv = K.squeeze(conv, 2)
-
-        if params[index]['BN']:
-            conv = BatchNormalization()(conv)
-        conv = Conv1D(128, 10, strides=1, padding="same", activation="relu", name='conv_2')(conv)
-        if params[index]['BN']:
-            conv = BatchNormalization()(conv)
-        conv = Conv1D(128, 4, strides=2, padding="same", activation="relu", name='conv_3')(conv)
-        if params[index]['BN']:
-            conv = BatchNormalization()(conv)
-        conv = Conv1D(128, 2, strides=1, padding="same", activation="relu", name='conv_4')(conv)
-
+        if not params[index]['maxpool']:
+            conv = Conv1D(128, 3, strides=2, padding="same", activation="relu", name='conv_5')(conv)
+        else:
+            conv = MaxPool1D(2, padding="valid", name="max_pool")(conv)
         conv = Flatten()(conv)
 
-        return keras.Model(input, conv)
+        return keras.Model(input, conv, name="siamese_cnn")
 
         
     def create_model(self, params, index, logger):
@@ -67,11 +67,16 @@ class contrastive_by_line_cnn():
                              name='input_2')
 
         cnn = self.create_cnn(params, index)
+        cnn.summary()
 
         cnn1 = cnn(input1)
         cnn2 = cnn(input2)
 
-        output_embedding = Dense(512, name="output_embedding")
+        # non_linearity = Dense(256, activation="relu", name="non_linearity")
+        output_embedding = Dense(256, name="output_embedding")
+
+        # non_linearity1 = non_linearity(cnn1)
+        # non_linearity2 = non_linearity(cnn2)
 
         output_embedding1 = output_embedding(cnn1)
         output_embedding2 = output_embedding(cnn2)
