@@ -34,6 +34,7 @@ from tensorflow.keras import backend as K
 from contrastive_by_line_cnn import contrastive_by_line_cnn
 from contrastive_1D_to_2D import contrastive_1D_to_2D
 from src import TRAIN_LEN, VAL_LEN, SL
+from shutil import copy
 
 
 class trainer:
@@ -55,6 +56,8 @@ class trainer:
                               + 'with model ' + model.name)
         self.root_logger.info("Parameter dict: " + str(self.params))
         self.root_logger.info("")
+
+        copy("src/models/" + model.name + ".py", self.logdir)
 
         self.model = model
         self.params = self.generate_param_grid(self.params)
@@ -218,6 +221,6 @@ class trainer:
 # trainer(contrastive_bilstm(), "fixing_error", 2, "2-18-20").train()
 # trainer(contrastive_bilstm_v2(), "fixing_non_siamese_dense", 5, "5-12-20").train()
 # trainer(multi_attention_bilstm(), "fixing_non_siamese_dense", 5, "5-12-20").train()
-# trainer(contrastive_cnn(), "fixing_non_siamese_dense", 3, "5-12-20").train()
-trainer(contrastive_by_line_cnn(), "testing_speed", 4, "5-18-20").train()
-trainer(contrastive_1D_to_2D(), "first_runs", 1, "5-18-20").train()
+trainer(contrastive_cnn(), "larger_input", 4, "5-19-20").train()
+# trainer(contrastive_by_line_cnn(), "testing_speed", 4, "5-18-20").train()
+# trainer(contrastive_1D_to_2D(), "first_runs", 1, "5-18-20").train()
