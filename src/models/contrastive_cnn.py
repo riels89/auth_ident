@@ -4,7 +4,7 @@ import tensorflow.keras as keras
 from tensorflow.keras import layers
 from src.preprocessing import load_data
 from tensorflow.keras.layers import Dense, Dropout
-from tensorflow.keras.layers import Embedding
+from tensorflow.keras.layers import Embedding, TimeDistributed
 from tensorflow.keras.layers import LSTM, Conv1D, Flatten, BatchNormalization, Lambda
 from tensorflow.keras import backend as K
 
@@ -27,10 +27,11 @@ class contrastive_cnn():
 
         self.name = "contrastive_cnn"
         self.dataset_type = "split"
+        self.input_embedding_size = 32
 
     def create_cnn(self, params, index):
         input = keras.Input(batch_shape=(params[index]["batch_size"], params[index]["max_code_length"] + 2,
-                            params[index]['dataset'].len_encoding),
+                            self.input_embedding_size),
                             name='place_holder_input')
 
         conv = Conv1D(128, 63, strides=1, padding="same", activation="relu", name='conv_1')(input)
@@ -51,7 +52,7 @@ class contrastive_cnn():
 
         conv = Flatten()(conv)
 
-        return keras.Model(input, conv)
+        return keras.Model(input, conv, name="siamese_cnn")
 
         
     def create_model(self, params, index, logger):
@@ -63,12 +64,19 @@ class contrastive_cnn():
                              params[index]['dataset'].len_encoding),
                              name='input_2')
 
+        embedding = Dense(self.input_embedding_size, name='input_embedding')
+        embedding = TimeDistributed(embedding)
+
+        embedding1 = embedding(input1)
+        embedding2 = embedding(input2)
+
         cnn = self.create_cnn(params, index)
+        cnn.summary()
 
-        cnn1 = cnn(input1)
-        cnn2 = cnn(input2)
+        cnn1 = cnn(embedding1)
+        cnn2 = cnn(embedding2)
 
-        output_embedding = Dense(512, name="output_embedding")
+        output_embedding = Dense(256, name="output_embedding")
 
         output_embedding1 = output_embedding(cnn1)
         output_embedding2 = output_embedding(cnn2)

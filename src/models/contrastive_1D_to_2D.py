@@ -4,7 +4,7 @@ import tensorflow.keras as keras
 from tensorflow.keras import layers
 from src.preprocessing import load_data
 from tensorflow.keras.layers import Dense, Dropout
-from tensorflow.keras.layers import Embedding
+from tensorflow.keras.layers import Embedding, TimeDistributed
 from tensorflow.keras.layers import LSTM, Conv1D, Flatten, BatchNormalization, Lambda, Conv2D, Reshape, MaxPool1D
 from tensorflow.keras import backend as K
 
@@ -27,12 +27,13 @@ class contrastive_1D_to_2D():
 
         self.name = "contrastive_1D_to_2D"
         self.dataset_type = "by_line"
+        self.input_embedding_size = 32
 
     def create_cnn(self, params, index):
         input = keras.Input(batch_shape=(params[index]["batch_size"],
                                          params[index]["max_lines"],
                                          params[index]["max_line_length"],
-                                         params[index]['dataset'].len_encoding),
+                                         self.input_embedding_size),
                             name='place_holder_input')
 
         conv = Conv2D(128, [1, 30], strides=[1, 1], padding="same", activation="relu", name='conv_1')(input)
@@ -66,11 +67,17 @@ class contrastive_1D_to_2D():
                                           params[index]['dataset'].len_encoding),
                              name='input_2')
 
+        embedding = Dense(self.input_embedding_size, name='input_embedding')
+        embedding = TimeDistributed(embedding)
+
+        embedding1 = embedding(input1)
+        embedding2 = embedding(input2)
+
         cnn = self.create_cnn(params, index)
         cnn.summary()
 
-        cnn1 = cnn(input1)
-        cnn2 = cnn(input2)
+        cnn1 = cnn(embedding1)
+        cnn2 = cnn(embedding2)
 
         # non_linearity = Dense(256, activation="relu", name="non_linearity")
         output_embedding = Dense(256, name="output_embedding")
