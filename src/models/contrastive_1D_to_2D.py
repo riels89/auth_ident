@@ -46,7 +46,9 @@ class contrastive_1D_to_2D():
 
         conv = K.squeeze(conv, 2)
         if not params[index]['maxpool']:
-            conv = Conv1D(128, 3, strides=2, padding="same", activation="relu", name='conv_5')(conv)
+            conv = Conv1D(128, 10, strides=1, padding="same", activation="relu", name='conv_5')(conv)
+            conv = Conv1D(128, 4, strides=2, padding="same", activation="relu", name='conv_6')(conv)
+            conv = Conv1D(128, 2, strides=1, padding="same", activation="relu", name='conv_7')(conv)
         else:
             conv = MaxPool1D(2, padding="valid", name="max_pool")(conv)
         conv = Flatten()(conv)
