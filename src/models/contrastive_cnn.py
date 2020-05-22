@@ -34,33 +34,32 @@ class contrastive_cnn():
                             self.input_embedding_size),
                             name='place_holder_input')
 
-        conv = Conv1D(128, 63, strides=1, padding="same", activation="relu", name='conv_1')(input)
+        conv = Conv1D(256, 7, strides=1, padding="same", activation="relu", name='conv_1')(input)
         if params[index]['BN']:
             conv = BatchNormalization()(conv)
-        conv = Conv1D(128, 31, strides=2, padding="same", activation="relu", name='conv_2')(conv)
+        conv = MaxPool1D(3, padding="valid", name="max_pool_1")(conv)
+
+        conv = Conv1D(256, 7, strides=1, padding="same", activation="relu", name='conv_2')(conv)
         if params[index]['BN']:
             conv = BatchNormalization()(conv)
-        conv = Conv1D(128, 30, strides=2, padding="same", activation="relu", name='conv_3')(conv)
+        conv = MaxPool1D(3, padding="valid", name="max_pool_2")(conv)
+
+        conv = Conv1D(256, 3, strides=1, padding="same", activation="relu", name='conv_3')(conv)
         if params[index]['BN']:
             conv = BatchNormalization()(conv)
-        conv = Conv1D(128, 15, strides=1, padding="same", activation="relu", name='conv_4')(conv)
+
+        conv = Conv1D(256, 3, strides=1, padding="same", activation="relu", name='conv_4')(conv)
         if params[index]['BN']:
             conv = BatchNormalization()(conv)
-        conv = Conv1D(128, 15, strides=4, padding="same", activation="relu", name='conv_5')(conv)
+
+        conv = Conv1D(256, 3, strides=1, padding="same", activation="relu", name='conv_5')(conv)
         if params[index]['BN']:
             conv = BatchNormalization()(conv)
-        conv = Conv1D(64, 7, strides=1, padding="same", activation="relu", name='conv_6')(conv)
+
+        conv = Conv1D(256, 3, strides=1, padding="same", activation="relu", name='conv_6')(conv)
         if params[index]['BN']:
             conv = BatchNormalization()(conv)
-        conv = Conv1D(64, 7, strides=2, padding="same", activation="relu", name='conv_7')(conv)
-        if params[index]['BN']:
-            conv = BatchNormalization()(conv)
-        conv = Conv1D(64, 7, strides=2, padding="same", activation="relu", name='conv_8')(conv)
-        if params[index]['BN']:
-            conv = BatchNormalization()(conv)
-        conv = Conv1D(64, 3, strides=1, padding="same", activation="relu", name='conv_9')(conv)
-        if params[index]['BN']:
-            conv = BatchNormalization()(conv)
+        conv = MaxPool1D(3, padding="valid", name="max_pool_3")(conv)
 
         conv = Flatten()(conv)
 
@@ -88,10 +87,19 @@ class contrastive_cnn():
         cnn1 = cnn(embedding1)
         cnn2 = cnn(embedding2)
 
+        non_linearity_1 = Dense(1048, activation="relu", name="non_linearity_1")
+        non_linearity_2 = Dense(1048, activation="relu", name="non_linearity_2")
+
         output_embedding = Dense(256, name="output_embedding")
 
-        output_embedding1 = output_embedding(cnn1)
-        output_embedding2 = output_embedding(cnn2)
+        non_linearity1 = non_linearity_1(cnn1)
+        non_linearity2 = non_linearity_1(cnn2)
+
+        non_linearity1 = non_linearity_2(non_linearity1)
+        non_linearity2 = non_linearity_2(non_linearity2)
+
+        output_embedding1 = output_embedding(non_linearity1)
+        output_embedding2 = output_embedding(non_linearity2)
 
         distance = Lambda(euclidean_distance,
                   output_shape=eucl_dist_output_shape, name='distance')([output_embedding1, output_embedding2])
