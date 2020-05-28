@@ -21,11 +21,11 @@ def eucl_dist_output_shape(shapes):
     return [shape1[0], 1]
 
 
-class dialated_conv_by_line():
+class contrastive_strided_conv_by_line():
 
     def __init__(self):
 
-        self.name = "dialated_conv_by_line"
+        self.name = "contrastive_strided_conv_by_line"
         self.dataset_type = "by_line"
         self.input_embedding_size = 32
 
