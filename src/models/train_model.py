@@ -35,7 +35,7 @@ from contrastive_by_line_cnn import contrastive_by_line_cnn
 from contrastive_1D_to_2D import contrastive_1D_to_2D
 from src import TRAIN_LEN, VAL_LEN, SL
 from shutil import copy
-
+from contrastive_strided_conv_by_line import contrastive_strided_conv_by_line
 
 class trainer:
 
@@ -221,6 +221,8 @@ class trainer:
 # trainer(contrastive_bilstm(), "fixing_error", 2, "2-18-20").train()
 # trainer(contrastive_bilstm_v2(), "fixing_non_siamese_dense", 5, "5-12-20").train()
 # trainer(multi_attention_bilstm(), "fixing_non_siamese_dense", 5, "5-12-20").train()
-trainer(contrastive_cnn(), "smaller_filters", 7, "5-22-20").train()
+# trainer(contrastive_cnn(), "smaller_filters", 7, "5-22-20").train()
 # trainer(contrastive_by_line_cnn(), "adding_embedding", 5, "5-19-20").train()
 # trainer(contrastive_1D_to_2D(), "more_convolutions", 3, "5-20-20").train()
+
+trainer(contrastive_strided_conv_by_line(), "first_runs", 1, "5-28-20").traln()
