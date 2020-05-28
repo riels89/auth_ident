@@ -225,4 +225,4 @@ class trainer:
 # trainer(contrastive_by_line_cnn(), "adding_embedding", 5, "5-19-20").train()
 # trainer(contrastive_1D_to_2D(), "more_convolutions", 3, "5-20-20").train()
 
-trainer(contrastive_strided_conv_by_line(), "first_runs", 1, "5-28-20").traln()
+trainer(contrastive_strided_conv_by_line(), "first_runs", 1, "5-28-20").train()
