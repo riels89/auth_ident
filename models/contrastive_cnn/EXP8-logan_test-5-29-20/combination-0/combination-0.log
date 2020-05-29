@@ -1,0 +1,10 @@
+2020-05-29 12:02:37,318 : INFO : combination-0 : Training with parameter combination 0
+2020-05-29 12:02:37,318 : INFO : combination-0 : With parameters: {'optimizer': 'adam', 'loss': 'contrastive', 'lr': 1e-05, 'decay': 2.5e-06, 'margin': 1, 'epochs': 4, 'batch_size': 64, 'binary_encoding': False, 'max_code_length': 1200, 'embedding_size': 256, 'BN': False}
+2020-05-29 12:02:37,318 : INFO : combination-0 : 
+2020-05-29 12:02:37,318 : INFO : combination-0 : Current log dir: models/contrastive_cnn/EXP8-logan_test-5-29-20/combination-0
+2020-05-29 12:02:50,035 : INFO : combination-0 : Fit model on training data
+2020-05-29 12:05:06,721 : INFO : combination-0 : Training with parameter combination 0
+2020-05-29 12:05:06,721 : INFO : combination-0 : With parameters: {'optimizer': 'adam', 'loss': 'contrastive', 'lr': 1e-05, 'decay': 2.5e-06, 'margin': 1, 'epochs': 4, 'batch_size': 64, 'binary_encoding': False, 'max_code_length': 1200, 'embedding_size': 256, 'BN': False}
+2020-05-29 12:05:06,721 : INFO : combination-0 : 
+2020-05-29 12:05:06,721 : INFO : combination-0 : Current log dir: models/contrastive_cnn/EXP8-logan_test-5-29-20/combination-0
+2020-05-29 12:05:09,581 : INFO : combination-0 : Fit model on training data
