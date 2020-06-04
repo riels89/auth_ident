@@ -6,7 +6,7 @@
   "decay": [0.0000025],
   "margin": [1],
   "epochs": [4],
-  "batch_size": [64],
+  "batch_size": [54],
   "max_line_length": [120],
   "embedding_size": [256],
   "max_lines": [50],
