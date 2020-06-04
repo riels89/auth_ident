@@ -21,11 +21,11 @@ def eucl_dist_output_shape(shapes):
     return [shape1[0], 1]
 
 
-class dialated_conv_by_line():
+class dilated_conv_by_line():
 
     def __init__(self):
 
-        self.name = "dialated_conv_by_line"
+        self.name = "dilated_conv_by_line"
         self.dataset_type = "by_line"
         self.input_embedding_size = 32
 
@@ -44,11 +44,11 @@ class dialated_conv_by_line():
         conv = Conv1D(128, 10, strides=1, padding="same", activation="relu", name='conv_2')(conv)
         if params[index]['BN']:
             conv = BatchNormalization()(conv)
-        conv = Conv1D(128, 4, strides=2, padding="same", activation="relu", dialated=[2], name='conv_3')(conv)
+        conv = Conv1D(128, 4, strides=2, padding="same", activation="relu", dilated_rate=2, name='conv_3')(conv)
         if params[index]['BN']:
             conv = BatchNormalization()(conv)
-        conv = Conv1D(128, 2, strides=1, padding="same", activation="relu", dialated=[4], name='conv_4')(conv)
-        conv = Conv1D(128, 2, strides=1, padding="same", activation="relu", dialated=[8], name='conv_5')(conv)
+        conv = Conv1D(128, 2, strides=1, padding="same", activation="relu", dilated_rate=4, name='conv_4')(conv)
+        conv = Conv1D(128, 2, strides=1, padding="same", activation="relu", dilated_rate=8, name='conv_5')(conv)
 
         conv = Flatten()(conv)
 
