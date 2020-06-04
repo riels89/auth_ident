@@ -44,7 +44,7 @@ class dilated_conv_by_line():
         conv = Conv1D(128, 10, strides=1, padding="same", activation="relu", name='conv_2')(conv)
         if params[index]['BN']:
             conv = BatchNormalization()(conv)
-        conv = Conv1D(128, 4, strides=2, padding="same", activation="relu", dilation_rate=2, name='conv_3')(conv)
+        conv = Conv1D(128, 4, strides=1, padding="same", activation="relu", dilation_rate=2, name='conv_3')(conv)
         if params[index]['BN']:
             conv = BatchNormalization()(conv)
         conv = Conv1D(128, 2, strides=1, padding="same", activation="relu", dilation_rate=4, name='conv_4')(conv)
