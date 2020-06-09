@@ -224,6 +224,6 @@ class trainer:
 # trainer(multi_attention_bilstm(), "fixing_non_siamese_dense", 5, "5-12-20").train()
 # trainer(contrastive_cnn(), "logan_test", 8, "5-29-20").train()
 #trainer(dilated_conv_by_line(), "higher_learning_rate", 2, "6-4-20").train()
-trainer(dilated_conv_by_line(), "small_batch", 9, "6-08-20").train()
+trainer(contrastive_cnn(), "small_batch", 9, "6-08-20").train()
 # trainer(contrastive_by_line_cnn(), "adding_embedding", 5, "5-19-20").train()
 # trainer(contrastive_1D_to_2D(), "more_convolutions", 3, "5-20-20").train()
