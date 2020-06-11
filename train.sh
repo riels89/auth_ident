@@ -5,7 +5,7 @@ if [ "$#" -ne 4 ]; then
 	exit
 fi
 
-cd src/models/
+cd src/models/ || exit
 cp train_model.py temp.py
 echo "from $1 import $1" >> temp.py
 echo "trainer($1(), \"$3\", $2, \"$4\").train()" >> temp.py
