@@ -81,19 +81,20 @@ def create_file_csv():
     auth_to_idx = {authors[i]: i for i in range(len(authors))}
 
     def make_file_csv(pair_set):
-        files = np.empty([pair_set.shape[0], 4], dtype='object, object, i8, i8')
+        files = {"file1": [], "file2": [], "author1": [], "author2": []}
+        # files = np.empty([pair_set.shape[0], 4], dtype='object, object, i8, i8')
 
         for i in range(pair_set.shape[0]):
             with open(pair_set[i][0], 'r') as file:
                 code = file.read()
-                files[i, 0] = code
+                files["file1"].append(code)
             with open(pair_set[i][1], 'r') as file:
                 code = file.read()
-                files[i, 1] = code
-            files[i, 2] = auth_to_idx[pair_set[i][0].split(SL)[2]]
-            files[i, 3] = auth_to_idx[pair_set[i][1].split(SL)[2]]
+                files["file2"].append(code)
+            files["author1"].append(auth_to_idx[pair_set[i][0].split(SL)[2]])
+            files["author2"].append(auth_to_idx[pair_set[i][1].split(SL)[2]])
 
-        return pd.DataFrame(data=files, columns=["file1, file2, author1", "author2"])
+        return pd.DataFrame(files)
 
     train_df = make_file_csv(train_pairs)
     train_df.to_csv('data/paired_file_paths/contrastive_train_pairs.csv')
