@@ -91,8 +91,8 @@ def create_file_csv():
             with open(pair_set[i][1], 'r') as file:
                 code = file.read()
                 files["file2"].append(code)
-            files["author1"].append(auth_to_idx[pair_set[i][0].split(SL)[2]])
-            files["author2"].append(auth_to_idx[pair_set[i][1].split(SL)[2]])
+            files["author1"].append(auth_to_idx[pair_set[i][0].split(SL)[4]])
+            files["author2"].append(auth_to_idx[pair_set[i][1].split(SL)[4]])
 
         return pd.DataFrame(files)
 
