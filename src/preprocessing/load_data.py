@@ -86,16 +86,19 @@ def create_file_csv():
         # files = np.empty([pair_set.shape[0], 4], dtype='object, object, i8, i8')
 
         for i in range(pair_set.shape[0]):
-            if i % 1000:
-                print(i, '/', pair_set.shape[0])
-            with open(pair_set[i][0], 'r', errors='surrogateescape') as file:
-                code = file.read()
-                files["file1"].append(code)
-            with open(pair_set[i][1], 'r', errors='surrogateescape') as file:
-                code = file.read()
-                files["file2"].append(code)
-            files["author1"].append(auth_to_idx[pair_set[i][0].split(SL)[4]])
-            files["author2"].append(auth_to_idx[pair_set[i][1].split(SL)[4]])
+            try:
+                if i % 1000:
+                    print(i, '/', pair_set.shape[0])
+                with open(pair_set[i][0], 'r', errors='surrogateescape') as file:
+                    code = file.read()
+                    files["file1"].append(code)
+                with open(pair_set[i][1], 'r', errors='surrogateescape') as file:
+                    code = file.read()
+                    files["file2"].append(code)
+                files["author1"].append(auth_to_idx[pair_set[i][0].split(SL)[4]])
+                files["author2"].append(auth_to_idx[pair_set[i][1].split(SL)[4]])
+            except:
+                pass
 
         return pd.DataFrame(files)
 
