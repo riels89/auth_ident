@@ -12,6 +12,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '../..'))
 from src import TRAIN_LEN, SL
 from src.preprocessing.pair_authors import pair_authors
 # from src.preprocessing.contrastive_author_comb import pair_authors as contrastive_pair
+from src.preprocessing.contrastive_author_comb import contrastive_author_comb
 
 # max = 102400
 max_chars = 0
@@ -73,7 +74,7 @@ def create_and_save_dataset():
     np.save('data/paired_file_paths/test_labels.npy', test_labels, allow_pickle=True)
 
 def create_file_csv():
-    pa = contrastive_pair("refrences/gcj.csv")
+    pa = contrastive_author_comb("refrences/gcj.csv")
     train_pairs, val_pairs, test_pairs = pa.generate_pairs()
     files = pd.read_csv("refrences/gcj.csv", keep_default_na=False)
     authors = list(set(files['username']))
@@ -105,8 +106,10 @@ def create_file_csv():
 
             
 
-# create_file_csv()
+create_file_csv()
 
+# pa = contrastive_author_comb("refrences/gcj.csv")
+# train_pairs, train_labels, val_pairs, val_labels, test_pairs, test_labels = pa.generate_pairs()
 
 # create_and_save_dataset()
 # load_paired_file_paths()
