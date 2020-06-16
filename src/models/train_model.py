@@ -139,7 +139,7 @@ class trainer:
         logger.info('Fit model on training data')
         print(type(val_dataset))
         print(val_dataset)
-        for i in val_dataset:
+        for i in val_dataset.as_numpy_iterator():
             print(i)
         exit()
         history = model.fit(training_dataset,
