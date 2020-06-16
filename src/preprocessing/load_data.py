@@ -19,7 +19,7 @@ from src.preprocessing.contrastive_author_comb import contrastive_author_comb
 max_chars = 0
 counter = 0
 
-def make_csv():
+def make_csv(gcj_root="data/raw/gcj", new_csv="refrences/gcj.csv"):
     # ->contest_id/
     # --->username/
     # ------>problem_id/
@@ -30,15 +30,15 @@ def make_csv():
     filepaths = []
     usernames = []
 
-    max_chars = 0
-    counter = 0
-    for root, _, files in os.walk("data/raw/gcj"):
+    for root, _, files in os.walk(gcj_root):
         for file in files:
-            filepaths.append(os.path.join(root, file).replace("\\", "/"))
-            usernames.append(root.split(SL)[2])
+            root_norm = os.path.normpath(root)
+            local_path = root_norm[len(gcj_root):]
+            filepaths.append(os.path.join(root_norm, file))
+            usernames.append(local_path.split('/')[2])
 
-    filepaths = pd.DataFrame({"username": usernames, "filepath": filepaths})
-    filepaths.to_csv("refrences/gcj.csv")
+    frame = pd.DataFrame({"username": usernames, "filepath": filepaths})
+    frame.to_csv(new_csv, index=False)
 
 
 def file_stats(file):
@@ -112,8 +112,8 @@ def create_file_csv():
     test_df.to_csv('data/paired_file_paths/contrastive_test_pairs.csv')
 
             
-
-create_file_csv()
+if __name__ == "__main__":
+    create_file_csv()
 
 # pa = contrastive_author_comb("refrences/gcj.csv")
 # train_pairs, train_labels, val_pairs, val_labels, test_pairs, test_labels = pa.generate_pairs()
