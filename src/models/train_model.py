@@ -140,9 +140,9 @@ class trainer:
         print(type(val_dataset))
         print(val_dataset)
         for images, labels in val_dataset.take(100):  # only take first element of dataset
-            numpy_images = images.numpy()
+           # numpy_images = images.numpy()
             numpy_labels = labels.numpy()
-            print(numpy_images)
+           # print(numpy_images)
             print(numpy_labels)
         exit()
         history = model.fit(training_dataset,
