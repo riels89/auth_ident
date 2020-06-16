@@ -86,6 +86,10 @@ class trainer:
             logger.info("")
 
             history = self.train_one(index, logger)
+            print("HISTORY\n")
+            print(history)
+            print("HISTORY.HISTORY\n")
+            print(history.history)
 
             parameters.loc[index, 'val_loss'] = history['val_loss'][0]
             parameters.loc[index, 'val_accuracy'] = history['val_accuracy'][0]
