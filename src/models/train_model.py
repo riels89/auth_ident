@@ -146,7 +146,16 @@ class trainer:
                             validation_steps=VAL_LEN // self.params[index]['batch_size'],
                             callbacks=[tensorboard_callback, save_model_callback])
         #print
-        predictions = model.predict(val_dataset,)
+        predictions = model.predict(val_dataset)
+        print("\npredictions:\n")
+        print(predictions)
+        print("\nresult\n")
+        result = np.absolute(val_dataset - predictions)
+        print(result)
+        print("\nindv\n")
+        for i in result:
+            print(i)
+
         return history.history
 
     def generate_param_grid(self, params):
