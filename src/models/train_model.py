@@ -139,6 +139,9 @@ class trainer:
         logger.info('Fit model on training data')
         print(type(val_dataset))
         print(val_dataset)
+        for i in val_dataset:
+            print i
+        exit()
         history = model.fit(training_dataset,
                             validation_data=val_dataset,
                             epochs=self.params[index]['epochs'],
