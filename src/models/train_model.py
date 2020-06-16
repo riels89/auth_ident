@@ -140,7 +140,7 @@ class trainer:
         print(type(val_dataset))
         print(val_dataset)
         for i in val_dataset:
-            print i
+            print(i)
         exit()
         history = model.fit(training_dataset,
                             validation_data=val_dataset,
