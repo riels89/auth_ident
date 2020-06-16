@@ -146,7 +146,7 @@ class trainer:
                             validation_steps=VAL_LEN // self.params[index]['batch_size'],
                             callbacks=[tensorboard_callback, save_model_callback])
         #print
-        predictions = model.predict(val_dataset, steps=VAL_LEN // self.params[index]["batch+_size"])
+        predictions = model.predict(val_dataset, steps=VAL_LEN // self.params[index]['batch_size'])
         print("\npredictions:\n")
         print(predictions)
         print("\nresult\n")
