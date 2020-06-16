@@ -184,6 +184,7 @@ class trainer:
                                           batch_size=self.params[index]['batch_size'],
                                           binary_encoding=self.params[index]['binary_encoding'])
         self.params[index]['dataset'] = dataset
+        print(dataset.get_dataset())
         return dataset.get_dataset()
 
     def map_params(self, index):

@@ -12,4 +12,5 @@ echo "trainer($1(), \"$3\", $2, \"$4\").train()" >> temp.py
 
 cd ../../
 python src/models/temp.py &> "$1-EXP$2.out"
+cp "$1-EXP$2.out" "./models/$1/EXP$2-$3-$4/."
 rm src/models/temp.py
