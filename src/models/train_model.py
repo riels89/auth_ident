@@ -137,13 +137,15 @@ class trainer:
         model.summary()
 
         logger.info('Fit model on training data')
-
+        print(val_dataset)
         history = model.fit(training_dataset,
                             validation_data=val_dataset,
                             epochs=self.params[index]['epochs'],
                             steps_per_epoch=TRAIN_LEN // self.params[index]['batch_size'],
                             validation_steps=VAL_LEN // self.params[index]['batch_size'],
                             callbacks=[tensorboard_callback, save_model_callback])
+        #print
+        predictions = model.predict(val_dataset,)
         return history.history
 
     def generate_param_grid(self, params):
@@ -184,7 +186,7 @@ class trainer:
                                           batch_size=self.params[index]['batch_size'],
                                           binary_encoding=self.params[index]['binary_encoding'])
         self.params[index]['dataset'] = dataset
-        print(dataset.get_dataset())
+
         return dataset.get_dataset()
 
     def map_params(self, index):
