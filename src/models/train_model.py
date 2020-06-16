@@ -139,8 +139,11 @@ class trainer:
         logger.info('Fit model on training data')
         print(type(val_dataset))
         print(val_dataset)
-        for i in val_dataset.as_numpy_iterator():
-            print(i)
+        for images, labels in val_dataset.take(100):  # only take first element of dataset
+            numpy_images = images.numpy()
+            numpy_labels = labels.numpy()
+            print(numpy_images)
+            print(numpy_labels)
         exit()
         history = model.fit(training_dataset,
                             validation_data=val_dataset,
