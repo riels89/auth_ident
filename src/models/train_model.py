@@ -137,6 +137,7 @@ class trainer:
         model.summary()
 
         logger.info('Fit model on training data')
+        print(type(val_dataset))
         print(val_dataset)
         history = model.fit(training_dataset,
                             validation_data=val_dataset,
