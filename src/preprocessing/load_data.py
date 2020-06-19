@@ -97,8 +97,8 @@ def create_file_csv():
                     files["file2"].append(code)
                 files["author1"].append(auth_to_idx[pair_set[i][0].split(SL)[4]])
                 files["author2"].append(auth_to_idx[pair_set[i][1].split(SL)[4]])
-            except:
-                pass
+            except Exception as e:
+                print(e)
 
         return pd.DataFrame(files)
 
