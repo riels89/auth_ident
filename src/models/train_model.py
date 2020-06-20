@@ -137,30 +137,13 @@ class trainer:
         model.summary()
 
         logger.info('Fit model on training data')
-        print(type(val_dataset))
-        print(val_dataset)
-        for images, labels in val_dataset.take(100):  # only take first element of dataset
-            numpy_images = images
-            numpy_labels = labels.numpy()
-            print(numpy_images)
-            print(numpy_labels)
-        exit()
+
         history = model.fit(training_dataset,
                             validation_data=val_dataset,
                             epochs=self.params[index]['epochs'],
                             steps_per_epoch=TRAIN_LEN // self.params[index]['batch_size'],
                             validation_steps=VAL_LEN // self.params[index]['batch_size'],
                             callbacks=[tensorboard_callback, save_model_callback])
-        #print
-        predictions = model.predict(val_dataset, steps=VAL_LEN // self.params[index]['batch_size'])
-        print("\npredictions:\n")
-        print(predictions)
-        print("\nresult\n")
-        result = np.absolute(val_dataset - predictions)
-        print(result)
-        print("\nindv\n")
-        for i in result:
-            print(i)
 
         return history.history
 
