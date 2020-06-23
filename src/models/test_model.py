@@ -119,7 +119,7 @@ class tester:
         print("Untrained model, accuracy: {:5.2f}%".format(100 * acc))
 
         # Loads the weights
-        model.load_weights(sys.argv[1])
+        model.load_weights(sys.argv[1], steps=200)
 
         # Re-evaluate the model
         loss, acc = model.evaluate(test_dataset, verbose=2)
