@@ -206,7 +206,7 @@ dataset = split_dataset(max_code_length=1200,
 test_dataset = dataset.get_dataset()[2]
 
 # Create a basic model instance
-model = tf.keras.create_model()
+model = keras.create_model()
 
 # Evaluate the model
 loss, acc = model.evaluate(test_dataset, verbose=2)
