@@ -196,37 +196,14 @@ class trainer:
         margin_square = K.square(K.maximum(self.margin - y_pred, 0))
         return K.mean(y_true * square_pred + (1 - y_true) * margin_square)
 
-
-def map_dataset(self, dataset_type):
-
-    if dataset_type == "combined":
-        dataset = combined_dataset(max_code_length=self.params[0]["max_code_length"],
-                                   batch_size=self.params[0]['batch_size'],
-                                   binary_encoding=self.params[0]['binary_encoding'])
-    elif dataset_type == "split":
-        dataset = split_dataset(max_code_length=self.params[0]["max_code_length"],
-                                batch_size=self.params[0]['batch_size'],
-                                binary_encoding=self.params[0]['binary_encoding'])
-    elif dataset_type == 'by_line':
-        if self.params[0]['loss'] == 'contrastive':
-            dataset = by_line_dataset(max_lines=self.params[0]["max_lines"],
-                                      max_line_length=self.params[0]["max_line_length"],
-                                      batch_size=self.params[0]['batch_size'],
-                                      binary_encoding=self.params[0]['binary_encoding'])
-        else:
-            dataset = by_line_dataset(max_lines=self.params[0]["max_lines"],
-                                      max_line_length=self.params[0]["max_line_length"],
-                                      batch_size=self.params[0]['batch_size'],
-                                      binary_encoding=self.params[0]['binary_encoding'])
-    self.params[0]['dataset'] = dataset
-
-    return dataset.get_dataset()
-
-
 if len(sys.argv) != 2:
     print("Usage: ./test_model.py <hdf5 file>")
 
-test_dataset = map_dataset("split")[2]
+dataset = split_dataset(max_code_length=1200,
+                        batch_size=64,
+                        binary_encoding=False)
+
+test_dataset = dataset.get_dataset()[2]
 
 # Create a basic model instance
 model = tf.keras.create_model()
