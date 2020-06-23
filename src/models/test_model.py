@@ -115,14 +115,14 @@ class tester:
         model.summary()
 
         # Evaluate the model
-        loss, acc = model.evaluate(test_dataset, verbose=2)
+        loss, acc = model.evaluate(test_dataset, verbose=2, steps=200)
         print("Untrained model, accuracy: {:5.2f}%".format(100 * acc))
 
         # Loads the weights
-        model.load_weights(sys.argv[1], steps=200)
+        model.load_weights(sys.argv[1])
 
         # Re-evaluate the model
-        loss, acc = model.evaluate(test_dataset, verbose=2)
+        loss, acc = model.evaluate(test_dataset, verbose=2, steps=200)
         print("Restored model, accuracy: {:5.2f}%".format(100 * acc))
 
         return acc
