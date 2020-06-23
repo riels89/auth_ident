@@ -17,9 +17,10 @@ from src.preprocessing.by_line_dataset import by_line_dataset
 from tensorflow.keras import backend as K
 from src import TRAIN_LEN, VAL_LEN, SL
 from shutil import copy
+from contrastive_cnn import contrastive_cnn
 
 
-class trainer:
+class tester:
 
     def __init__(self, model, expirement_name, expirement_num,
                  date=datetime.now().strftime("%m-%d-%y")):
@@ -46,7 +47,7 @@ class trainer:
 
         self.margin = 1
 
-    def train(self):
+    def test(self):
 
         parameters = pd.DataFrame(self.params)
         parameters["val_accuracy"] = np.nan
@@ -67,10 +68,6 @@ class trainer:
             logger.info("")
 
             history = self.train_one(index, logger)
-            print("HISTORY\n")
-            print(history)
-            print("HISTORY.HISTORY\n")
-            print(history.history)
 
             parameters.loc[index, 'val_loss'] = history['val_loss'][0]
             parameters.loc[index, 'val_accuracy'] = history['val_accuracy'][0]
@@ -81,22 +78,22 @@ class trainer:
 
         parameters.to_csv(self.logdir + "/hyperparameter_matrix.csv")
 
-    def train_one(self, index, logger):
+    def test_one(self, index, logger):
 
         curr_log_dir = self.logdir + SL + "combination-" + str(index)
         logger.info("Current log dir: " + curr_log_dir)
 
-        training_dataset, val_dataset, test_dataset = self.map_dataset(self.model.dataset_type, index)
+        test_dataset = self.map_dataset(self.model.dataset_type, index)[2]
 
         self.map_params(index)
 
         model = self.model.create_model(self.params, index, logger)
 
-        tensorboard_callback = TensorBoard(log_dir=curr_log_dir,
-                                           update_freq=64, profile_batch=0)
+        #tensorboard_callback = TensorBoard(log_dir=curr_log_dir,
+        #                                   update_freq=64, profile_batch=0)
 
-        save_model_callback = ModelCheckpoint(curr_log_dir + "/checkpoints/model.{epoch:02d}-{val_loss:.2f}.hdf5",
-                                              monitor='val_loss', save_best_only=True, mode='min')
+        #save_model_callback = ModelCheckpoint(curr_log_dir + "/checkpoints/model.{epoch:02d}-{val_loss:.2f}.hdf5",
+        #                                      monitor='val_loss', save_best_only=True, mode='min')
 
         # def batchOutput(batch, logs):
         #     logger.info("Finished batch: " + str(batch))
@@ -117,16 +114,18 @@ class trainer:
 
         model.summary()
 
-        logger.info('Fit model on training data')
+        # Evaluate the model
+        loss, acc = model.evaluate(test_dataset, verbose=2)
+        print("Untrained model, accuracy: {:5.2f}%".format(100 * acc))
 
-        history = model.fit(training_dataset,
-                            validation_data=val_dataset,
-                            epochs=self.params[index]['epochs'],
-                            steps_per_epoch=TRAIN_LEN // self.params[index]['batch_size'],
-                            validation_steps=VAL_LEN // self.params[index]['batch_size'],
-                            callbacks=[tensorboard_callback, save_model_callback])
+        # Loads the weights
+        model.load_weights(sys.argv[1])
 
-        return history.history
+        # Re-evaluate the model
+        loss, acc = model.evaluate(test_dataset, verbose=2)
+        print("Restored model, accuracy: {:5.2f}%".format(100 * acc))
+
+        return acc
 
     def generate_param_grid(self, params):
         return [dict(zip(params.keys(), values)) for values in product(*params.values())]
@@ -199,25 +198,7 @@ class trainer:
 if len(sys.argv) != 2:
     print("Usage: ./test_model.py <hdf5 file>")
 
-dataset = split_dataset(max_code_length=1200,
-                        batch_size=64,
-                        binary_encoding=False)
 
-test_dataset = dataset.get_dataset()[2]
-
-# Create a basic model instance
-model = keras.create_model()
-
-# Evaluate the model
-loss, acc = model.evaluate(test_dataset, verbose=2)
-print("Untrained model, accuracy: {:5.2f}%".format(100*acc))
-
-# Loads the weights
-model.load_weights(sys.argv[1])
-
-# Re-evaluate the model
-loss,acc = model.evaluate(test_dataset, verbose=2)
-print("Restored model, accuracy: {:5.2f}%".format(100*acc))
 
 # trainer(simple_lstm(), "first_runs", 1, date="13-10-19").train()
 # trainer(simpleNN(), "dropout_onehot", 5, date="12-10-19").train()
@@ -229,7 +210,7 @@ print("Restored model, accuracy: {:5.2f}%".format(100*acc))
 # trainer(contrastive_bilstm(), "fixing_error", 2, "2-18-20").train()
 # trainer(contrastive_bilstm_v2(), "fixing_non_siamese_dense", 5, "5-12-20").train()
 # trainer(multi_attention_bilstm(), "fixing_non_siamese_dense", 5, "5-12-20").train()
-# trainer(contrastive_cnn(), "logan_test", 8, "5-29-20").train()
+tester(contrastive_cnn(), "logan_test", 8, "5-29-20").test()
 #trainer(dilated_conv_by_line(), "higher_learning_rate", 2, "6-4-20").train()
 #trainer(dilated_conv_by_line(), "more_epochs", 3, "6-5-20").train()
 # trainer(contrastive_by_line_cnn(), "adding_embedding", 5, "5-19-20").train()
