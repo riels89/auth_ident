@@ -69,12 +69,12 @@ class tester:
 
             history = self.test_one(index, logger)
 
-            parameters.loc[index, 'val_loss'] = history['val_loss'][0]
-            parameters.loc[index, 'val_accuracy'] = history['val_accuracy'][0]
-            parameters.iloc[index].to_json(curr_log_dir + '/params.json')
+            #parameters.loc[index, 'val_loss'] = history['val_loss'][0]
+            #parameters.loc[index, 'val_accuracy'] = history['val_accuracy'][0]
+            #parameters.iloc[index].to_json(curr_log_dir + '/params.json')
 
-            logger.info("Val loss: " + str(history['val_loss'][0]))
-            logger.info("Val accuracy: " + str(history['val_accuracy'][0]))
+            #logger.info("Val loss: " + str(history['val_loss'][0]))
+            #logger.info("Val accuracy: " + str(history['val_accuracy'][0]))
 
         parameters.to_csv(self.logdir + "/hyperparameter_matrix.csv")
 
