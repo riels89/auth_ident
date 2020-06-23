@@ -67,7 +67,7 @@ class tester:
             logger.info("With parameters: " + str(self.params[index]))
             logger.info("")
 
-            history = self.train_one(index, logger)
+            history = self.test_one(index, logger)
 
             parameters.loc[index, 'val_loss'] = history['val_loss'][0]
             parameters.loc[index, 'val_accuracy'] = history['val_accuracy'][0]
