@@ -33,7 +33,6 @@ from contrastive_cnn import contrastive_cnn
 from tensorflow.keras import backend as K
 from contrastive_by_line_cnn import contrastive_by_line_cnn
 from contrastive_1D_to_2D import contrastive_1D_to_2D
-from dilated_conv_by_line import dilated_conv_by_line
 from src import TRAIN_LEN, VAL_LEN, SL
 from shutil import copy
 
@@ -73,7 +72,7 @@ class trainer:
 
         for index in range(len(self.params)):
             curr_log_dir = self.logdir + SL + "combination-" + str(index)
-            os.makedirs(curr_log_dir, )#exist_ok=True)
+            os.makedirs(curr_log_dir, exist_ok=True)
             assert os.path.isdir(curr_log_dir), "Dir " + curr_log_dir + "doesn't exist"
             os.makedirs(curr_log_dir + '/checkpoints', exist_ok=True)
             assert os.path.isdir(curr_log_dir + '/checkpoints'), "Dir " + curr_log_dir + "doesn't exist"
@@ -110,7 +109,7 @@ class trainer:
         tensorboard_callback = TensorBoard(log_dir=curr_log_dir,
                                            update_freq=64, profile_batch=0)
 
-        save_model_callback = ModelCheckpoint(curr_log_dir + "/checkpoints/model.{epoch:02d}-{val_loss:.2f}.hdf5", 
+        save_model_callback = ModelCheckpoint(curr_log_dir + "/checkpoints/model.{epoch:02d}-{val_loss:.2f}.hdf5",
                                               monitor='val_loss', save_best_only=True, mode='min')
 
         # def batchOutput(batch, logs):
@@ -140,7 +139,6 @@ class trainer:
                             steps_per_epoch=TRAIN_LEN // self.params[index]['batch_size'],
                             validation_steps=VAL_LEN // self.params[index]['batch_size'],
                             callbacks=[tensorboard_callback, save_model_callback])
-
         return history.history
 
     def generate_param_grid(self, params):
@@ -181,7 +179,6 @@ class trainer:
                                           batch_size=self.params[index]['batch_size'],
                                           binary_encoding=self.params[index]['binary_encoding'])
         self.params[index]['dataset'] = dataset
-
         return dataset.get_dataset()
 
     def map_params(self, index):
@@ -224,8 +221,6 @@ class trainer:
 # trainer(contrastive_bilstm(), "fixing_error", 2, "2-18-20").train()
 # trainer(contrastive_bilstm_v2(), "fixing_non_siamese_dense", 5, "5-12-20").train()
 # trainer(multi_attention_bilstm(), "fixing_non_siamese_dense", 5, "5-12-20").train()
-# trainer(contrastive_cnn(), "logan_test", 8, "5-29-20").train()
-#trainer(dilated_conv_by_line(), "higher_learning_rate", 2, "6-4-20").train()
-#trainer(dilated_conv_by_line(), "more_epochs", 3, "6-5-20").train()
+#trainer(contrastive_cnn(), "smaller_filters", 7, "5-22-20").train()
 # trainer(contrastive_by_line_cnn(), "adding_embedding", 5, "5-19-20").train()
 # trainer(contrastive_1D_to_2D(), "more_convolutions", 3, "5-20-20").train()
