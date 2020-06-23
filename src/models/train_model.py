@@ -182,7 +182,7 @@ class trainer:
                                           binary_encoding=self.params[index]['binary_encoding'])
         self.params[index]['dataset'] = dataset
 
-        return dataset.get_dataset()[0:2]
+        return dataset.get_dataset()
 
     def map_params(self, index):
         if self.params[index]['optimizer'] == 'adam':
