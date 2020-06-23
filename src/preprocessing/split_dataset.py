@@ -154,7 +154,8 @@ class split_dataset:
 
         train_dataset = self.create_dataset(train_pairs, train_labels)
         val_dataset = self.create_dataset(val_pairs, val_labels)
+        test_dataset = self.create_dataset(test_pairs, test_labels)
 
-        return train_dataset, val_dataset
+        return train_dataset, val_dataset, test_dataset
 
     
