@@ -73,7 +73,7 @@ class trainer:
 
         for index in range(len(self.params)):
             curr_log_dir = self.logdir + SL + "combination-" + str(index)
-            os.makedirs(curr_log_dir, exist_ok=True)
+            os.makedirs(curr_log_dir, )#exist_ok=True)
             assert os.path.isdir(curr_log_dir), "Dir " + curr_log_dir + "doesn't exist"
             os.makedirs(curr_log_dir + '/checkpoints', exist_ok=True)
             assert os.path.isdir(curr_log_dir + '/checkpoints'), "Dir " + curr_log_dir + "doesn't exist"
@@ -86,6 +86,10 @@ class trainer:
             logger.info("")
 
             history = self.train_one(index, logger)
+            print("HISTORY\n")
+            print(history)
+            print("HISTORY.HISTORY\n")
+            print(history.history)
 
             parameters.loc[index, 'val_loss'] = history['val_loss'][0]
             parameters.loc[index, 'val_accuracy'] = history['val_accuracy'][0]
@@ -110,7 +114,7 @@ class trainer:
         tensorboard_callback = TensorBoard(log_dir=curr_log_dir,
                                            update_freq=64, profile_batch=0)
 
-        save_model_callback = ModelCheckpoint(curr_log_dir + "/checkpoints/model.{epoch:02d}-{val_loss:.2f}.hdf5",
+        save_model_callback = ModelCheckpoint(curr_log_dir + "/checkpoints/model.{epoch:02d}-{val_loss:.2f}.hdf5", 
                                               monitor='val_loss', save_best_only=True, mode='min')
 
         # def batchOutput(batch, logs):
@@ -133,13 +137,30 @@ class trainer:
         model.summary()
 
         logger.info('Fit model on training data')
-
+        print(type(val_dataset))
+        print(val_dataset)
+        for images, labels in val_dataset.take(100):  # only take first element of dataset
+            numpy_images = images
+            numpy_labels = labels.numpy()
+            print(numpy_images)
+            print(numpy_labels)
+        exit()
         history = model.fit(training_dataset,
                             validation_data=val_dataset,
                             epochs=self.params[index]['epochs'],
                             steps_per_epoch=TRAIN_LEN // self.params[index]['batch_size'],
                             validation_steps=VAL_LEN // self.params[index]['batch_size'],
                             callbacks=[tensorboard_callback, save_model_callback])
+        #print
+        predictions = model.predict(val_dataset, steps=VAL_LEN // self.params[index]['batch_size'])
+        print("\npredictions:\n")
+        print(predictions)
+        print("\nresult\n")
+        result = np.absolute(val_dataset - predictions)
+        print(result)
+        print("\nindv\n")
+        for i in result:
+            print(i)
 
         return history.history
 
@@ -182,7 +203,7 @@ class trainer:
                                           binary_encoding=self.params[index]['binary_encoding'])
         self.params[index]['dataset'] = dataset
 
-        return dataset.get_dataset()[0:2]
+        return dataset.get_dataset()
 
     def map_params(self, index):
         if self.params[index]['optimizer'] == 'adam':

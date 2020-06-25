@@ -1,44 +1,26 @@
-import sys
 import os
+import sys
+
 sys.path.append(os.path.join(os.path.dirname(__file__), '../..'))
 
-import matplotlib.pyplot as plt
 import tensorflow as tf
 import tensorflow.keras as keras
-from tensorflow.keras.callbacks import TensorBoard, ModelCheckpoint
 import logging
 from itertools import product
 import json
-from simpleNN import simpleNN
-from simple_lstm import simple_lstm
-from cnn_lstm import cnn_lstm
 from datetime import datetime
 import pandas as pd
 import numpy as np
-from src.preprocessing import load_data
 from src.preprocessing.combined_dataset import combined_dataset
 from src.preprocessing.split_dataset import split_dataset
 from src.preprocessing.by_line_dataset import by_line_dataset
-from split_cnn import split_cnn
-from largeNN import largeNN
-from split_NN import split_NN
-from tensorflow.keras.callbacks import LambdaCallback
-from split_lstm import split_lstm
-from split_bilstm import split_bilstm
-from contrastive_bilstm import contrastive_bilstm
-from contrastive_bilstm_v2 import contrastive_bilstm_v2
-from contrastive_stacked_bilstm import contrastive_stacked_bilstm
-from multi_attention_bilstm import multi_attention_bilstm
-from contrastive_cnn import contrastive_cnn
 from tensorflow.keras import backend as K
-from contrastive_by_line_cnn import contrastive_by_line_cnn
-from contrastive_1D_to_2D import contrastive_1D_to_2D
-from dilated_conv_by_line import dilated_conv_by_line
 from src import TRAIN_LEN, VAL_LEN, SL
 from shutil import copy
+from contrastive_cnn import contrastive_cnn
 
 
-class trainer:
+class tester:
 
     def __init__(self, model, expirement_name, expirement_num,
                  date=datetime.now().strftime("%m-%d-%y")):
@@ -65,7 +47,7 @@ class trainer:
 
         self.margin = 1
 
-    def train(self):
+    def test(self):
 
         parameters = pd.DataFrame(self.params)
         parameters["val_accuracy"] = np.nan
@@ -73,9 +55,9 @@ class trainer:
 
         for index in range(len(self.params)):
             curr_log_dir = self.logdir + SL + "combination-" + str(index)
-            os.makedirs(curr_log_dir, exist_ok=True)
+            #os.makedirs(curr_log_dir, )#exist_ok=True)
             assert os.path.isdir(curr_log_dir), "Dir " + curr_log_dir + "doesn't exist"
-            os.makedirs(curr_log_dir + '/checkpoints', exist_ok=True)
+            #os.makedirs(curr_log_dir + '/checkpoints', exist_ok=True)
             assert os.path.isdir(curr_log_dir + '/checkpoints'), "Dir " + curr_log_dir + "doesn't exist"
 
             logger = self.create_logger(curr_log_dir, index=index)
@@ -85,33 +67,33 @@ class trainer:
             logger.info("With parameters: " + str(self.params[index]))
             logger.info("")
 
-            history = self.train_one(index, logger)
+            history = self.test_one(index, logger)
 
-            parameters.loc[index, 'val_loss'] = history['val_loss'][0]
-            parameters.loc[index, 'val_accuracy'] = history['val_accuracy'][0]
-            parameters.iloc[index].to_json(curr_log_dir + '/params.json')
+            #parameters.loc[index, 'val_loss'] = history['val_loss'][0]
+            #parameters.loc[index, 'val_accuracy'] = history['val_accuracy'][0]
+            #parameters.iloc[index].to_json(curr_log_dir + '/params.json')
 
-            logger.info("Val loss: " + str(history['val_loss'][0]))
-            logger.info("Val accuracy: " + str(history['val_accuracy'][0]))
+            #logger.info("Val loss: " + str(history['val_loss'][0]))
+            #logger.info("Val accuracy: " + str(history['val_accuracy'][0]))
 
         parameters.to_csv(self.logdir + "/hyperparameter_matrix.csv")
 
-    def train_one(self, index, logger):
+    def test_one(self, index, logger):
 
         curr_log_dir = self.logdir + SL + "combination-" + str(index)
         logger.info("Current log dir: " + curr_log_dir)
 
-        training_dataset, val_dataset = self.map_dataset(self.model.dataset_type, index)
+        test_dataset = self.map_dataset(self.model.dataset_type, index)[2]
 
         self.map_params(index)
 
         model = self.model.create_model(self.params, index, logger)
 
-        tensorboard_callback = TensorBoard(log_dir=curr_log_dir,
-                                           update_freq=64, profile_batch=0)
+        #tensorboard_callback = TensorBoard(log_dir=curr_log_dir,
+        #                                   update_freq=64, profile_batch=0)
 
-        save_model_callback = ModelCheckpoint(curr_log_dir + "/checkpoints/model.{epoch:02d}-{val_loss:.2f}.hdf5",
-                                              monitor='val_loss', save_best_only=True, mode='min')
+        #save_model_callback = ModelCheckpoint(curr_log_dir + "/checkpoints/model.{epoch:02d}-{val_loss:.2f}.hdf5",
+        #                                      monitor='val_loss', save_best_only=True, mode='min')
 
         # def batchOutput(batch, logs):
         #     logger.info("Finished batch: " + str(batch))
@@ -132,16 +114,18 @@ class trainer:
 
         model.summary()
 
-        logger.info('Fit model on training data')
+        # Evaluate the model
+        loss, acc = model.evaluate(test_dataset, verbose=2, steps=200)
+        print("Untrained model, accuracy: {:5.2f}%".format(100 * acc))
 
-        history = model.fit(training_dataset,
-                            validation_data=val_dataset,
-                            epochs=self.params[index]['epochs'],
-                            steps_per_epoch=TRAIN_LEN // self.params[index]['batch_size'],
-                            validation_steps=VAL_LEN // self.params[index]['batch_size'],
-                            callbacks=[tensorboard_callback, save_model_callback])
+        # Loads the weights
+        model.load_weights(sys.argv[1])
 
-        return history.history
+        # Re-evaluate the model
+        loss, acc = model.evaluate(test_dataset, verbose=2, steps=200)
+        print("Restored model, accuracy: {:5.2f}%".format(100 * acc))
+
+        return acc
 
     def generate_param_grid(self, params):
         return [dict(zip(params.keys(), values)) for values in product(*params.values())]
@@ -182,7 +166,7 @@ class trainer:
                                           binary_encoding=self.params[index]['binary_encoding'])
         self.params[index]['dataset'] = dataset
 
-        return dataset.get_dataset()[0:2]
+        return dataset.get_dataset()
 
     def map_params(self, index):
         if self.params[index]['optimizer'] == 'adam':
@@ -211,6 +195,8 @@ class trainer:
         margin_square = K.square(K.maximum(self.margin - y_pred, 0))
         return K.mean(y_true * square_pred + (1 - y_true) * margin_square)
 
+if len(sys.argv) != 2:
+    print("Usage: ./test_model.py <hdf5 file>")
 
 
 
@@ -224,7 +210,7 @@ class trainer:
 # trainer(contrastive_bilstm(), "fixing_error", 2, "2-18-20").train()
 # trainer(contrastive_bilstm_v2(), "fixing_non_siamese_dense", 5, "5-12-20").train()
 # trainer(multi_attention_bilstm(), "fixing_non_siamese_dense", 5, "5-12-20").train()
-# trainer(contrastive_cnn(), "logan_test", 8, "5-29-20").train()
+tester(contrastive_cnn(), "logan_test", 8, "5-29-20").test()
 #trainer(dilated_conv_by_line(), "higher_learning_rate", 2, "6-4-20").train()
 #trainer(dilated_conv_by_line(), "more_epochs", 3, "6-5-20").train()
 # trainer(contrastive_by_line_cnn(), "adding_embedding", 5, "5-19-20").train()
