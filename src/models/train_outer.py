@@ -105,39 +105,3 @@ def accuracy(y_true, y_pred):
     '''Compute classification accuracy with a fixed threshold on distances.
     '''
     return K.mean(K.equal(y_true, K.cast(y_pred < 0.5, y_true.dtype)))
-
-
-
-
-file1 = sys.argv[3]
-file2 = sys.argv[4]
-matching = sys.argv[5]
-
-dataset_builder = split_dataset(max_code_length=params[0]["max_code_length"],
-                                batch_size=1,
-                                binary_encoding=params[0]['binary_encoding'])
-params[0]['dataset'] = dataset_builder
-dataset = dataset_builder.encode_files(tf.convert_to_tensor([[file1, file2]]), tf.convert_to_tensor([matching]))
-
-# Create model
-model = model.create_model(params, 0, None)
-model.compile(optimizer=params[0]['optimizer'],
-              loss=params[0]['loss'],
-              metrics=[accuracy])
-model.summary()
-
-# Load most recent checkpoint
-files = os.listdir(comb_dir)
-paths = [os.path.join(comb_dir, basename) for basename in files]
-newest_model = max(paths, key=os.path.getctime)
-model.load_weights(newest_model)
-
-# Evaluate the model
-predict = model.predict_on_batch(dataset)
-
-if predict[0,0] <= .5:
-    print("Not a match")
-else:
-    print("Match")
-
-print(predict)
