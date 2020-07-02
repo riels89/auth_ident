@@ -36,7 +36,7 @@ class train_outer:
     def __init__(self, model, experiment_num):
         # TODO THIS IS DANGEROUS
         self.model = eval(model + "()")
-        temp = "models/" + model + "/EXP" + experiment_num + "*" + "/combination-0"
+        temp = "models/" + model + "/EXP" + str(experiment_num) + "*" + "/combination-0"
         model_path = glob.glob(temp)[0]
 
         params_path = model_path + "/../param_dict.json"
