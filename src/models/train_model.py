@@ -36,6 +36,7 @@ from contrastive_1D_to_2D import contrastive_1D_to_2D
 from dilated_conv_by_line import dilated_conv_by_line
 from src import TRAIN_LEN, VAL_LEN, SL
 from shutil import copy
+from train_outer import train_outer
 
 
 class trainer:
@@ -212,7 +213,18 @@ class trainer:
         return K.mean(y_true * square_pred + (1 - y_true) * margin_square)
 
 
+def main():
+    outer = False;
+    if len(sys.argv) > 2:
+        print("Usage: ./train_model.py <outer? (0/1)>")
+    elif len(sys.argv) == 2:
+        outer = bool(sys.argv[1])
 
+    if outer:
+        train_outer(model_name, EXP_num).train()
+
+if __name__ == "__main__":
+    main()
 
 # trainer(simple_lstm(), "first_runs", 1, date="13-10-19").train()
 # trainer(simpleNN(), "dropout_onehot", 5, date="12-10-19").train()
