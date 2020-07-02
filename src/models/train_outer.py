@@ -62,6 +62,7 @@ class train_outer:
         model.load_weights(newest_model)
 
     def train(self):
+        print("train")
         #train
 
 
