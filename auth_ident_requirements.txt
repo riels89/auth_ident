@@ -13,3 +13,4 @@ matplotlib
 numpy >= 1.16.6
 numpydoc >= 0.7.0
 pandas >= 0.24.2
+bs4
