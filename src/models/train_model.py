@@ -59,6 +59,8 @@ class trainer:
         self.root_logger.info("Parameter dict: " + str(self.params))
         self.root_logger.info("")
 
+        print(str(model.layers))
+
         copy("src/models/" + model.name + ".py", self.logdir)
 
         self.model = model
@@ -236,7 +238,7 @@ if __name__ == "__main__":
 # trainer(contrastive_bilstm(), "fixing_error", 2, "2-18-20").train()
 # trainer(contrastive_bilstm_v2(), "fixing_non_siamese_dense", 5, "5-12-20").train()
 # trainer(multi_attention_bilstm(), "fixing_non_siamese_dense", 5, "5-12-20").train()
-# trainer(contrastive_cnn(), "logan_test", 8, "5-29-20").train()
+trainer(contrastive_cnn(), "logan_test", 8, "5-29-20").train()
 #trainer(dilated_conv_by_line(), "higher_learning_rate", 2, "6-4-20").train()
 #trainer(dilated_conv_by_line(), "more_epochs", 3, "6-5-20").train()
 # trainer(contrastive_by_line_cnn(), "adding_embedding", 5, "5-19-20").train()

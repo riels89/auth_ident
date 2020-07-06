@@ -2,6 +2,8 @@
 import os
 import sys
 
+from src.models import random_forest
+
 sys.path.append(os.path.join(os.path.dirname(__file__), '../..'))
 
 import tensorflow as tf
@@ -60,6 +62,25 @@ class train_outer:
         paths = [os.path.join(comb_dir, basename) for basename in files]
         newest_model = max(paths, key=os.path.getctime)
         model.load_weights(newest_model)
+
+        #strip cnn
+        layer_name = 'output_embedding'
+        intermediate_layer_model = keras.Model(inputs=model.input,
+                                         outputs=model.get_layer(layer_name).output)
+        #intermediate_output = intermediate_layer_model.predict(data)
+
+
+        #split test1 -> train3 + test3
+        test3 = None
+        train3 = None
+
+        #create outer model, train/val on original val1
+        #Wrapper class used in case of need for logging
+        outer_model = random_forest.create_model(params, 1, None)
+        outer_model.set_hyperparams
+
+        #train on train3
+        #test on test3
 
     def train(self):
         print("train")
