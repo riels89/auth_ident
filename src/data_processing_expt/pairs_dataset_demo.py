@@ -23,7 +23,9 @@ def benchmark(dataset, num_epochs=2):
 
 
 if __name__ == "__main__":
-    df = pd.read_hdf('/home/spragunr/auth_ident/py.hdf')
+    print("reading hdf...")
+    df = pd.read_hdf('/home/spragunr/nobackup/pyfull.hdf')
+    print("building generator...")
     pg = pairs_generator.PairGen(df, crop_length=10, samples_per_epoch=100)
 
     dataset = tf.data.Dataset.from_generator(
@@ -32,5 +34,6 @@ if __name__ == "__main__":
 
     print(list(dataset.take(3).as_numpy_iterator()))
 
-    #benchmark(dataset.prefetch(tf.data.experimental.AUTOTUNE))
-    benchmark(dataset)
+    print("timing...")
+    benchmark(dataset.prefetch(tf.data.experimental.AUTOTUNE))
+    #benchmark(dataset)

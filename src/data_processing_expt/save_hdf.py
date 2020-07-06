@@ -1,7 +1,7 @@
 """
 Command line script for processing a directory hierarchy containing Google Code
-Jam submissions to create a single hdf file that can be read by Pandas.  The
-columns in the resulting pandas dataframe will be:
+Jam submissions to create h5 files that can be read by Pandas.  The columns in
+the resultingpandas dataframes will be
 
 "username" - The user id of the author.
 "filepath" - The original relative path for the file.
@@ -10,13 +10,21 @@ columns in the resulting pandas dataframe will be:
 
 usage: save_hdf.py [-h] [--src-dir SRC_DIR] [--keep-repeats] --out OUT
                    [--extensions [EXTENSIONS [EXTENSIONS ...]]]
+                   [--val-test-split VAL_TEST_SPLIT]
 
 optional arguments:
   -h, --help            show this help message and exit
   --src-dir SRC_DIR     Root directory of gcj dataset. (default: data/raw/gcj)
   --keep-repeats        Keep multiple submissions from the same author for the
                         same problem (default: False)
-  --out OUT             Destination file. (default: None)
+  --out OUT             Destination file. (.h5 will be appended) (default:
+                        None)
+  --val-test-split VAL_TEST_SPLIT
+                        Fraction of files to set aside for each of validation
+                        and testing. If greater than zero, three files will be
+                        created with _val _test and _train appended to the
+                        names. (default: 0)
+
   --extensions [EXTENSIONS [EXTENSIONS ...]]
                         List of file extensions to keep. (default: ['py'])
 
@@ -34,11 +42,23 @@ This script expects that the gcj folders are organized as follows:
 
 import argparse
 import os
+import numpy as np
 import pandas as pd
 from bs4 import UnicodeDammit
 
 
-def make_hdf(gcj_root, new_hdf, keep_repeats, extensions):
+def make_hdf(gcj_root, new_hdf, keep_repeats, extensions, val_test_split):
+    """
+    Create .h5 file(s) from Google code jam submissions.
+
+    :param gcj_root (srting): Root of the code jam file hierarchy.
+    :param new_hdf (string): Filename to save (.h5 will be appended)
+    :param keep_repeats (boolean): Keep multiple problem submissions.
+    :param extensions (list of strings): Keep files with these extensions.
+    :param val_test_split (float): Fraction of files to set aside for
+    each of validation and testing.
+
+    """
     # mapping from "contest_id/username/problem_id/solution_id"
     #        or    "contest_id/username/problem_id" if dropping repeats
     # to a tuple (username, filepath, file_contents)
@@ -84,18 +104,50 @@ def make_hdf(gcj_root, new_hdf, keep_repeats, extensions):
                           "file_content": [v[2] for v in
                                            submissions.values()]})
 
-    frame.to_hdf(new_hdf, key='df', mode='w')
+    if val_test_split > 0:
+        authors = frame['username'].unique()
+        np.random.shuffle(authors)
+
+        num_val = int(val_test_split * len(authors))
+        num_test = int(val_test_split * len(authors))
+
+        # Determine which authors will be in which set...
+        val_authors = np.random.choice(authors, num_val, replace=False)
+        authors = np.setdiff1d(authors, val_authors,
+                               assume_unique=True)
+        test_authors = np.random.choice(authors, num_test, replace=False)
+
+        # All remaining are in the train set.
+        train_authors = np.setdiff1d(authors, test_authors,
+                                     assume_unique=True)
+
+        # Split into DataFrames according to the selected authors.
+        # Unfortunately, this will double memory usage.
+        val_matches = [name in val_authors for name in frame['username']]
+        test_matches = [name in test_authors for name in frame['username']]
+        train_matches = [name in train_authors for name in frame['username']]
+
+        val_frame = frame.loc[val_matches].reset_index(drop=True)
+        test_frame = frame.loc[test_matches].reset_index(drop=True)
+        train_frame = frame.loc[train_matches].reset_index(drop=True)
+
+        val_frame.to_hdf(new_hdf + "_val.h5", key='df', mode='w')
+        test_frame.to_hdf(new_hdf + "_test.h5", key='df', mode='w')
+        train_frame.to_hdf(new_hdf + "_train.h5", key='df', mode='w')
+    else:
+        frame.to_hdf(new_hdf + ".h5", key='df', mode='w')
 
 
 class CustomFormatter(argparse.ArgumentDefaultsHelpFormatter,
                       argparse.RawDescriptionHelpFormatter):
+    """ Trick to allow both defaults and nice formatting in the help. """
     pass
 
 
 def main():
     description = '''Process a directory hierarchy containing Google Code Jam submissions to create
-a single hdf file that can be read by Pandas.  The columns in the resulting
-pandas dataframe will be
+h5 files that can be read by Pandas.  The columns in the resulting
+pandas dataframes will be
 
 "username" - The user id of the author.
 "filepath" - The original relative path for the file.
@@ -111,12 +163,19 @@ pandas dataframe will be
     parser.add_argument('--keep-repeats', default=False, action='store_true',
                         help='Keep multiple submissions from the same author '
                              'for the same problem')
-    parser.add_argument('--out', required=True, help="Destination file.")
+    parser.add_argument('--out', required=True, help='Destination file. (.h5 '
+                                                     'will be appended)')
     parser.add_argument('--extensions', default=['py'], nargs='*',
                         help="List of file extensions to keep.")
+    parser.add_argument('--val-test-split', default=0, type=float,
+                        help='Fraction of files to set aside for each of '
+                             'validation and testing.  If greater than zero, '
+                             'three files will be created with _val _test '
+                             'and _train appended to the names.')
 
     args = parser.parse_args()
-    make_hdf(args.src_dir, args.out, args.keep_repeats, args.extensions)
+    make_hdf(args.src_dir, args.out, args.keep_repeats, args.extensions,
+             args.val_test_split)
 
 
 if __name__ == "__main__":
