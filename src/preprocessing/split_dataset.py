@@ -87,10 +87,6 @@ class split_dataset:
             return files, label
 
         def encode_one_hot(files, label):
-            print(type(files))
-            for x in files:
-                print(x)
-                print(files[x])
             files["input_1"] = self.encode_to_one_hot(files["input_1"])
             files["input_2"] = self.encode_to_one_hot(files["input_2"])
             return files, label
@@ -133,7 +129,8 @@ class split_dataset:
             label = label
             return files, label
              
-        #dataset = tf.data.Dataset.from_tensor_slices(({"input_1": pairs[:, 0], "input_2": pairs[:, 1]}, labels))
+        dataset = tf.data.Dataset.from_tensor_slices(({"input_1": pairs[:, 0], "input_2": pairs[:, 1]}, labels))
+        print(dataset)
         df = pd.read_hdf('out.hdf')
         pg = pairs_generator.PairGen(df, crop_length=self.max_code_length, samples_per_epoch=self.batch_size)
 
@@ -143,7 +140,7 @@ class split_dataset:
 
         data = np.array(list(pg.gen()))
         dataset = tf.data.Dataset.from_tensor_slices(({"input_1": data[:, 0], "input_2": data[:, 1]}, data[:,2]))
-
+        print(dataset)
         dataset = dataset.shuffle(4096)
         dataset = dataset.repeat()
         
