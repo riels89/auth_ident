@@ -87,6 +87,7 @@ class split_dataset:
             return files, label
 
         def encode_one_hot(files, label):
+            print(files)
             files["input_1"] = self.encode_to_one_hot(files["input_1"])
             files["input_2"] = self.encode_to_one_hot(files["input_2"])
             return files, label
