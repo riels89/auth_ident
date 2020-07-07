@@ -10,7 +10,9 @@ import tensorflow as tf
 import numpy as np
 import tensorflow.keras as keras
 import logging
+import sklearn
 from itertools import product
+import pandas as pd
 import json
 import glob
 from src.preprocessing.split_dataset import split_dataset
@@ -71,16 +73,20 @@ class train_outer:
 
 
         #split test1 -> train3 + test3
-        test3 = None
-        train3 = None
 
-        #create outer model, train/val on original val1
-        #Wrapper class used in case of need for logging
-        outer_model = random_forest.create_model(params, 1, None)
-        outer_model.set_hyperparams
+        train2, val2, train3, test3 = split_dataset.get_dataset()
+        outer_model_params = None
+        #TODO: Validate using train2 and val2 to lock params
 
+        outer_model = create_random_forest(params, 1, None)
         #train on train3
         #test on test3
+        train3_labels = pd.factorize(train3['author'])[0]
+        test3_labels = pd.factorize(test3['author'])[0]
+        outer_model = outer_model.fit(train3, train3_labels)
+        outer_model.set_params(outer_model_params)
+        accuracy = outer_model.score(test3, test3_labels)
+        print("Closed set problem accuracy: " + accuracy)
 
     def train(self):
         print("train")
@@ -126,3 +132,9 @@ def accuracy(y_true, y_pred):
     '''Compute classification accuracy with a fixed threshold on distances.
     '''
     return K.mean(K.equal(y_true, K.cast(y_pred < 0.5, y_true.dtype)))
+
+
+def create_random_forest(self, params, index, logger):
+    input = keras.Input(batch_shape=(params[index]["batch_size"], params[index]["max_code_length"] + 2,
+                                     params[index]['dataset'].len_encoding), name='input')
+    return sklearn.ensemble.RandomForestClassifier(**params[index])
