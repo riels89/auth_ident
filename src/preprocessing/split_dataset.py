@@ -141,7 +141,7 @@ class split_dataset:
 #            pg.gen,
 #            ({tf.string: tf.string, tf.string: tf.string}, tf.int32))
 
-        data = list(pg.gen())
+        data = np.array(list(pg.gen()))
         dataset = tf.data.Dataset.from_tensor_slices(({"input_1": data[:, 0], "input_2": data[:, 1]}, data[:,2]))
 
         dataset = dataset.shuffle(4096)
