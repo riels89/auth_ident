@@ -7,6 +7,9 @@ import itertools
 import math
 
 import sys
+
+from data_processing_expt import pairs_generator
+
 sys.path.append(os.path.join(os.path.dirname(__file__), '../..'))
 from src import TRAIN_LEN, SL
 from src.preprocessing.pair_authors import pair_authors
@@ -127,13 +130,19 @@ class split_dataset:
             label = label
             return files, label
              
-        dataset = tf.data.Dataset.from_tensor_slices(({"input_1": pairs[:, 0], "input_2": pairs[:, 1]}, labels))
-        
+        #dataset = tf.data.Dataset.from_tensor_slices(({"input_1": pairs[:, 0], "input_2": pairs[:, 1]}, labels))
+        df = pd.read_hdf('out.hdf')
+        pg = pairs_generator.PairGen(df, crop_length=self.max_code_length, samples_per_epoch=self.batch_size)
+
+        dataset = tf.data.Dataset.from_generator(
+            pg.gen,
+            (tf.string, tf.string, tf.int32))
+
         dataset = dataset.shuffle(4096)
         dataset = dataset.repeat()
         
-        dataset = dataset.map(get_file, 120)
-        dataset = dataset.map(truncate_files, 120)
+        #dataset = dataset.map(get_file, 120)
+        #dataset = dataset.map(truncate_files, 120)
         if self.binary_encoding:
             dataset = dataset.map(encode_binary, 120)
         else:
