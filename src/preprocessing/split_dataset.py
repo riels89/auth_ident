@@ -11,7 +11,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '../..'))
 from src import TRAIN_LEN, SL
 from src.preprocessing.pair_authors import pair_authors
 from src.preprocessing import load_data
-from data_processing_expt import pairs_generator
+from src.data_processing_expt import pairs_generator
 
 
 class split_dataset:
