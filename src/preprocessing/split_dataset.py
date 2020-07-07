@@ -135,7 +135,7 @@ class split_dataset:
 
         dataset = tf.data.Dataset.from_generator(
             pg.gen,
-            (tf.string, tf.string, tf.int32))
+            ({tf.string: tf.string, tf.string: tf.string}, tf.int32))
 
         dataset = dataset.shuffle(4096)
         dataset = dataset.repeat()
