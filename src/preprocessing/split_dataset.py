@@ -130,7 +130,7 @@ class split_dataset:
             return files, label
              
         dataset = tf.data.Dataset.from_tensor_slices(({"input_1": pairs[:, 0], "input_2": pairs[:, 1]}, labels))
-        print(dataset)
+#        print(dataset)
         df = pd.read_hdf('out.hdf')
         pg = pairs_generator.PairGen(df, crop_length=self.max_code_length, samples_per_epoch=self.batch_size)
 
@@ -139,8 +139,8 @@ class split_dataset:
 #            ({tf.string: tf.string, tf.string: tf.string}, tf.int32))
 
         data = np.array(list(pg.gen()))
-        dataset = tf.data.Dataset.from_tensor_slices(({"input_1": data[:, 0], "input_2": data[:, 1]}, data[:,2]))
-        print(dataset)
+        dataset = tf.data.Dataset.from_tensor_slices(({"input_1": data[:, 0], "input_2": data[:, 1]}, int(data[:,2])))
+
         dataset = dataset.shuffle(4096)
         dataset = dataset.repeat()
         
