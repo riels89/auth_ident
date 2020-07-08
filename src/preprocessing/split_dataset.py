@@ -40,13 +40,8 @@ class split_dataset:
         self.bits = tf.constant((128, 64, 32, 16, 8, 4, 2, 1), dtype=tf.uint8)
 
         self.flip_labels = flip_labels
-        # max = 102400
-        # max_chars = 0
-        # counter = 0
 
     def encode_to_one_hot(self, code_to_embed):
-        # start = tf.timestamp(name=None)
-
         reshaped = tf.concat([[self.start], tf.strings.unicode_split(code_to_embed, 'UTF-8'), [self.end]], axis=0)
         encoding = self.table.lookup(reshaped)
         encoding = tf.reshape(tf.squeeze(tf.one_hot(encoding, self.len_encoding)), (-1, self.len_encoding))
@@ -54,9 +49,6 @@ class split_dataset:
         code_length = tf.shape(encoding)[0]
         padding = [[0, self.max_code_length + 2 - code_length], [0, 0]]
         encoding = tf.pad(encoding, padding, 'CONSTANT', constant_values=1)
-
-        # end = tf.timestamp(name=None)
-        # tf.print("Embedding time: ", [end - start])
 
         return encoding
 
@@ -79,7 +71,7 @@ class split_dataset:
             label = 1
         return files, label
 
-    def create_dataset(self, pairs, labels):
+    def create_dataset(self, language, split):
 
         def encode_binary(files, label):
             files["input_1"] = self.encode_to_binary(files["input_1"])
@@ -91,61 +83,22 @@ class split_dataset:
             files["input_2"] = self.encode_to_one_hot(files["input_2"])
             return files, label
 
-        def get_file(files, label):
-            files["input_1"] = tf.io.read_file(files["input_1"])
-            files["input_2"] = tf.io.read_file(files["input_2"])
-            return files, label
-
-        def truncate_files(files, label):
-            # start = tf.timestamp(name=None)
-            len1 = tf.strings.length(files["input_1"])
-            len2 = tf.strings.length(files["input_2"])
-
-            if(len1 - self.max_code_length > 0):
-                pos1 = tf.random.uniform([1], minval=0, 
-                             maxval=len1 - self.max_code_length,
-                             dtype=tf.int32)[0]
-
-                files["input_1"] = tf.strings.substr(files["input_1"], pos=pos1,
-                                             len=tf.math.minimum(len1,
-                                             self.max_code_length))
-
-            if(len2 - self.max_code_length > 0):
-                pos2 = tf.random.uniform([1], minval=0, 
-                                         maxval=len2 - self.max_code_length,
-                                         dtype=tf.int32)[0]
-
-                files["input_2"] = tf.strings.substr(files["input_2"], pos=pos2,
-                                             len=tf.math.minimum(len2,
-                                             self.max_code_length))
-            # end = tf.timestamp(name=None)
-            # tf.print("Get file time: ", [end - start])
-
-            return files, label
-
         def set_shape(files, label):
             files["input_1"].set_shape((self.max_code_length + 2, self.len_encoding))
             files["input_2"].set_shape((self.max_code_length + 2, self.len_encoding))
             label = label
             return files, label
-             
- #       dataset = tf.data.Dataset.from_tensor_slices(({"input_1": pairs[:, 0], "input_2": pairs[:, 1]}, labels))
-#        print(dataset)
-        df = pd.read_hdf('out.hdf')
-        pg = pairs_generator.PairGen(df, crop_length=self.max_code_length, samples_per_epoch=self.batch_size)
 
- #       dataset = tf.data.Dataset.from_generator(
-#            pg.gen,
-#            ({tf.string: tf.string, tf.string: tf.string}, tf.int32))
+        file="data/loaded/" + language + "_" + split + ".h5"
+        df = pd.read_hdf(file)
+        pg = pairs_generator.PairGen(df, crop_length=self.max_code_length, samples_per_epoch=self.batch_size)
 
         data = np.array(list(pg.gen()))
         dataset = tf.data.Dataset.from_tensor_slices(({"input_1": data[:, 0], "input_2": data[:, 1]}, data[:,2].astype(int)))
 
         dataset = dataset.shuffle(4096)
         dataset = dataset.repeat()
-        
-        #dataset = dataset.map(get_file, 120)
-        #dataset = dataset.map(truncate_files, 120)
+
         if self.binary_encoding:
             dataset = dataset.map(encode_binary, 120)
         else:
@@ -155,18 +108,15 @@ class split_dataset:
 
         dataset = dataset.map(set_shape, 120)
 
-        # dataset = dataset.map(tf_file_stats)
         dataset = dataset.batch(self.batch_size)
         dataset = dataset.prefetch(2)
 
         return dataset
 
     def get_dataset(self):
-        train_pairs, train_labels, val_pairs, val_labels, test_pairs, test_labels = load_data.load_paired_file_paths()
-
-        train_dataset = self.create_dataset(train_pairs, train_labels)
-        val_dataset = self.create_dataset(val_pairs, val_labels)
-        test_dataset = self.create_dataset(test_pairs, test_labels)
+        train_dataset = self.create_dataset(self.language, "train")
+        val_dataset = self.create_dataset(self.language, "val")
+        test_dataset = self.create_dataset(self.language, "test")
 
         return train_dataset, val_dataset, test_dataset
 
