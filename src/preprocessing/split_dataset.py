@@ -16,7 +16,7 @@ from src.data_processing_expt import pairs_generator
 
 class split_dataset:
 
-    def __init__(self, max_code_length, batch_size, binary_encoding=False, flip_labels=False):
+    def __init__(self, max_code_length, batch_size, binary_encoding=False, flip_labels=False, language=None):
 
         chars_to_encode = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM\n\r\t " + r"1234567890-=!@#$%^&*()_+[]{}|;':\",./<>?"
         self.start = "<start>"
@@ -27,9 +27,12 @@ class split_dataset:
         self.binary_encoding_len = 8
 
         self.binary_encoding = binary_encoding
-        
         if binary_encoding:
             self.len_encoding = self.binary_encoding_len
+
+        self.language = language
+        if language is None:
+            self.language = "python"
 
         char_map = tf.lookup.KeyValueTensorInitializer(chars_to_encode, chars_index, key_dtype=tf.string, value_dtype=tf.int64)
         self.table = tf.lookup.StaticVocabularyTable(char_map, num_oov_buckets=1)
