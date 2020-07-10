@@ -17,7 +17,7 @@ from src.data_processing_expt import pairs_generator
 class split_dataset:
 
     def __init__(self, max_code_length, batch_size, binary_encoding=False, flip_labels=False, language=None):
-
+        print("\nIn INIT\n")
         chars_to_encode = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM\n\r\t " + r"1234567890-=!@#$%^&*()_+[]{}|;':\",./<>?"
         self.start = "<start>"
         self.end = "<end>"
@@ -130,7 +130,7 @@ class split_dataset:
         return dataset
 
     def get_dataset(self):
-        print("In get_dataset()")
+        print("\nIn get_dataset()\n")
         train_dataset = self.create_dataset(self.language, "train")
         val_dataset = self.create_dataset(self.language, "val")
         test_dataset = self.create_dataset(self.language, "test")
