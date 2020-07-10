@@ -69,11 +69,9 @@ class contrastive_cnn():
     def create_model(self, params, index, logger):
 
         input1 = keras.Input(batch_shape=(params[index]["batch_size"], params[index]["max_code_length"] + 2,
-                             params[index]['dataset'].len_encoding),
-                             name='input_1')
+                             params[index]['dataset'].len_encoding))
         input2 = keras.Input(batch_shape=(params[index]["batch_size"], params[index]["max_code_length"] + 2,
-                             params[index]['dataset'].len_encoding),
-                             name='input_2')
+                             params[index]['dataset'].len_encoding))
 
         embedding = Dense(self.input_embedding_size, name='input_embedding')
         embedding = TimeDistributed(embedding)
