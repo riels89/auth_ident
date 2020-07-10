@@ -67,8 +67,8 @@ class PairGen:
                     rand_pair = np.random.choice(self.num_files, 2,
                                                  replace=False)
 
-            yield (self.random_crop(rand_pair[0], self.crop_length),
-                   self.random_crop(rand_pair[1], self.crop_length),
+            yield ({"input1": self.random_crop(rand_pair[0], self.crop_length),
+                    "input2": self.random_crop(rand_pair[1], self.crop_length)},
                    int(matching_pair)
                    )
 
