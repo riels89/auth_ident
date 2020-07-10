@@ -95,18 +95,18 @@ def make_hdf(gcj_root, new_hdf, keep_repeats, extensions, val_test_split):
 
                 with open(full_path, 'rb') as content_file:
                     contents = content_file.read()
-                    if contents is None or contents == "":
-                        print("\nNONE\n")
                     dammit = UnicodeDammit(contents)
-                    submissions[submission_key] = (local_path.split('/')[1],
-                                                   os.path.join(local_path,
-                                                                file),
-                                                   dammit.unicode_markup)
-                    if submissions[submission_key][2] is None or submissions[submission_key][2] == "":
-                        print("\nSUBMISSIONS_NONE\n")
-                    loaded_files += 1
-                    if dammit.contains_replacement_characters:
-                        replaced_files += 1
+                    unicode = dammit.unicode_markup
+
+                    if unicode is not None:
+                        submissions[submission_key] = (local_path.split('/')[1],
+                                                       os.path.join(local_path,
+                                                                    file),
+                                                       unicode)
+                        loaded_files += 1
+                        if dammit.contains_replacement_characters:
+                            replaced_files += 1
+
 
     frame = pd.DataFrame({"username": [v[0] for v in submissions.values()],
                           "filepath": [v[1] for v in submissions.values()],
