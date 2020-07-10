@@ -188,9 +188,14 @@ pandas dataframes will be
     total, loaded, replaced = make_hdf(args.src_dir, args.out, args.keep_repeats, args.extensions,
                                        args.val_test_split)
 
-    print("Files searched: ", total)
-    print("Files loaded: ", loaded)
-    print("Files with replacement chars: ", replaced)
+    # Print info about the dataset
+    with open(args.out + ".info", 'w') as f:
+        print("Keep repeats: ", args.keep_repeats, file=f)
+        print("Extensions: ", args.extenstions, file=f)
+        print("Fraction for test/val:", args.val_test_split, file=f)
+        print("Files searched: ", total, file=f)
+        print("Files loaded: ", loaded, file=f)
+        print("Files with replacement chars: ", replaced, file=f)
 
 
 if __name__ == "__main__":
