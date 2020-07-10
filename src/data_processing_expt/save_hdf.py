@@ -102,7 +102,7 @@ def make_hdf(gcj_root, new_hdf, keep_repeats, extensions, val_test_split):
                                                    os.path.join(local_path,
                                                                 file),
                                                    dammit.unicode_markup)
-                    if submissions[submission_key] is None or submissions[submission_key] == "":
+                    if submissions[submission_key][2] is None or submissions[submission_key][2] == "":
                         print("\nSUBMISSIONS_NONE\n")
                     loaded_files += 1
                     if dammit.contains_replacement_characters:
