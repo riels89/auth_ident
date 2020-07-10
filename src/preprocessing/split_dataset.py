@@ -110,7 +110,8 @@ class split_dataset:
         #dataset = tf.data.Dataset.from(({"input_1": data[:, 0], "input_2": data[:, 1]}, data[:,2].astype(int)))
         dataset = tf.data.Dataset.from_generator(
             pg.gen,
-            (tf.string, tf.string, tf.int32))
+            (tf.string, tf.string, tf.int32),
+            output_shapes=(tf.TensorShape([self.max_code_length + 2, self.len_encoding]), tf.TensorShape([])))
         print("Data Generated.", flush=True)
 
         dataset = dataset.shuffle(4096)
@@ -123,7 +124,7 @@ class split_dataset:
             print("ERROR: Binary encoding not supported: split_dataset.create_dataset")
             exit(1)
 
-        dataset = dataset.map(set_shape, 120)
+        #dataset = dataset.map(set_shape, 120)
 
         dataset = dataset.batch(self.batch_size)
         dataset = dataset.prefetch(2)
