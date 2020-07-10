@@ -106,8 +106,11 @@ class split_dataset:
         df = pd.read_hdf(file)
         pg = pairs_generator.PairGen(df, crop_length=self.max_code_length, samples_per_epoch=num_samples)
 
+        print("Generating Data...")
         data = np.array(list(pg.gen()))
+        print("Data Generated.\nLoading Data...")
         dataset = tf.data.Dataset.from_tensor_slices(({"input_1": data[:, 0], "input_2": data[:, 1]}, data[:,2].astype(int)))
+        print("Data Loaded.")
 
         dataset = dataset.shuffle(4096)
         dataset = dataset.repeat()
