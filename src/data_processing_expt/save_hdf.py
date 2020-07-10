@@ -191,7 +191,7 @@ pandas dataframes will be
     # Print info about the dataset
     with open(args.out + ".info", 'w') as f:
         print("Keep repeats: ", args.keep_repeats, file=f)
-        print("Extensions: ", args.extenstions, file=f)
+        print("Extensions: ", args.extensions, file=f)
         print("Fraction for test/val:", args.val_test_split, file=f)
         print("Files searched: ", total, file=f)
         print("Files loaded: ", loaded, file=f)
