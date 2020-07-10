@@ -84,11 +84,11 @@ class split_dataset:
             dataset[0:,] = self.encode_to_one_hot(dataset[0:,])
             dataset[1:,] = self.encode_to_one_hot(dataset[1:,])
 
-        def set_shape(files, label):
-            files["input_1"].set_shape((self.max_code_length + 2, self.len_encoding))
-            files["input_2"].set_shape((self.max_code_length + 2, self.len_encoding))
+        def set_shape(file1, file2, label):
+            file1.set_shape((self.max_code_length + 2, self.len_encoding))
+            file2.set_shape((self.max_code_length + 2, self.len_encoding))
             label = label
-            return files, label
+            return file1, file2, label
 
         if split == 'train':
             num_samples = TRAIN_LEN
