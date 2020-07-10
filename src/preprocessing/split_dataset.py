@@ -76,21 +76,20 @@ class split_dataset:
 
     def create_dataset(self, language, split):
 
-        def encode_binary(files, label):
-            files["input_1"] = self.encode_to_binary(files["input_1"])
-            files["input_2"] = self.encode_to_binary(files["input_2"])
-            return files, label
+        def encode_binary(dataset):
+            dataset[0:,] = self.encode_to_binary(dataset[0:,])
+            dataset[1:,] = self.encode_to_binary(dataset[1:,])
 
-        def encode_one_hot(files, label):
-            files["input_1"] = self.encode_to_one_hot(files["input_1"])
-            files["input_2"] = self.encode_to_one_hot(files["input_2"])
-            return files, label
+        def encode_one_hot(file1, file2, label):
+            file1 = self.encode_to_one_hot(file1)
+            file2 = self.encode_to_one_hot(file2)
+            return file1, file2, label
 
-        def set_shape(files, label):
-            files["input_1"].set_shape((self.max_code_length + 2, self.len_encoding))
-            files["input_2"].set_shape((self.max_code_length + 2, self.len_encoding))
+        def set_shape(file1, file2, label):
+            file1.set_shape((self.max_code_length + 2, self.len_encoding))
+            file2.set_shape((self.max_code_length + 2, self.len_encoding))
             label = label
-            return files, label
+            return file1, file2, label
 
         if split == 'train':
             num_samples = TRAIN_LEN
@@ -112,14 +111,14 @@ class split_dataset:
         #dataset = tf.data.Dataset.from(({"input_1": data[:, 0], "input_2": data[:, 1]}, data[:,2].astype(int)))
         dataset = tf.data.Dataset.from_generator(
             pg.gen,
-            ({"input_1": tf.string, "input_2": tf.string}, tf.int32))
+            (tf.string, tf.string, tf.int32))
         print("Data Generated.", flush=True)
 
         dataset = dataset.shuffle(4096)
         dataset = dataset.repeat()
 
         if self.binary_encoding:
-            dataset = dataset.map(encode_binary, 120)
+            encode_binary(dataset)#dataset.map(encode_binary, 120)
         else:
             dataset = dataset.map(encode_one_hot, 120)
         if self.flip_labels:
