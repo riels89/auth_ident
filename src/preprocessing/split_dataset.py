@@ -103,18 +103,20 @@ class split_dataset:
         file="data/loaded/" + language + "_" + split + ".h5"
         df = pd.read_hdf(file)
         pg = pairs_generator.PairGen(df, crop_length=self.max_code_length, samples_per_epoch=num_samples)
-        print(list(dataset.take(3).as_numpy_iterator()))
-        exit()
+
+
         print("Generating Data...", flush=True)
         #data = np.array(list(pg.gen()))
         #print("Data Generated.\nLoading Data...", flush=True)
         #dataset = tf.data.Dataset.from(({"input_1": data[:, 0], "input_2": data[:, 1]}, data[:,2].astype(int)))
         dataset = tf.data.Dataset.from_generator(
             pg.gen,
-            ({"input_1": tf.string, "input_2": tf.string}, tf.int32))
+            ({"input_1": tf.slice, "input_2": tf.slice}, tf.int32))
             #output_shapes=(tf.TensorShape([self.max_code_length + 2, self.len_encoding]),
             #               tf.TensorShape([self.max_code_length + 2, self.len_encoding]),
             #               tf.TensorShape([])))
+        print(list(dataset.take(3).as_numpy_iterator()))
+        exit()
         print("Data Generated.", flush=True)
 
         dataset = dataset.shuffle(4096)
