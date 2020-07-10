@@ -64,6 +64,8 @@ def make_hdf(gcj_root, new_hdf, keep_repeats, extensions, val_test_split):
     # to a tuple (username, filepath, file_contents)
     submissions = {}
     file_count = 0
+    replaced_files = 0
+    loaded_files = 0
     for root, dir_names, files in os.walk(gcj_root):
 
         # Make sure we walk the subdirectories in order, so later
@@ -98,6 +100,9 @@ def make_hdf(gcj_root, new_hdf, keep_repeats, extensions, val_test_split):
                                                    os.path.join(local_path,
                                                                 file),
                                                    dammit.unicode_markup)
+                    loaded_files += 1
+                    if dammit.contains_replacement_characters:
+                        replaced_files += 1
 
     frame = pd.DataFrame({"username": [v[0] for v in submissions.values()],
                           "filepath": [v[1] for v in submissions.values()],
@@ -137,6 +142,8 @@ def make_hdf(gcj_root, new_hdf, keep_repeats, extensions, val_test_split):
     else:
         frame.to_hdf(new_hdf + ".h5", key='df', mode='w')
 
+    return file_count, loaded_files, replaced_files
+
 
 class CustomFormatter(argparse.ArgumentDefaultsHelpFormatter,
                       argparse.RawDescriptionHelpFormatter):
@@ -174,8 +181,12 @@ pandas dataframes will be
                              'and _train appended to the names.')
 
     args = parser.parse_args()
-    make_hdf(args.src_dir, args.out, args.keep_repeats, args.extensions,
-             args.val_test_split)
+    total, loaded, replaced = make_hdf(args.src_dir, args.out, args.keep_repeats, args.extensions,
+                                       args.val_test_split)
+
+    print("Files searched: ", total)
+    print("Files loaded: ", loaded)
+    print("Files with replacement chars: ", replaced)
 
 
 if __name__ == "__main__":
