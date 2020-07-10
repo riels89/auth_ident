@@ -83,7 +83,7 @@ class split_dataset:
 
         def encode_one_hot(file1, file2, label):
             file1 = self.encode_to_one_hot(file1)
-            files2 = self.encode_to_one_hot(file2)
+            file2 = self.encode_to_one_hot(file2)
             return file1, file2, label
 
         def set_shape(file1, file2, label):
