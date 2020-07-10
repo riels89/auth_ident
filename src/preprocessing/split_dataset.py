@@ -82,7 +82,7 @@ class split_dataset:
 
         def encode_one_hot(dataset):
             dataset[0:,] = self.encode_to_one_hot(dataset[0:,])
-            dataset[1:,]  = self.encode_to_one_hot(dataset[1:,] )
+            dataset[1:,] = self.encode_to_one_hot(dataset[1:,])
 
         def set_shape(file1, file2, label):
             file1.set_shape((self.max_code_length + 2, self.len_encoding))
@@ -116,12 +116,12 @@ class split_dataset:
         dataset = dataset.shuffle(4096)
         dataset = dataset.repeat()
 
-        if self.binary_encoding:
-            encode_binary(dataset)#dataset.map(encode_binary, 120)
-        else:
-            encode_one_hot(dataset)
-        if self.flip_labels:
-            dataset = dataset.map(self.flip_labels, 120)
+       # if self.binary_encoding:
+       #     encode_binary(dataset)#dataset.map(encode_binary, 120)
+       # else:
+       #     encode_one_hot(dataset)
+        #if self.flip_labels:
+        #    dataset = dataset.map(self.flip_labels, 120)
 
         dataset = dataset.map(set_shape, 120)
 
