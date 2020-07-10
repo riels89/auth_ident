@@ -76,21 +76,21 @@ class split_dataset:
 
     def create_dataset(self, language, split):
 
-        def encode_binary(files, label):
-            files["input_1"] = self.encode_to_binary(files["input_1"])
-            files["input_2"] = self.encode_to_binary(files["input_2"])
-            return files, label
+        def encode_binary(file1, file2, label):
+            file1 = self.encode_to_binary(file1)
+            file2 = self.encode_to_binary(file2)
+            return file1, file2, label
 
-        def encode_one_hot(files, label):
-            files["input_1"] = self.encode_to_one_hot(files["input_1"])
-            files["input_2"] = self.encode_to_one_hot(files["input_2"])
-            return files, label
+        def encode_one_hot(file1, file2, label):
+            file1 = self.encode_to_one_hot(files1)
+            files2 = self.encode_to_one_hot(files2)
+            return file1, file2, label
 
-        def set_shape(files, label):
-            files["input_1"].set_shape((self.max_code_length + 2, self.len_encoding))
-            files["input_2"].set_shape((self.max_code_length + 2, self.len_encoding))
+        def set_shape(file1, file2, label):
+            file1.set_shape((self.max_code_length + 2, self.len_encoding))
+            file2.set_shape((self.max_code_length + 2, self.len_encoding))
             label = label
-            return files, label
+            return file1, file2, label
 
         if split == 'train':
             num_samples = TRAIN_LEN
@@ -107,10 +107,13 @@ class split_dataset:
         pg = pairs_generator.PairGen(df, crop_length=self.max_code_length, samples_per_epoch=num_samples)
 
         print("Generating Data...", flush=True)
-        data = np.array(list(pg.gen()))
-        print("Data Generated.\nLoading Data...", flush=True)
-        dataset = tf.data.Dataset.from_tensor_slices(({"input_1": data[:, 0], "input_2": data[:, 1]}, data[:,2].astype(int)))
-        print("Data Loaded.", flush=True)
+        #data = np.array(list(pg.gen()))
+        #print("Data Generated.\nLoading Data...", flush=True)
+        #dataset = tf.data.Dataset.from(({"input_1": data[:, 0], "input_2": data[:, 1]}, data[:,2].astype(int)))
+        dataset = tf.data.Dataset.from_generator(
+            pg.gen,
+            (tf.string, tf.string, tf.int32))
+        print("Data Generated.", flush=True)
 
         dataset = dataset.shuffle(4096)
         dataset = dataset.repeat()
