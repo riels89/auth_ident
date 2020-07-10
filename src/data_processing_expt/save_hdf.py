@@ -95,14 +95,14 @@ def make_hdf(gcj_root, new_hdf, keep_repeats, extensions, val_test_split):
 
                 with open(full_path, 'rb') as content_file:
                     contents = content_file.read()
-                    if contents is None:
+                    if contents == "":
                         print("\nNONE\n")
                     dammit = UnicodeDammit(contents)
                     submissions[submission_key] = (local_path.split('/')[1],
                                                    os.path.join(local_path,
                                                                 file),
                                                    dammit.unicode_markup)
-                    if submissions[submission_key] is None:
+                    if submissions[submission_key] == "":
                         print("\nSUBMISSIONS_NONE\n")
                     loaded_files += 1
                     if dammit.contains_replacement_characters:
