@@ -95,6 +95,8 @@ def make_hdf(gcj_root, new_hdf, keep_repeats, extensions, val_test_split):
 
                 with open(full_path, 'rb') as content_file:
                     contents = content_file.read()
+                    if contents is None:
+                        print("\nNONE\n")
                     dammit = UnicodeDammit(contents)
                     submissions[submission_key] = (local_path.split('/')[1],
                                                    os.path.join(local_path,
