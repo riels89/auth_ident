@@ -115,8 +115,7 @@ class split_dataset:
             #output_shapes=(tf.TensorShape([self.max_code_length + 2, self.len_encoding]),
             #               tf.TensorShape([self.max_code_length + 2, self.len_encoding]),
             #               tf.TensorShape([])))
-        print(list(dataset.take(3).as_numpy_iterator()))
-        exit()
+
         print("Data Generated.", flush=True)
 
         dataset = dataset.shuffle(4096)

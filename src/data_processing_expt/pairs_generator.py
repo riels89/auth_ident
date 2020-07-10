@@ -106,7 +106,6 @@ class PairGen:
         code_length = tf.shape(encoding)[0]
         padding = [[0, self.crop_length + 2 - code_length], [0, 0]]
         encoding = tf.pad(encoding, padding, 'CONSTANT', constant_values=1)
-        print(type(encoding), flush=True)
         return encoding
 
 if __name__ == "__main__":
