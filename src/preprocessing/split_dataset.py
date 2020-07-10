@@ -116,12 +116,12 @@ class split_dataset:
         dataset = dataset.shuffle(4096)
         dataset = dataset.repeat()
 
-       # if self.binary_encoding:
-       #     encode_binary(dataset)#dataset.map(encode_binary, 120)
-       # else:
-       #     encode_one_hot(dataset)
-        #if self.flip_labels:
-        #    dataset = dataset.map(self.flip_labels, 120)
+        if self.binary_encoding:
+            print("ERROR: Binary encoding not supported: split_dataset.create_dataset")
+            exit(1)
+        if self.flip_labels:
+            print("ERROR: Binary encoding not supported: split_dataset.create_dataset")
+            exit(1)
 
         dataset = dataset.map(set_shape, 120)
 

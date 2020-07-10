@@ -18,6 +18,17 @@ class PairGen:
 
         self.num_files = len(dataframe)
 
+        #Everything for binary encoding
+        chars_to_encode = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM\n\r\t " + r"1234567890-=!@#$%^&*()_+[]{}|;':\",./<>?"
+        self.start = "<start>"
+        self.end = "<end>"
+        chars_to_encode = [self.start, self.end] + list(chars_to_encode)
+        self.len_encoding = len(chars_to_encode)
+        chars_index = [i for i in range(self.len_encoding)]
+        char_map = tf.lookup.KeyValueTensorInitializer(chars_to_encode, chars_index, key_dtype=tf.string,
+                                                       value_dtype=tf.int64)
+        self.table = tf.lookup.StaticVocabularyTable(char_map, num_oov_buckets=1)
+
         # Mapping from author names to file index
         self.files_by_auth_name = dataframe.groupby(['username']).indices
 
@@ -67,8 +78,8 @@ class PairGen:
                     rand_pair = np.random.choice(self.num_files, 2,
                                                  replace=False)
 
-            yield ({"input1": self.random_crop(rand_pair[0], self.crop_length),
-                    "input2": self.random_crop(rand_pair[1], self.crop_length)},
+            yield (self.encode_to_one_hot(self.random_crop(rand_pair[0], self.crop_length)),
+                   self.encode_to_one_hot(self.random_crop(rand_pair[1], self.crop_length)),
                    int(matching_pair)
                    )
 
@@ -87,6 +98,16 @@ class PairGen:
             contents = contents[start:start + crop_length]
         return contents
 
+    def encode_to_one_hot(self, code_to_embed):
+        reshaped = tf.concat([[self.start], tf.strings.unicode_split(code_to_embed, 'UTF-8'), [self.end]], axis=0)
+        encoding = self.table.lookup(reshaped)
+        encoding = tf.reshape(tf.squeeze(tf.one_hot(encoding, self.len_encoding)), (-1, self.len_encoding))
+
+        code_length = tf.shape(encoding)[0]
+        padding = [[0, self.crop_length + 2 - code_length], [0, 0]]
+        encoding = tf.pad(encoding, padding, 'CONSTANT', constant_values=1)
+
+        return encoding
 
 if __name__ == "__main__":
     df = pd.read_hdf('/home/spragunr/auth_ident/py.hdf')
