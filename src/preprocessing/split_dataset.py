@@ -130,6 +130,7 @@ class split_dataset:
         return dataset
 
     def get_dataset(self):
+        print("In get_dataset()")
         train_dataset = self.create_dataset(self.language, "train")
         val_dataset = self.create_dataset(self.language, "val")
         test_dataset = self.create_dataset(self.language, "test")
