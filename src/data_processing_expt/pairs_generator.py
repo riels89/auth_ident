@@ -79,6 +79,9 @@ class PairGen:
         file will be returned.
         """
         contents = self.dataframe['file_content'][file_indx]
+        if contents is None:
+            print("None")
+            return ""
         if len(contents) > crop_length:
             start = np.random.randint(0, len(contents) - crop_length + 1)
             contents = contents[start:start + crop_length]
