@@ -17,7 +17,7 @@ from src.data_processing_expt import pairs_generator
 class split_dataset:
 
     def __init__(self, max_code_length, batch_size, binary_encoding=False, flip_labels=False, language=None):
-        print("\nIn INIT\n")
+        print("\nIn INIT\n", flush=True)
         chars_to_encode = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM\n\r\t " + r"1234567890-=!@#$%^&*()_+[]{}|;':\",./<>?"
         self.start = "<start>"
         self.end = "<end>"
@@ -106,11 +106,11 @@ class split_dataset:
         df = pd.read_hdf(file)
         pg = pairs_generator.PairGen(df, crop_length=self.max_code_length, samples_per_epoch=num_samples)
 
-        print("Generating Data...")
+        print("Generating Data...", flush=True)
         data = np.array(list(pg.gen()))
-        print("Data Generated.\nLoading Data...")
+        print("Data Generated.\nLoading Data...", flush=True)
         dataset = tf.data.Dataset.from_tensor_slices(({"input_1": data[:, 0], "input_2": data[:, 1]}, data[:,2].astype(int)))
-        print("Data Loaded.")
+        print("Data Loaded.", flush=True)
 
         dataset = dataset.shuffle(4096)
         dataset = dataset.repeat()
@@ -130,7 +130,7 @@ class split_dataset:
         return dataset
 
     def get_dataset(self):
-        print("\nIn get_dataset()\n")
+        print("\nIn get_dataset()\n", flush=True)
         train_dataset = self.create_dataset(self.language, "train")
         val_dataset = self.create_dataset(self.language, "val")
         test_dataset = self.create_dataset(self.language, "test")
