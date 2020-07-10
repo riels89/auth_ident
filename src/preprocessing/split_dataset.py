@@ -111,7 +111,9 @@ class split_dataset:
         dataset = tf.data.Dataset.from_generator(
             pg.gen,
             (tf.string, tf.string, tf.int32),
-            output_shapes=(tf.TensorShape([self.max_code_length + 2, self.len_encoding]), tf.TensorShape([])))
+            output_shapes=(tf.TensorShape([self.max_code_length + 2, self.len_encoding]),
+                           tf.TensorShape([self.max_code_length + 2, self.len_encoding]),
+                           tf.TensorShape([])))
         print("Data Generated.", flush=True)
 
         dataset = dataset.shuffle(4096)
