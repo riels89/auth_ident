@@ -8,7 +8,7 @@ import math
 
 import sys
 sys.path.append(os.path.join(os.path.dirname(__file__), '../..'))
-from src import TRAIN_LEN, SL
+from src import TRAIN_LEN, VAL_LEN, TEST_LEN, SL
 from src.preprocessing.pair_authors import pair_authors
 from src.preprocessing import load_data
 from src.data_processing_expt import pairs_generator
@@ -92,9 +92,19 @@ class split_dataset:
             label = label
             return files, label
 
+        if split == 'train':
+            num_samples = TRAIN_LEN
+        elif split == 'val':
+            num_samples = VAL_LEN
+        elif split == 'test':
+            num_samples = TEST_LEN
+        else:
+            print("ERROR: Invalid split type in split_dataset.create_dataset: " + split)
+            exit(1)
+
         file="data/loaded/" + language + "_" + split + ".h5"
         df = pd.read_hdf(file)
-        pg = pairs_generator.PairGen(df, crop_length=self.max_code_length, samples_per_epoch=self.batch_size)
+        pg = pairs_generator.PairGen(df, crop_length=self.max_code_length, samples_per_epoch=num_samples)
 
         data = np.array(list(pg.gen()))
         dataset = tf.data.Dataset.from_tensor_slices(({"input_1": data[:, 0], "input_2": data[:, 1]}, data[:,2].astype(int)))
