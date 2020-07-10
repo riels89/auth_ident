@@ -103,7 +103,8 @@ class split_dataset:
         file="data/loaded/" + language + "_" + split + ".h5"
         df = pd.read_hdf(file)
         pg = pairs_generator.PairGen(df, crop_length=self.max_code_length, samples_per_epoch=num_samples)
-
+        print(list(dataset.take(3).as_numpy_iterator()))
+        exit()
         print("Generating Data...", flush=True)
         #data = np.array(list(pg.gen()))
         #print("Data Generated.\nLoading Data...", flush=True)
