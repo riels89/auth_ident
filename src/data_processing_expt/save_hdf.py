@@ -78,7 +78,7 @@ def make_hdf(gcj_root, new_hdf, keep_repeats, extensions, val_test_split):
                 print(".", end="", flush=True)
 
             _, file_extension = os.path.splitext(file)
-            if file_extension[1::] in extensions:
+            if True: #file_extension[1::] in extensions:
                 root_norm = os.path.normpath(root)
 
                 # pull out just the part of the path from constest_id forward
