@@ -6,6 +6,7 @@ Borrowed from:  https://www.tensorflow.org/guide/data_performance
 import pandas as pd
 import tensorflow as tf
 import pairs_generator
+import split_dataset
 import time
 
 def benchmark(dataset, num_epochs=2):
@@ -13,16 +14,16 @@ def benchmark(dataset, num_epochs=2):
     time_sleeping = 0
     for epoch_num in range(num_epochs):
         for sample in dataset:
+            #time.sleep(0.01)
+            time_sleeping += .0
             # Performing a training step
-            time.sleep(0.01)
-            time_sleeping += .01
 
 
     tf.print("Execution time:", time.perf_counter() - start_time)
     tf.print("Time sleeping:", time_sleeping)
 
 
-if __name__ == "__main__":
+def test_simple():
     print("reading hdf...")
     df = pd.read_hdf('/home/spragunr/nobackup/pyfull.hdf')
     print("building generator...")
@@ -37,3 +38,13 @@ if __name__ == "__main__":
     print("timing...")
     benchmark(dataset.prefetch(tf.data.experimental.AUTOTUNE))
     #benchmark(dataset)
+
+def test_full_pairs():
+     sds = split_dataset.SplitDataset(1200, 64, language='java')
+     train_dataset, val_dataset, test_dataset = sds.get_dataset()
+     benchmark(train_dataset.prefetch(tf.data.experimental.AUTOTUNE))
+     #benchmark(train_dataset)
+     
+if __name__ == "__main__":
+    test_full_pairs()
+
