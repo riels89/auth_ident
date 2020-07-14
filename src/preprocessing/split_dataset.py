@@ -134,7 +134,7 @@ class split_dataset:
             print("ERROR: Flip Labels not supported: split_dataset.create_dataset")
             exit(1)
 
-        #dataset = dataset.map(set_shape, 120)
+        dataset = dataset.map(set_shape, 120)
 
         dataset = dataset.batch(self.batch_size)
         dataset = dataset.prefetch(2)
