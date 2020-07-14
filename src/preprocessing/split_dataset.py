@@ -76,13 +76,9 @@ class split_dataset:
 
     def create_dataset(self, language, split):
 
-        def encode_binary(dataset):
-            dataset[0:,] = self.encode_to_binary(dataset[0:,])
-            dataset[1:,] = self.encode_to_binary(dataset[1:,])
-
-        #def encode_one_hot(dataset):
-        #    dataset[0:,] = self.encode_to_one_hot(dataset[0:,])
-        #    dataset[1:,] = self.encode_to_one_hot(dataset[1:,])
+        def encode_binary(files, label):
+            files["input_1"] = self.encode_to_binary(files["input_1"])
+            files["input_2"] = self.encode_to_binary(files["input_2"])
 
         def encode_one_hot(files, label):
             files["input_1"] = self.encode_to_one_hot(files["input_1"])
@@ -124,12 +120,13 @@ class split_dataset:
         print("Data Generated.", flush=True)
 
         #dataset = dataset.shuffle(4096)
-        dataset = dataset.map(encode_one_hot)
         #dataset = dataset.repeat()
 
         if self.binary_encoding:
-            print("ERROR: Binary encoding not supported: split_dataset.create_dataset")
-            exit(1)
+            dataset = dataset.map(encode_one_hot)
+        else:
+            dataset = dataset.map(encode_binary)
+
         if self.flip_labels:
             print("ERROR: Flip Labels not supported: split_dataset.create_dataset")
             exit(1)
