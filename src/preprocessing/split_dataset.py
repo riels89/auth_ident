@@ -125,7 +125,7 @@ class split_dataset:
             print("ERROR: Binary encoding not supported: split_dataset.create_dataset")
             exit(1)
         if self.flip_labels:
-            print("ERROR: Binary encoding not supported: split_dataset.create_dataset")
+            print("ERROR: Flip Labels not supported: split_dataset.create_dataset")
             exit(1)
 
         #dataset = dataset.map(set_shape, 120)
