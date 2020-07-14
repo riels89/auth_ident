@@ -79,6 +79,7 @@ class split_dataset:
         def encode_binary(files, label):
             files["input_1"] = self.encode_to_binary(files["input_1"])
             files["input_2"] = self.encode_to_binary(files["input_2"])
+            return files, label
 
         def encode_one_hot(files, label):
             files["input_1"] = self.encode_to_one_hot(files["input_1"])
