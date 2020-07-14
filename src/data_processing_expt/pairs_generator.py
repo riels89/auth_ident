@@ -99,14 +99,7 @@ class PairGen:
         return contents
 
     def encode_to_one_hot(self, code_to_embed):
-        reshaped = tf.concat([[self.start], tf.strings.unicode_split(code_to_embed, 'UTF-8'), [self.end]], axis=0)
-        encoding = self.table.lookup(reshaped)
-        encoding = tf.reshape(tf.squeeze(tf.one_hot(encoding, self.len_encoding)), (-1, self.len_encoding))
-
-        code_length = tf.shape(encoding)[0]
-        padding = [[0, self.crop_length + 2 - code_length], [0, 0]]
-        encoding = tf.pad(encoding, padding, 'CONSTANT', constant_values=1)
-        return encoding
+        pass
 
 if __name__ == "__main__":
     df = pd.read_hdf('/home/spragunr/auth_ident/py.hdf')
