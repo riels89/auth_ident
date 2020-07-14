@@ -123,9 +123,9 @@ class split_dataset:
         #dataset = dataset.repeat()
 
         if self.binary_encoding:
-            dataset = dataset.map(encode_one_hot)
-        else:
             dataset = dataset.map(encode_binary)
+        else:
+            dataset = dataset.map(encode_one_hot)
 
         if self.flip_labels:
             print("ERROR: Flip Labels not supported: split_dataset.create_dataset")
