@@ -99,7 +99,7 @@ class PairGen:
         return contents
 
     def encode_to_one_hot(self, code_to_embed):
-        pass
+        return code_to_embed
 
 if __name__ == "__main__":
     df = pd.read_hdf('/home/spragunr/auth_ident/py.hdf')

@@ -26,11 +26,11 @@ if __name__ == "__main__":
     print("reading hdf...")
     df = pd.read_hdf('/home/spragunr/nobackup/pyfull.hdf')
     print("building generator...")
-    pg = pairs_generator.PairGen(df, crop_length=1200, samples_per_epoch=1000000)
+    pg = pairs_generator.PairGen(df, crop_length=1200, samples_per_epoch=1000)
 
     dataset = tf.data.Dataset.from_generator(
         pg.gen,
-        ({"input_1": tf.uint8, "input_2": tf.uint8}, tf.bool))
+        ({"input_1": tf.string, "input_2": tf.string}, tf.bool))
 
     print(list(dataset.take(3).as_numpy_iterator()))
 
