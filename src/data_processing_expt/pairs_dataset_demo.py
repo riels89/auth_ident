@@ -30,7 +30,7 @@ if __name__ == "__main__":
 
     dataset = tf.data.Dataset.from_generator(
         pg.gen,
-        ({"input_1": tf.string, "input_2": tf.string}, tf.bool))
+        ({"input_1": tf.uint8, "input_2": tf.uint8}, tf.bool))
 
     print(list(dataset.take(3).as_numpy_iterator()))
 
