@@ -10,3 +10,4 @@ projector_config.pbtxt
 .idea/
 auth_ident.sublime-project
 auth_ident.sublime-workspace
+env
