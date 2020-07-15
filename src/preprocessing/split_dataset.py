@@ -76,13 +76,15 @@ class split_dataset:
 
     def create_dataset(self, language, split):
 
-        def encode_binary(dataset):
-            dataset[0:,] = self.encode_to_binary(dataset[0:,])
-            dataset[1:,] = self.encode_to_binary(dataset[1:,])
+        def encode_binary(files, label):
+            files["input_1"] = self.encode_to_binary(files["input_1"])
+            files["input_2"] = self.encode_to_binary(files["input_2"])
+            return files, label
 
-        def encode_one_hot(dataset):
-            dataset[0:,] = self.encode_to_one_hot(dataset[0:,])
-            dataset[1:,] = self.encode_to_one_hot(dataset[1:,])
+        def encode_one_hot(files, label):
+            files["input_1"] = self.encode_to_one_hot(files["input_1"])
+            files["input_2"] = self.encode_to_one_hot(files["input_2"])
+            return files, label
 
         def set_shape(files, label):
             files["input_1"].set_shape((self.max_code_length + 2, self.len_encoding))
@@ -111,27 +113,29 @@ class split_dataset:
         #dataset = tf.data.Dataset.from(({"input_1": data[:, 0], "input_2": data[:, 1]}, data[:,2].astype(int)))
         dataset = tf.data.Dataset.from_generator(
             pg.gen,
-            ({"input_1": tf.uint8, "input_2": tf.uint8}, tf.bool))
-            #output_shapes=(tf.TensorShape([self.max_code_length + 2, self.len_encoding]),
-            #               tf.TensorShape([self.max_code_length + 2, self.len_encoding]),
-            #               tf.TensorShape([])))
+            ({"input_1": tf.string, "input_2": tf.string}, tf.bool),
+            output_shapes=({"input_1": tf.TensorShape([]),
+                            "input_2": tf.TensorShape([])},
+                           tf.TensorShape([])))
 
         print("Data Generated.", flush=True)
 
-        dataset = dataset.shuffle(4096)
-        dataset = dataset.repeat()
+        #dataset = dataset.shuffle(4096)
+        #dataset = dataset.repeat()
 
         if self.binary_encoding:
-            print("ERROR: Binary encoding not supported: split_dataset.create_dataset")
-            exit(1)
+            dataset = dataset.map(encode_binary)
+        else:
+            dataset = dataset.map(encode_one_hot)
+
         if self.flip_labels:
             print("ERROR: Flip Labels not supported: split_dataset.create_dataset")
             exit(1)
 
-        #dataset = dataset.map(set_shape, 120)
+        dataset = dataset.map(set_shape, 120)
 
         dataset = dataset.batch(self.batch_size)
-        dataset = dataset.prefetch(2)
+        dataset = dataset.prefetch(tf.data.experimental.AUTOTUNE)
 
         return dataset
 
@@ -143,4 +147,7 @@ class split_dataset:
 
         return train_dataset, val_dataset, test_dataset
 
-    
+if __name__ == "__main__":
+    sds = SplitDataset(20, 4, language='java')
+    train_dataset, val_dataset, test_dataset = sds.get_dataset()
+    print(list(train_dataset.take(3).as_numpy_iterator()))
