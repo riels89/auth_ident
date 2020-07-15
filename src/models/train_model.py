@@ -168,7 +168,8 @@ class trainer:
         elif dataset_type == "split":
             dataset = split_dataset(max_code_length=self.params[index]["max_code_length"],
                                     batch_size=self.params[index]['batch_size'],
-                                    binary_encoding=self.params[index]['binary_encoding'])
+                                    binary_encoding=self.params[index]['binary_encoding'],
+                                    language=self.params[index].get('language'))
         elif dataset_type == 'by_line':
             if self.params[index]['loss'] == 'contrastive':
                 dataset = by_line_dataset(max_lines=self.params[index]["max_lines"],
