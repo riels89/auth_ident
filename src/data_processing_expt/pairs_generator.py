@@ -16,6 +16,8 @@ class PairGen:
         self.match_rate = match_rate
         self.samples_per_epoch = samples_per_epoch
 
+        self.rng = np.random.default_rng(1)
+
         self.num_files = len(dataframe)
 
         # Mapping from author names to file index
@@ -53,22 +55,26 @@ class PairGen:
 
         """
         for _ in range(self.samples_per_epoch):
-            matching_pair = np.random.random() < self.match_rate
+            matching_pair = self.rng.random() < self.match_rate
             if matching_pair:
-                rand_file = np.random.choice(self.files_with_pairs, 1)[0]
+                rand_file = self.rng.choice(self.files_with_pairs, 1,
+                                            shuffle=False)[0]
                 rand_auth = self.indx_to_auth[rand_file]
-                rand_pair = np.random.choice(self.files_by_auth_name[
-                                                 rand_auth], 2, replace=False)
+
+                rand_pair = self.rng.choice(self.files_by_auth_name[rand_auth],
+                                            2, replace=False, shuffle=False)
 
             else:
-                rand_pair = np.random.choice(self.num_files, 2, replace=False)
+                rand_pair = self.rng.choice(self.num_files, 2, replace=False,
+                                            shuffle=False)
                 while (self.indx_to_auth[rand_pair[0]] ==
                        self.indx_to_auth[rand_pair[1]]):
-                    rand_pair = np.random.choice(self.num_files, 2,
-                                                 replace=False)
+                    rand_pair = self.rng.choice(self.num_files, 2,
+                                                replace=False, shuffle=False)
 
             yield ({'input_1': self.random_crop(rand_pair[0], self.crop_length),
-                    'input_2': self.random_crop(rand_pair[1], self.crop_length)},
+                    'input_2': self.random_crop(rand_pair[1],
+                                                self.crop_length)},
                    matching_pair)
 
     def random_crop(self, file_indx, crop_length):
@@ -77,16 +83,24 @@ class PairGen:
         crop_length is longer than the length of the file, then the entire
         file will be returned.
         """
+
         contents = self.dataframe['file_content'][file_indx]
         if len(contents) > crop_length:
-            start = np.random.randint(0, len(contents) - crop_length + 1)
+            start = self.rng.integers(0, len(contents) - crop_length + 1)
             contents = contents[start:start + crop_length]
-        return contents.ljust(crop_length, '\0') # pad with nulls if necessary
+        return contents.ljust(crop_length, '\0')
 
 
 if __name__ == "__main__":
-    df = pd.read_hdf('/home/spragunr/nobackup/gcj_java_train.h5')
-    pg = PairGen(df, crop_length=5)
+    import time
 
-    for pair in pg.gen():
-        print(pair)
+    df = pd.read_hdf('/home/spragunr/nobackup/gcj_java_test.h5')
+    pg = PairGen(df, crop_length=1200, samples_per_epoch=10000)
+
+    start_time = time.perf_counter()
+    for _ in range(2):
+        for pair in pg.gen():
+            # print(".", end="")
+            pass
+
+    print("Execution time:", time.perf_counter() - start_time)

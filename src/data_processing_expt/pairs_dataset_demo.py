@@ -14,7 +14,7 @@ def benchmark(dataset, num_epochs=2):
     time_sleeping = 0
     for epoch_num in range(num_epochs):
         for sample in dataset:
-            #time.sleep(0.01)
+            time.sleep(0.0)
             time_sleeping += .0
             # Performing a training step
 
