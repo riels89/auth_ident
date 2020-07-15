@@ -121,7 +121,7 @@ class split_dataset:
         print("Data Generated.", flush=True)
 
         #dataset = dataset.shuffle(4096)
-        #dataset = dataset.repeat()
+        dataset = dataset.repeat()
 
         if self.binary_encoding:
             dataset = dataset.map(encode_binary)
