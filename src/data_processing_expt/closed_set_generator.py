@@ -45,7 +45,7 @@ class ClosedGen:
                 len(x) >= self.k_cross_val,
                 self.files_by_auth_name.values()))))
 
-    def get_splits(self):
+#    def get_splits(self):
         #for i in range(20):
         #    num_auth = len(list(itertools.chain.from_iterable(filter(lambda x: len(x) > i, self.files_by_auth_name.values()))))
         #    print("num files: ", i, "num_auth:", num_auth)
