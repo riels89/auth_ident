@@ -102,11 +102,11 @@ class ClosedGen:
                 authors_seen.append(rand_auth)
 
             for i in rand_k:
-                i = self.encode_to_one_hot(self.random_crop(i, self.crop_length))
-            X.append(rand_k)
-            y.append(self.k_cross_val * [auth_indx])
+                X.append(self.encode_to_one_hot(self.random_crop(i, self.crop_length)))
+            #X.extend(rand_k)
+            y.extend(self.k_cross_val * [auth_indx])
 
-            return X, y
+        return X, y
 
     def random_crop(self, file_indx, crop_length):
         """
@@ -132,9 +132,11 @@ class ClosedGen:
 
 if __name__ == "__main__":
     df = pd.read_hdf('data/loaded/cpp_test.h5')
-    pg = ClosedGen(df, crop_length=20)
+    pg = ClosedGen(df, crop_length=100, samples_per_epoch=15)
     X,y = pg.gen()
-
+    print(X)
+    print(y)
+    exit()
     for i in X:
         print(i)
 
