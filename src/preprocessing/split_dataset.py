@@ -148,6 +148,6 @@ class split_dataset:
         return train_dataset, val_dataset, test_dataset
 
 if __name__ == "__main__":
-    sds = SplitDataset(20, 4, language='java')
+    sds = split_dataset(20, 4, language='java')
     train_dataset, val_dataset, test_dataset = sds.get_dataset()
     print(list(train_dataset.take(3).as_numpy_iterator()))
