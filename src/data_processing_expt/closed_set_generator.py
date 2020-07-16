@@ -120,7 +120,7 @@ class ClosedGen:
         return encoding
 
 if __name__ == "__main__":
-    df = pd.read_hdf('../../data/loaded/cpp_test.h5')
+    df = pd.read_hdf('data/loaded/cpp_test.h5')
     pg = ClosedGen(df, crop_length=20)
     X,y = pg.gen()
 
