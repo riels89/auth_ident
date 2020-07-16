@@ -79,7 +79,7 @@ class ClosedGen:
                 rand_file = self.rng.choice(self.files_with_k, 1,
                                                 shuffle=False)[0]
                 rand_auth = self.indx_to_auth[rand_file]
-                loop_test = self.files_by_auth_name[rand_auth] < self.k_cross_val
+                loop_test = len(self.files_by_auth_name[rand_auth]) < self.k_cross_val
 
             rand_k = self.rng.choice(self.files_by_auth_name[rand_auth],
                                             self.k_cross_val, replace=False, shuffle=False)
