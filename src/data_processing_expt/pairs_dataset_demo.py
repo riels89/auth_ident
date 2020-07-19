@@ -6,7 +6,7 @@ Borrowed from:  https://www.tensorflow.org/guide/data_performance
 import pandas as pd
 import tensorflow as tf
 import pairs_generator
-import split_dataset
+import src.preprocessing.split_dataset
 import time
 
 def benchmark(dataset, num_epochs=2):

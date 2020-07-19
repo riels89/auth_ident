@@ -43,18 +43,42 @@ class ClosedGen:
         # reverse file to author mapping
         # [17] -> ["tom"]
         # [37] -> ["tom"]
-        self.indx_to_auth = {}
-        for item in self.files_by_auth_name.items():
-            for indx in item[1]:
-                self.indx_to_auth[indx] = item[0]
+        #self.indx_to_auth = {}
+        #for item in self.files_by_auth_name.items():
+        #    for indx in item[1]:
+        #        self.indx_to_auth[indx] = item[0]
 
         # Store all of the files by authors with more than k files.
         # [[4,27,31,45,58],[...]]
-        self.files_with_k = np.array(list(itertools.chain.from_iterable(
-            filter(
-                lambda x:
-                len(x) >= self.k_cross_val,
-                self.files_by_auth_name.values()))))
+        #self.files_with_k = np.array(list(itertools.chain.from_iterable(
+        #    filter(
+        #        lambda x:
+        #        len(x) >= self.k_cross_val,
+        #        self.files_by_auth_name.values()))))
+
+        #for i in self.files_by_auth_name:
+        #    print(i)
+        self.authors_with_k = dict(filter(lambda x: len(x[1]) >= self.k_cross_val, self.files_by_auth_name.items()))
+        print(len(self.authors_with_k))
+        #TODO Parallel
+        for k in self.authors_with_k:
+            self.authors_with_k[k] = self.rng.choice(self.authors_with_k[k], self.k_cross_val, replace=False,
+                                                     shuffle=False)
+        #print(self.authors_with_k)
+        y=[]
+        X=list(itertools.chain(self.authors_with_k.values()))
+        print(list(self.authors_with_k.keys())[0])
+        print(list(self.authors_with_k.values())[0])
+        print(len(X))
+        for i in range(len(X)):
+            y.append(int(i / self.k_cross_val))
+
+        print(y)
+        #print(len(self.authors_with_k))
+
+        #TODO Get File, Crop, and Embed
+        X=self.authors_with_k.values()
+
 
 #    def get_splits(self):
         #for i in range(20):
@@ -79,6 +103,10 @@ class ClosedGen:
                     label = len(authors_seen)
                     authors_seen.append(i)
 
+        Algorithm 2.0:
+        files = k files from all authors with >= k files
+        for i in len(files)
+            y[i] = author(files[i])
         """
         X = []
         y = []
@@ -95,18 +123,19 @@ class ClosedGen:
             rand_k = self.rng.choice(self.files_by_auth_name[rand_auth],
                                             self.k_cross_val, replace=False, shuffle=False)
 
-            if authors_seen.__contains__(rand_auth):
+            if rand_auth in authors_seen:
                 auth_indx = authors_seen.index(rand_auth)
             else:
                 auth_indx = len(authors_seen)
                 authors_seen.append(rand_auth)
 
+            #TODO Parallelize this
             for i in rand_k:
-                X.append(self.encode_to_one_hot(self.random_crop(i, self.crop_length)))
-            #X.extend(rand_k)
-            y.extend(self.k_cross_val * [auth_indx])
+                i = self.encode_to_one_hot(self.random_crop(i, self.crop_length))
+            X.append(rand_k)
+            y.append(self.k_cross_val * [auth_indx])
 
-        return X, y
+            return X, y
 
     def random_crop(self, file_indx, crop_length):
         """
@@ -132,14 +161,6 @@ class ClosedGen:
 
 if __name__ == "__main__":
     df = pd.read_hdf('data/loaded/cpp_test.h5')
-    pg = ClosedGen(df, crop_length=100, samples_per_epoch=15)
-    X,y = pg.gen()
-    print(X)
-    print(y)
-    exit()
-    for i in X:
-        print(i)
-
-    for i in y:
-        print(i)
+    pg = ClosedGen(df, crop_length=20)
+    #X, y = pg.gen()
 
