@@ -1,11 +1,6 @@
 
 import os
 import sys
-
-from src.models import random_forest
-
-sys.path.append(os.path.join(os.path.dirname(__file__), '../..'))
-
 import tensorflow as tf
 import numpy as np
 import tensorflow.keras as keras
@@ -15,6 +10,9 @@ from itertools import product
 import pandas as pd
 import json
 import glob
+
+sys.path.append(os.path.join(os.path.dirname(__file__), '../..'))
+
 from src.preprocessing.split_dataset import split_dataset
 from tensorflow.keras import backend as K
 from contrastive_cnn import contrastive_cnn
@@ -34,10 +32,12 @@ from contrastive_cnn import contrastive_cnn
 from contrastive_by_line_cnn import contrastive_by_line_cnn
 from contrastive_1D_to_2D import contrastive_1D_to_2D
 from dilated_conv_by_line import dilated_conv_by_line
+from src.data_processing_expt.closed_dataset import closed_dataset
 
 class train_outer:
 
-    def __init__(self, model, experiment_num):
+    def __init__(self, model, experiment_num, k_cross_val=5):
+        self.k_cross_val = k_cross_val
         # TODO THIS IS DANGEROUS
         self.model = eval(model + "()")
         temp = "models/" + model + "/EXP" + str(experiment_num) + "*" + "/combination-0"
@@ -49,9 +49,7 @@ class train_outer:
         params = json.load(open(params_path))
         params = generate_param_grid(params)
         map_params(params)
-        print(params)
-        print(params[0])
-        print(params[1])
+
         # Create inner model
         model = model.create_model(params, 0, None)
         model.compile(optimizer=params[0]['optimizer'],
@@ -73,20 +71,22 @@ class train_outer:
 
 
         #split test1 -> train3 + test3
+        gen = closed_dataset(crop_length=params.max_code_len, k_cross_val=params.k_cross_val, language=params.language)
+        X1, y1, X2, y2 = gen.get_dataset()
 
-        train2, val2, train3, test3 = split_dataset.get_dataset()
-        outer_model_params = None
         #TODO: Validate using train2 and val2 to lock params
 
-        outer_model = create_random_forest(params, 1, None)
+        model = create_random_forest(params, 1, None)
+        score = sklearn.cross_val_score(model, X1, y1, cv=self.k_cross_val)
+        print(score)
         #train on train3
         #test on test3
-        train3_labels = pd.factorize(train3['author'])[0]
-        test3_labels = pd.factorize(test3['author'])[0]
-        outer_model = outer_model.fit(train3, train3_labels)
-        outer_model.set_params(outer_model_params)
-        accuracy = outer_model.score(test3, test3_labels)
-        print("Closed set problem accuracy: " + accuracy)
+        #train3_labels = pd.factorize(train3['author'])[0]
+        #test3_labels = pd.factorize(test3['author'])[0]
+        #outer_model = outer_model.fit(train3, train3_labels)
+        #outer_model.set_params(outer_model_params)
+        #accuracy = outer_model.score(test3, test3_labels)
+        #print("Closed set problem accuracy: " + accuracy)
 
     def train(self):
         print("train")
