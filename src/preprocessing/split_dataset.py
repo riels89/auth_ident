@@ -16,8 +16,7 @@ from src.data_processing_expt import pairs_generator
 
 class split_dataset:
 
-    def __init__(self, max_code_length, batch_size, binary_encoding=False, flip_labels=False, language=None):
-        print("\nIn INIT\n", flush=True)
+    def __init__(self, max_code_length, batch_size, binary_encoding=False, flip_labels=False, language="python"):
         chars_to_encode = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM\n\r\t " + r"1234567890-=!@#$%^&*()_+[]{}|;':\",./<>?"
         self.start = "<start>"
         self.end = "<end>"
@@ -31,8 +30,6 @@ class split_dataset:
             self.len_encoding = self.binary_encoding_len
 
         self.language = language
-        if language is None:
-            self.language = "python"
 
         char_map = tf.lookup.KeyValueTensorInitializer(chars_to_encode, chars_index, key_dtype=tf.string, value_dtype=tf.int64)
         self.table = tf.lookup.StaticVocabularyTable(char_map, num_oov_buckets=1)
@@ -107,7 +104,6 @@ class split_dataset:
         pg = pairs_generator.PairGen(df, crop_length=self.max_code_length, samples_per_epoch=num_samples)
 
 
-        print("Generating Data...", flush=True)
         #data = np.array(list(pg.gen()))
         #print("Data Generated.\nLoading Data...", flush=True)
         #dataset = tf.data.Dataset.from(({"input_1": data[:, 0], "input_2": data[:, 1]}, data[:,2].astype(int)))
@@ -118,7 +114,6 @@ class split_dataset:
                             "input_2": tf.TensorShape([])},
                            tf.TensorShape([])))
 
-        print("Data Generated.", flush=True)
 
         #dataset = dataset.shuffle(4096)
         dataset = dataset.repeat()
@@ -140,7 +135,6 @@ class split_dataset:
         return dataset
 
     def get_dataset(self):
-        print("\nIn get_dataset()\n", flush=True)
         train_dataset = self.create_dataset(self.language, "train")
         val_dataset = self.create_dataset(self.language, "val")
         test_dataset = self.create_dataset(self.language, "test")
