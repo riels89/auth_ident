@@ -53,22 +53,22 @@ class train_outer:
         map_params(params)
 
         # Create inner model
-        model = model.create_model(params, 0, None)
-        model.compile(optimizer=params[0]['optimizer'],
+        self.model = self.model.create_model(params, 0, None)
+        self.model.compile(optimizer=params[0]['optimizer'],
                       loss=params[0]['loss'],
                       metrics=[accuracy])
-        model.summary()
+        self.model.summary()
 
         # Load most recent checkpoint
         files = os.listdir(comb_dir)
         paths = [os.path.join(comb_dir, basename) for basename in files]
         newest_model = max(paths, key=os.path.getctime)
-        model.load_weights(newest_model)
+        self.model.load_weights(newest_model)
 
         #strip cnn
         layer_name = 'output_embedding'
-        intermediate_layer_model = keras.Model(inputs=model.input,
-                                         outputs=model.get_layer(layer_name).output)
+        intermediate_layer_model = keras.Model(inputs=self.model.input,
+                                         outputs=self.model.get_layer(layer_name).output)
         #intermediate_output = intermediate_layer_model.predict(data)
 
 
