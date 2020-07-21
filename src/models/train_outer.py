@@ -36,10 +36,12 @@ from src.data_processing_expt.closed_dataset import closed_dataset
 
 class train_outer:
 
-    def __init__(self, model, experiment_num, k_cross_val=5):
-        self.k_cross_val = k_cross_val
+    def __init__(self, model, experiment_num):
+        self.k_cross_val = 5
+
         # TODO THIS IS DANGEROUS
         self.model = eval(model + "()")
+        #from eval(model) import eval(model)
         temp = "models/" + model + "/EXP" + str(experiment_num) + "*" + "/combination-0"
         model_path = glob.glob(temp)[0]
 
@@ -71,14 +73,13 @@ class train_outer:
 
 
         #split test1 -> train3 + test3
-        gen = closed_dataset(crop_length=params.max_code_len, k_cross_val=params.k_cross_val, language=params.language)
-        X1, y1, X2, y2 = gen.get_dataset()
+        #gen = closed_dataset(crop_length=params[0]["max_code_len"], k_cross_val=params[0]["k_cross_val"], language=params[0]["language"])
+        gen = closed_dataset(crop_length=1200)
+        self.X1, self.y1, self.X2, self.y2 = gen.get_dataset()
 
         #TODO: Validate using train2 and val2 to lock params
 
-        model = create_random_forest(params, 1, None)
-        score = sklearn.cross_val_score(model, X1, y1, cv=self.k_cross_val)
-        print(score)
+        self.outer_model = create_random_forest(params, 1, None)
         #train on train3
         #test on test3
         #train3_labels = pd.factorize(train3['author'])[0]
@@ -89,8 +90,8 @@ class train_outer:
         #print("Closed set problem accuracy: " + accuracy)
 
     def train(self):
-        print("train")
-        #train
+        score = sklearn.cross_val_score(self.outer_model, self.X1, self.y1, cv=self.k_cross_val)
+        return score
 
 
 
@@ -138,3 +139,7 @@ def create_random_forest(self, params, index, logger):
     input = keras.Input(batch_shape=(params[index]["batch_size"], params[index]["max_code_length"] + 2,
                                      params[index]['dataset'].len_encoding), name='input')
     return sklearn.ensemble.RandomForestClassifier(**params[index])
+
+if __name__ == "__main__":
+    trainer = train_outer("contrastive_cnn", "")
+    #X, y = pg.gen()
