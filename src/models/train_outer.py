@@ -46,11 +46,13 @@ class train_outer:
         model_path = glob.glob(temp)[0]
 
         params_path = model_path + "/../param_dict.json"
+        print(str(params_path))
         comb_dir = model_path + "/checkpoints"
 
         params = json.load(open(params_path))
         params = generate_param_grid(params)
         map_params(params)
+        print(str(params))
 
         # Create inner model
         self.model = self.model.create_model(params, 0, None)
