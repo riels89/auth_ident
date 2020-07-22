@@ -5,7 +5,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '../..'))
 import matplotlib.pyplot as plt
 import tensorflow as tf
 import tensorflow.keras as keras
-from tensorflow.keras.callbacks import TensorBoard, ModelCheckpoint
+from tensorflow.keras.callbacks import TensorBoard, ModelCheckpoint, EarlyStopping
 import logging
 from itertools import product
 import json
@@ -112,6 +112,8 @@ class trainer:
 
         save_model_callback = ModelCheckpoint(curr_log_dir + "/checkpoints/model.{epoch:02d}-{val_loss:.2f}.hdf5",
                                               monitor='val_loss', save_best_only=True, mode='min')
+        early_stop_callback = EarlyStopping(monitor='val_loss', patience=2)
+
 
         # def batchOutput(batch, logs):
         #     logger.info("Finished batch: " + str(batch))
@@ -139,7 +141,7 @@ class trainer:
                             epochs=self.params[index]['epochs'],
                             steps_per_epoch=TRAIN_LEN // self.params[index]['batch_size'],
                             validation_steps=VAL_LEN // self.params[index]['batch_size'],
-                            callbacks=[tensorboard_callback, save_model_callback])
+                            callbacks=[tensorboard_callback, save_model_callback, early_stop_callback])
 
         return history.history
 
