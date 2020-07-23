@@ -5,6 +5,7 @@ import tensorflow.keras as keras
 import logging
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.svm import SVC
+from sklearn.neighbors import KNeighborsClassifier
 from sklearn.model_selection import cross_val_score, train_test_split
 from itertools import product
 import json
@@ -192,7 +193,8 @@ def accuracy(y_true, y_pred):
 
 
 def create_random_forest(params, index, logger):
-    return SVC()
+    return KNeighborsClassifier(n_jobs=-1)
+    #return SVC()
     #return RandomForestClassifier(n_jobs=-1, verbose=0, warm_start=True, min_samples_leaf=5)
 
 if __name__ == "__main__":
