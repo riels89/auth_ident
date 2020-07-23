@@ -38,7 +38,7 @@ class closed_dataset:
         self.dataframe2 = pd.read_hdf(file)
 
     def get_datasets(self):
-        return self.get_two(self.dataframe1), self.get_two(self.dataframe2)
+        return tuple(list(self.get_two(self.dataframe1)) + list(self.get_two(self.dataframe2)))
 
     def get_two(self, df):
         """
@@ -86,12 +86,17 @@ class closed_dataset:
         for i in range(len(files)):
             y.append(int(i / self.k_cross_val))
 
-        crop = np.vectorize(self.random_crop)
-        files = crop(files, self.crop_length)
+        #crop = np.vectorize(self.random_crop)
+        #files = crop(files, self.crop_length, df)
+        contents=[]
+        for i in range(len(files)):
+            contents.append(self.random_crop(files[i], self.crop_length, df))
+
+        #contents=np.array(contents)
 
         X = []
-        for i in range(len(files)):
-            X.append(self.encode_to_one_hot(files[i]))
+        for i in range(len(contents)):
+            X.append(self.encode_to_one_hot(contents[i]))
         X = np.array(X)
 
         return X, y
@@ -102,7 +107,7 @@ class closed_dataset:
         crop_length is longer than the length of the file, then the entire
         file will be returned.
         """
-        contents = self.df['file_content'][file_indx]
+        contents = df['file_content'][file_indx]
         if len(contents) > crop_length:
             start = self.rng.integers(0, len(contents) - crop_length + 1)
             contents = contents[start:start + crop_length]
