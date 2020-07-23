@@ -92,6 +92,10 @@ class outer_model:
             test_proportion = .1
         X_train, X_test, y_train, y_test = train_test_split(self.X2, self.y2, test_size=test_proportion,
                                                             stratify=self.y2)
+        #TODO Sanity check
+        for i in y_test:
+            assert i in y_train
+
         self.outer_model.fit(X_train, y_train)
         return self.outer_model.score(X_test, y_test)
 
@@ -189,7 +193,7 @@ def accuracy(y_true, y_pred):
 
 
 def create_random_forest(params, index, logger):
-    return RandomForestClassifier(n_jobs=-1, verbose=2, warm_start=True)
+    return RandomForestClassifier(n_jobs=-1, verbose=2, warm_start=True, min_samples_leaf=5)
 
 if __name__ == "__main__":
     model = outer_model("placeholder", 1, "7-22-20")
