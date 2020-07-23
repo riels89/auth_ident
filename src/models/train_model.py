@@ -1,5 +1,7 @@
 import sys
 import os
+from time import perf_counter
+
 sys.path.append(os.path.join(os.path.dirname(__file__), '../..'))
 
 import matplotlib.pyplot as plt
@@ -37,7 +39,6 @@ from dilated_conv_by_line import dilated_conv_by_line
 from large_contrastive_cnn import large_contrastive_cnn
 from src import TRAIN_LEN, VAL_LEN, SL
 from shutil import copy
-
 
 class trainer:
 
@@ -86,14 +87,20 @@ class trainer:
             logger.info("With parameters: " + str(self.params[index]))
             logger.info("")
 
+            start_time = perf_counter()
             history = self.train_one(index, logger)
+            elapsed_time = perf_counter() - start_time
 
             parameters.loc[index, 'val_loss'] = history['val_loss'][0]
             parameters.loc[index, 'val_accuracy'] = history['val_accuracy'][0]
+            parameters.loc[index, 'elapsed_time'] = elapsed_time
+            parameters.loc[index, 'epochs_run'] = len(history['loss'])
             parameters.iloc[index].to_json(curr_log_dir + '/params.json')
 
             logger.info("Val loss: " + str(history['val_loss'][0]))
             logger.info("Val accuracy: " + str(history['val_accuracy'][0]))
+            logger.info("Elapsed time: " + str(elapsed_time))
+            logger.info("Epochs run: " + str(len(history['loss'])))
 
         parameters.to_csv(self.logdir + "/hyperparameter_matrix.csv")
 
