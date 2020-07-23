@@ -1,14 +1,11 @@
 
 import os
 import sys
-import tensorflow as tf
-import numpy as np
 import tensorflow.keras as keras
 import logging
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import cross_val_score, train_test_split
 from itertools import product
-import pandas as pd
 import json
 import glob
 from datetime import datetime
@@ -192,8 +189,6 @@ def accuracy(y_true, y_pred):
 
 
 def create_random_forest(params, index, logger):
-    #input = keras.Input(batch_shape=(params[index]["batch_size"], params[index]["max_code_length"] + 2,
-    #                                 params[index]['dataset'].len_encoding), name='input')
     return RandomForestClassifier(n_jobs=-1, verbose=2, warm_start=True)
 
 if __name__ == "__main__":
