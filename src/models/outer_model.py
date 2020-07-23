@@ -68,6 +68,7 @@ class outer_model:
         print(self.X1.shape)
 
         self.X1 = intermediate_layer_model.predict(self.X1, batch_size=self.params[0]["batch_size"])
+        self.X2 = intermediate_layer_model.predict(self.X2, batch_size=self.params[0]["batch_size"])
 
         print(self.X1.shape)
         #TODO: Validate using train2 and val2 to lock params
@@ -193,7 +194,7 @@ def accuracy(y_true, y_pred):
 def create_random_forest(params, index, logger):
     #input = keras.Input(batch_shape=(params[index]["batch_size"], params[index]["max_code_length"] + 2,
     #                                 params[index]['dataset'].len_encoding), name='input')
-    return RandomForestClassifier()
+    return RandomForestClassifier(n_jobs=-1, verbose=2, warm_start=True)
 
 if __name__ == "__main__":
     model = outer_model("placeholder", 1, "7-22-20")
