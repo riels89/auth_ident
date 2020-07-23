@@ -1,0 +1,781 @@
+2020-07-23 09:34:31.238586: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcuda.so.1
+2020-07-23 09:34:31.257739: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1561] Found device 0 with properties: 
+pciBusID: 0000:03:00.0 name: GeForce GTX TITAN X computeCapability: 5.2
+coreClock: 1.076GHz coreCount: 24 deviceMemorySize: 11.92GiB deviceMemoryBandwidth: 313.37GiB/s
+2020-07-23 09:34:31.257999: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
+2020-07-23 09:34:31.259504: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10
+2020-07-23 09:34:31.260520: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcufft.so.10
+2020-07-23 09:34:31.260770: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcurand.so.10
+2020-07-23 09:34:31.262299: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusolver.so.10
+2020-07-23 09:34:31.263345: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusparse.so.10
+2020-07-23 09:34:31.266373: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+2020-07-23 09:34:31.268102: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1703] Adding visible gpu devices: 0
+2020-07-23 09:34:31.268393: I tensorflow/core/platform/cpu_feature_guard.cc:143] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+2020-07-23 09:34:31.293301: I tensorflow/core/platform/profile_utils/cpu_utils.cc:102] CPU Frequency: 2394320000 Hz
+2020-07-23 09:34:31.294289: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x7ffa68000b20 initialized for platform Host (this does not guarantee that XLA will be used). Devices:
+2020-07-23 09:34:31.294333: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Host, Default Version
+2020-07-23 09:34:31.349939: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x5915450 initialized for platform CUDA (this does not guarantee that XLA will be used). Devices:
+2020-07-23 09:34:31.349975: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): GeForce GTX TITAN X, Compute Capability 5.2
+2020-07-23 09:34:31.350977: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1561] Found device 0 with properties: 
+pciBusID: 0000:03:00.0 name: GeForce GTX TITAN X computeCapability: 5.2
+coreClock: 1.076GHz coreCount: 24 deviceMemorySize: 11.92GiB deviceMemoryBandwidth: 313.37GiB/s
+2020-07-23 09:34:31.351029: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
+2020-07-23 09:34:31.351052: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10
+2020-07-23 09:34:31.351071: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcufft.so.10
+2020-07-23 09:34:31.351090: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcurand.so.10
+2020-07-23 09:34:31.351108: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusolver.so.10
+2020-07-23 09:34:31.351127: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusparse.so.10
+2020-07-23 09:34:31.351146: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+2020-07-23 09:34:31.352840: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1703] Adding visible gpu devices: 0
+2020-07-23 09:34:31.352885: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
+2020-07-23 09:34:31.355007: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1102] Device interconnect StreamExecutor with strength 1 edge matrix:
+2020-07-23 09:34:31.355044: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1108]      0 
+2020-07-23 09:34:31.355057: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1121] 0:   N 
+2020-07-23 09:34:31.357525: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1247] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 11325 MB memory) -> physical GPU (device: 0, name: GeForce GTX TITAN X, pci bus id: 0000:03:00.0, compute capability: 5.2)
+2020-07-23 09:34:57.961066: W tensorflow/core/framework/cpu_allocator_impl.cc:81] Allocation of 1778719600 exceeds 10% of free system memory.
+2020-07-23 09:34:59.131968: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10
+2020-07-23 09:34:59.284199: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+2020-07-23 09:35:01.442517: W tensorflow/core/framework/cpu_allocator_impl.cc:81] Allocation of 1774007760 exceeds 10% of free system memory.
+Model: "siamese_cnn"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+place_holder_input (InputLay [(64, 1202, 32)]          0         
+_________________________________________________________________
+conv_1 (Conv1D)              (64, 1202, 256)           57600     
+_________________________________________________________________
+max_pool_1 (MaxPooling1D)    (64, 400, 256)            0         
+_________________________________________________________________
+conv_2 (Conv1D)              (64, 400, 256)            459008    
+_________________________________________________________________
+max_pool_2 (MaxPooling1D)    (64, 133, 256)            0         
+_________________________________________________________________
+conv_3 (Conv1D)              (64, 133, 256)            196864    
+_________________________________________________________________
+conv_4 (Conv1D)              (64, 133, 256)            196864    
+_________________________________________________________________
+conv_5 (Conv1D)              (64, 133, 256)            196864    
+_________________________________________________________________
+conv_6 (Conv1D)              (64, 133, 256)            196864    
+_________________________________________________________________
+max_pool_3 (MaxPooling1D)    (64, 44, 256)             0         
+_________________________________________________________________
+flatten (Flatten)            (64, 11264)               0         
+=================================================================
+Total params: 1,304,064
+Trainable params: 1,304,064
+Non-trainable params: 0
+_________________________________________________________________
+Model: "contrastive_cnn-0"
+__________________________________________________________________________________________________
+Layer (type)                    Output Shape         Param #     Connected to                     
+==================================================================================================
+input_1 (InputLayer)            [(64, 1202, 98)]     0                                            
+__________________________________________________________________________________________________
+input_2 (InputLayer)            [(64, 1202, 98)]     0                                            
+__________________________________________________________________________________________________
+time_distributed (TimeDistribut (64, 1202, 32)       3168        input_1[0][0]                    
+                                                                 input_2[0][0]                    
+__________________________________________________________________________________________________
+siamese_cnn (Model)             (64, 11264)          1304064     time_distributed[0][0]           
+                                                                 time_distributed[1][0]           
+__________________________________________________________________________________________________
+non_linearity_1 (Dense)         (64, 1048)           11805720    siamese_cnn[1][0]                
+                                                                 siamese_cnn[2][0]                
+__________________________________________________________________________________________________
+non_linearity_2 (Dense)         (64, 1048)           1099352     non_linearity_1[0][0]            
+                                                                 non_linearity_1[1][0]            
+__________________________________________________________________________________________________
+output_embedding (Dense)        (64, 256)            268544      non_linearity_2[0][0]            
+                                                                 non_linearity_2[1][0]            
+__________________________________________________________________________________________________
+distance (Lambda)               (64, 1)              0           output_embedding[0][0]           
+                                                                 output_embedding[1][0]           
+==================================================================================================
+Total params: 14,480,848
+Trainable params: 14,480,848
+Non-trainable params: 0
+__________________________________________________________________________________________________
+Model: "model"
+__________________________________________________________________________________________________
+Layer (type)                    Output Shape         Param #     Connected to                     
+==================================================================================================
+input_1 (InputLayer)            [(64, 1202, 98)]     0                                            
+__________________________________________________________________________________________________
+time_distributed (TimeDistribut (64, 1202, 32)       3168        input_1[0][0]                    
+__________________________________________________________________________________________________
+siamese_cnn (Model)             (64, 11264)          1304064     time_distributed[0][0]           
+__________________________________________________________________________________________________
+non_linearity_1 (Dense)         (64, 1048)           11805720    siamese_cnn[1][0]                
+__________________________________________________________________________________________________
+non_linearity_2 (Dense)         (64, 1048)           1099352     non_linearity_1[0][0]            
+__________________________________________________________________________________________________
+input_2 (InputLayer)            [(64, 1202, 98)]     0                                            
+__________________________________________________________________________________________________
+output_embedding (Dense)        (64, 256)            268544      non_linearity_2[0][0]            
+==================================================================================================
+Total params: 14,480,848
+Trainable params: 14,480,848
+Non-trainable params: 0
+__________________________________________________________________________________________________
+<class 'numpy.ndarray'>
+<class 'list'>
+<class 'numpy.ndarray'>
+<class 'list'>
+(3775, 1202, 98)
+(3775, 256)
+train_and_val
+[CV]  ................................................................
+[Parallel(n_jobs=1)]: Using backend SequentialBackend with 1 concurrent workers.
+[Parallel(n_jobs=-1)]: Using backend LokyBackend with 12 concurrent workers.
+[CV] ................................................. , total=  16.7s
+[CV]  ................................................................
+[CV] ................................................. , total=  14.1s
+[CV]  ................................................................
+[CV] ................................................. , total=  14.4s
+[CV]  ................................................................
+[CV] ................................................. , total=  14.1s
+[CV]  ................................................................
+[CV] ................................................. , total=  14.8s
+Train val scores:  [0.18013245 0.20397351 0.18675497 0.18675497 0.14966887]
+train_and_test
+[Parallel(n_jobs=-1)]: Done  17 tasks      | elapsed:    4.6s
+[Parallel(n_jobs=-1)]: Done 100 out of 100 | elapsed:   16.3s finished
+[Parallel(n_jobs=12)]: Using backend ThreadingBackend with 12 concurrent workers.
+[Parallel(n_jobs=12)]: Done  17 tasks      | elapsed:    0.0s
+[Parallel(n_jobs=12)]: Done 100 out of 100 | elapsed:    0.1s finished
+[Parallel(n_jobs=1)]: Done   1 out of   1 | elapsed:   16.7s remaining:    0.0s
+[Parallel(n_jobs=-1)]: Using backend LokyBackend with 12 concurrent workers.
+[Parallel(n_jobs=-1)]: Done  17 tasks      | elapsed:    3.1s
+[Parallel(n_jobs=-1)]: Done 100 out of 100 | elapsed:   13.7s finished
+[Parallel(n_jobs=12)]: Using backend ThreadingBackend with 12 concurrent workers.
+[Parallel(n_jobs=12)]: Done  17 tasks      | elapsed:    0.0s
+[Parallel(n_jobs=12)]: Done 100 out of 100 | elapsed:    0.1s finished
+[Parallel(n_jobs=-1)]: Using backend LokyBackend with 12 concurrent workers.
+[Parallel(n_jobs=-1)]: Done  17 tasks      | elapsed:    3.3s
+[Parallel(n_jobs=-1)]: Done 100 out of 100 | elapsed:   14.1s finished
+[Parallel(n_jobs=12)]: Using backend ThreadingBackend with 12 concurrent workers.
+[Parallel(n_jobs=12)]: Done  17 tasks      | elapsed:    0.0s
+[Parallel(n_jobs=12)]: Done 100 out of 100 | elapsed:    0.1s finished
+[Parallel(n_jobs=-1)]: Using backend LokyBackend with 12 concurrent workers.
+[Parallel(n_jobs=-1)]: Done  17 tasks      | elapsed:    3.1s
+[Parallel(n_jobs=-1)]: Done 100 out of 100 | elapsed:   13.8s finished
+[Parallel(n_jobs=12)]: Using backend ThreadingBackend with 12 concurrent workers.
+[Parallel(n_jobs=12)]: Done  17 tasks      | elapsed:    0.0s
+[Parallel(n_jobs=12)]: Done 100 out of 100 | elapsed:    0.1s finished
+[Parallel(n_jobs=-1)]: Using backend LokyBackend with 12 concurrent workers.
+[Parallel(n_jobs=-1)]: Done  17 tasks      | elapsed:    3.2s
+[Parallel(n_jobs=-1)]: Done 100 out of 100 | elapsed:   14.5s finished
+[Parallel(n_jobs=12)]: Using backend ThreadingBackend with 12 concurrent workers.
+[Parallel(n_jobs=12)]: Done  17 tasks      | elapsed:    0.0s
+[Parallel(n_jobs=12)]: Done 100 out of 100 | elapsed:    0.1s finished
+[Parallel(n_jobs=1)]: Done   5 out of   5 | elapsed:  1.2min finished
+[Parallel(n_jobs=-1)]: Using backend ThreadingBackend with 12 concurrent workers.
+[Parallel(n_jobs=-1)]: Done  17 tasks      | elapsed:    3.4s
+[Parallel(n_jobs=-1)]: Done 100 out of 100 | elapsed:   14.6s finished
+[Parallel(n_jobs=12)]: Using backend ThreadingBackend with 12 concurrent workers.
+[Parallel(n_jobs=12)]: Done  17 tasks      | elapsed:    0.0s
+[Parallel(n_jobs=12)]: Done 100 out of 100 | elapsed:    0.1s finished
+Num_file in test_set:  753
+Num_auth in test set:  753
+building tree 1 of 100
+building tree 2 of 100
+building tree 3 of 100
+building tree 4 of 100
+building tree 5 of 100
+building tree 6 of 100
+building tree 7 of 100
+building tree 8 of 100
+building tree 9 of 100
+building tree 10 of 100
+building tree 11 of 100
+building tree 12 of 100
+building tree 13 of 100
+building tree 14 of 100
+building tree 15 of 100
+building tree 16 of 100
+building tree 17 of 100
+building tree 18 of 100
+building tree 19 of 100
+building tree 20 of 100
+building tree 21 of 100
+building tree 22 of 100
+building tree 23 of 100
+building tree 24 of 100
+building tree 25 of 100
+building tree 26 of 100
+building tree 27 of 100
+building tree 28 of 100
+building tree 29 of 100
+building tree 30 of 100
+building tree 31 of 100
+building tree 32 of 100
+building tree 33 of 100
+building tree 34 of 100
+building tree 35 of 100
+building tree 36 of 100
+building tree 37 of 100
+building tree 38 of 100
+building tree 39 of 100
+building tree 40 of 100
+building tree 41 of 100
+building tree 42 of 100
+building tree 43 of 100
+building tree 44 of 100
+building tree 45 of 100
+building tree 46 of 100
+building tree 47 of 100
+building tree 48 of 100
+building tree 49 of 100
+building tree 50 of 100
+building tree 51 of 100
+building tree 52 of 100
+building tree 53 of 100
+building tree 54 of 100
+building tree 55 of 100
+building tree 56 of 100
+building tree 57 of 100
+building tree 58 of 100
+building tree 59 of 100
+building tree 60 of 100
+building tree 61 of 100
+building tree 62 of 100
+building tree 63 of 100
+building tree 64 of 100
+building tree 65 of 100
+building tree 66 of 100
+building tree 67 of 100
+building tree 68 of 100
+building tree 69 of 100
+building tree 70 of 100
+building tree 71 of 100
+building tree 72 of 100
+building tree 73 of 100
+building tree 74 of 100
+building tree 75 of 100
+building tree 76 of 100
+building tree 77 of 100
+building tree 78 of 100
+building tree 79 of 100
+building tree 80 of 100
+building tree 81 of 100
+building tree 82 of 100
+building tree 83 of 100
+building tree 84 of 100
+building tree 85 of 100
+building tree 86 of 100
+building tree 87 of 100
+building tree 88 of 100
+building tree 89 of 100
+building tree 90 of 100
+building tree 91 of 100
+building tree 92 of 100
+building tree 93 of 100
+building tree 94 of 100
+building tree 95 of 100
+building tree 96 of 100
+building tree 97 of 100
+building tree 98 of 100
+building tree 99 of 100
+building tree 100 of 100
+Test accuracy:  0.1899070385126162
+building tree 8 of 100
+building tree 17 of 100
+building tree 29 of 100
+building tree 42 of 100
+building tree 55 of 100
+building tree 64 of 100
+building tree 77 of 100
+building tree 86 of 100
+building tree 99 of 100
+building tree 10 of 100
+building tree 13 of 100
+building tree 25 of 100
+building tree 37 of 100
+building tree 49 of 100
+building tree 60 of 100
+building tree 73 of 100
+building tree 90 of 100
+building tree 3 of 100
+building tree 14 of 100
+building tree 25 of 100
+building tree 37 of 100
+building tree 49 of 100
+building tree 60 of 100
+building tree 71 of 100
+building tree 83 of 100
+building tree 95 of 100
+building tree 8 of 100
+building tree 16 of 100
+building tree 26 of 100
+building tree 43 of 100
+building tree 55 of 100
+building tree 63 of 100
+building tree 76 of 100
+building tree 89 of 100
+building tree 97 of 100
+building tree 11 of 100
+building tree 17 of 100
+building tree 25 of 100
+building tree 37 of 100
+building tree 51 of 100
+building tree 64 of 100
+building tree 80 of 100
+building tree 90 of 100
+building tree 7 of 100
+building tree 20 of 100
+building tree 34 of 100
+building tree 46 of 100
+building tree 58 of 100
+building tree 65 of 100
+building tree 74 of 100
+building tree 84 of 100
+building tree 96 of 100
+building tree 11 of 100
+building tree 16 of 100
+building tree 34 of 100
+building tree 45 of 100
+building tree 55 of 100
+building tree 67 of 100
+building tree 79 of 100
+building tree 91 of 100
+building tree 100 of 100
+building tree 10 of 100
+building tree 24 of 100
+building tree 36 of 100
+building tree 50 of 100
+building tree 62 of 100
+building tree 76 of 100
+building tree 85 of 100
+building tree 97 of 100
+building tree 10 of 100
+building tree 18 of 100
+building tree 25 of 100
+building tree 37 of 100
+building tree 52 of 100
+building tree 68 of 100
+building tree 75 of 100
+building tree 88 of 100
+building tree 3 of 100
+building tree 13 of 100
+building tree 26 of 100
+building tree 41 of 100
+building tree 54 of 100
+building tree 65 of 100
+building tree 79 of 100
+building tree 88 of 100
+building tree 1 of 100
+building tree 15 of 100
+building tree 37 of 100
+building tree 48 of 100
+building tree 61 of 100
+building tree 72 of 100
+building tree 85 of 100
+building tree 98 of 100
+building tree 8 of 100
+building tree 20 of 100
+building tree 35 of 100
+building tree 47 of 100
+building tree 62 of 100
+building tree 77 of 100
+building tree 83 of 100
+building tree 95 of 100
+building tree 5 of 100
+building tree 16 of 100
+building tree 32 of 100
+building tree 43 of 100
+building tree 57 of 100
+building tree 68 of 100
+building tree 80 of 100
+building tree 92 of 100
+building tree 4 of 100
+building tree 17 of 100
+building tree 31 of 100
+building tree 39 of 100
+building tree 49 of 100
+building tree 61 of 100
+building tree 72 of 100
+building tree 84 of 100
+building tree 96 of 100
+building tree 8 of 100
+building tree 22 of 100
+building tree 34 of 100
+building tree 46 of 100
+building tree 59 of 100
+building tree 68 of 100
+building tree 76 of 100
+building tree 94 of 100
+building tree 5 of 100
+building tree 23 of 100
+building tree 32 of 100
+building tree 45 of 100
+building tree 56 of 100
+building tree 66 of 100
+building tree 76 of 100
+building tree 89 of 100
+building tree 100 of 100
+building tree 12 of 100
+building tree 17 of 100
+building tree 28 of 100
+building tree 39 of 100
+building tree 50 of 100
+building tree 63 of 100
+building tree 71 of 100
+building tree 87 of 100
+building tree 99 of 100
+building tree 11 of 100
+building tree 20 of 100
+building tree 34 of 100
+building tree 45 of 100
+building tree 56 of 100
+building tree 70 of 100
+building tree 81 of 100
+building tree 91 of 100
+building tree 3 of 100
+building tree 23 of 100
+building tree 28 of 100
+building tree 38 of 100
+building tree 51 of 100
+building tree 67 of 100
+building tree 77 of 100
+building tree 87 of 100
+building tree 2 of 100
+building tree 16 of 100
+building tree 30 of 100
+building tree 38 of 100
+building tree 50 of 100
+building tree 62 of 100
+building tree 72 of 100
+building tree 83 of 100
+building tree 92 of 100
+building tree 6 of 100
+building tree 16 of 100
+building tree 26 of 100
+building tree 39 of 100
+building tree 51 of 100
+building tree 62 of 100
+building tree 78 of 100
+building tree 87 of 100
+building tree 6 of 100
+building tree 15 of 100
+building tree 26 of 100
+building tree 38 of 100
+building tree 51 of 100
+building tree 61 of 100
+building tree 72 of 100
+building tree 84 of 100
+building tree 97 of 100
+building tree 9 of 100
+building tree 18 of 100
+building tree 28 of 100
+building tree 40 of 100
+building tree 54 of 100
+building tree 64 of 100
+building tree 77 of 100
+building tree 89 of 100
+building tree 99 of 100
+building tree 9 of 100
+building tree 24 of 100
+building tree 33 of 100
+building tree 46 of 100
+building tree 59 of 100
+building tree 71 of 100
+building tree 81 of 100
+building tree 93 of 100
+building tree 5 of 100
+building tree 14 of 100
+building tree 36 of 100
+building tree 45 of 100
+building tree 58 of 100
+building tree 67 of 100
+building tree 77 of 100
+building tree 91 of 100
+building tree 11 of 100
+building tree 24 of 100
+building tree 35 of 100
+building tree 47 of 100
+building tree 59 of 100
+building tree 73 of 100
+building tree 91 of 100
+building tree 1 of 100
+building tree 23 of 100
+building tree 32 of 100
+building tree 46 of 100
+building tree 58 of 100
+building tree 70 of 100
+building tree 85 of 100
+building tree 96 of 100
+building tree 6 of 100
+building tree 19 of 100
+building tree 33 of 100
+building tree 46 of 100
+building tree 55 of 100
+building tree 66 of 100
+building tree 79 of 100
+building tree 93 of 100
+building tree 7 of 100
+building tree 20 of 100
+building tree 35 of 100
+building tree 44 of 100
+building tree 54 of 100
+building tree 65 of 100
+building tree 83 of 100
+building tree 92 of 100
+building tree 7 of 100
+building tree 21 of 100
+building tree 28 of 100
+building tree 42 of 100
+building tree 56 of 100
+building tree 69 of 100
+building tree 81 of 100
+building tree 93 of 100
+building tree 12 of 100
+building tree 21 of 100
+building tree 33 of 100
+building tree 40 of 100
+building tree 52 of 100
+building tree 69 of 100
+building tree 82 of 100
+building tree 93 of 100
+building tree 4 of 100
+building tree 24 of 100
+building tree 36 of 100
+building tree 48 of 100
+building tree 59 of 100
+building tree 74 of 100
+building tree 86 of 100
+building tree 98 of 100
+building tree 12 of 100
+building tree 23 of 100
+building tree 30 of 100
+building tree 44 of 100
+building tree 53 of 100
+building tree 67 of 100
+building tree 78 of 100
+building tree 90 of 100
+building tree 2 of 100
+building tree 13 of 100
+building tree 27 of 100
+building tree 42 of 100
+building tree 57 of 100
+building tree 70 of 100
+building tree 78 of 100
+building tree 90 of 100
+building tree 99 of 100
+building tree 10 of 100
+building tree 15 of 100
+building tree 27 of 100
+building tree 40 of 100
+building tree 53 of 100
+building tree 63 of 100
+building tree 75 of 100
+building tree 85 of 100
+building tree 97 of 100
+building tree 2 of 100
+building tree 22 of 100
+building tree 31 of 100
+building tree 43 of 100
+building tree 53 of 100
+building tree 70 of 100
+building tree 81 of 100
+building tree 90 of 100
+building tree 2 of 100
+building tree 18 of 100
+building tree 29 of 100
+building tree 42 of 100
+building tree 53 of 100
+building tree 65 of 100
+building tree 76 of 100
+building tree 88 of 100
+building tree 1 of 100
+building tree 15 of 100
+building tree 26 of 100
+building tree 38 of 100
+building tree 48 of 100
+building tree 61 of 100
+building tree 73 of 100
+building tree 86 of 100
+building tree 1 of 100
+building tree 15 of 100
+building tree 30 of 100
+building tree 47 of 100
+building tree 58 of 100
+building tree 69 of 100
+building tree 80 of 100
+building tree 95 of 100
+building tree 6 of 100
+building tree 23 of 100
+building tree 32 of 100
+building tree 47 of 100
+building tree 57 of 100
+building tree 66 of 100
+building tree 82 of 100
+building tree 95 of 100
+building tree 4 of 100
+building tree 13 of 100
+building tree 28 of 100
+building tree 41 of 100
+building tree 54 of 100
+building tree 67 of 100
+building tree 79 of 100
+building tree 88 of 100
+building tree 97 of 100
+building tree 9 of 100
+building tree 22 of 100
+building tree 30 of 100
+building tree 40 of 100
+building tree 57 of 100
+building tree 68 of 100
+building tree 80 of 100
+building tree 92 of 100
+building tree 4 of 100
+building tree 17 of 100
+building tree 27 of 100
+building tree 41 of 100
+building tree 52 of 100
+building tree 63 of 100
+building tree 75 of 100
+building tree 88 of 100
+building tree 100 of 100
+building tree 12 of 100
+building tree 19 of 100
+building tree 32 of 100
+building tree 48 of 100
+building tree 60 of 100
+building tree 73 of 100
+building tree 85 of 100
+building tree 98 of 100
+building tree 9 of 100
+building tree 20 of 100
+building tree 29 of 100
+building tree 39 of 100
+building tree 49 of 100
+building tree 61 of 100
+building tree 73 of 100
+building tree 84 of 100
+building tree 96 of 100
+building tree 3 of 100
+building tree 14 of 100
+building tree 25 of 100
+building tree 36 of 100
+building tree 49 of 100
+building tree 60 of 100
+building tree 71 of 100
+building tree 83 of 100
+building tree 95 of 100
+building tree 7 of 100
+building tree 14 of 100
+building tree 27 of 100
+building tree 44 of 100
+building tree 56 of 100
+building tree 69 of 100
+building tree 82 of 100
+building tree 94 of 100
+building tree 7 of 100
+building tree 13 of 100
+building tree 29 of 100
+building tree 42 of 100
+building tree 58 of 100
+building tree 69 of 100
+building tree 82 of 100
+building tree 94 of 100
+building tree 6 of 100
+building tree 14 of 100
+building tree 29 of 100
+building tree 45 of 100
+building tree 56 of 100
+building tree 66 of 100
+building tree 74 of 100
+building tree 86 of 100
+building tree 1 of 100
+building tree 18 of 100
+building tree 33 of 100
+building tree 43 of 100
+building tree 52 of 100
+building tree 71 of 100
+building tree 87 of 100
+building tree 98 of 100
+building tree 9 of 100
+building tree 19 of 100
+building tree 30 of 100
+building tree 44 of 100
+building tree 57 of 100
+building tree 68 of 100
+building tree 80 of 100
+building tree 92 of 100
+building tree 3 of 100
+building tree 21 of 100
+building tree 31 of 100
+building tree 41 of 100
+building tree 52 of 100
+building tree 64 of 100
+building tree 75 of 100
+building tree 81 of 100
+building tree 93 of 100
+building tree 8 of 100
+building tree 22 of 100
+building tree 35 of 100
+building tree 47 of 100
+building tree 59 of 100
+building tree 72 of 100
+building tree 87 of 100
+building tree 98 of 100
+building tree 11 of 100
+building tree 21 of 100
+building tree 36 of 100
+building tree 41 of 100
+building tree 50 of 100
+building tree 62 of 100
+building tree 79 of 100
+building tree 91 of 100
+building tree 100 of 100
+building tree 12 of 100
+building tree 24 of 100
+building tree 35 of 100
+building tree 48 of 100
+building tree 60 of 100
+building tree 74 of 100
+building tree 86 of 100
+building tree 99 of 100
+building tree 10 of 100
+building tree 18 of 100
+building tree 27 of 100
+building tree 38 of 100
+building tree 50 of 100
+building tree 63 of 100
+building tree 75 of 100
+building tree 94 of 100
+building tree 5 of 100
+building tree 19 of 100
+building tree 33 of 100
+building tree 43 of 100
+building tree 54 of 100
+building tree 66 of 100
+building tree 78 of 100
+building tree 89 of 100
+building tree 2 of 100
+building tree 21 of 100
+building tree 31 of 100
+building tree 39 of 100
+building tree 51 of 100
+building tree 65 of 100
+building tree 74 of 100
+building tree 84 of 100
+building tree 96 of 100
+building tree 5 of 100
+building tree 22 of 100
+building tree 34 of 100
+building tree 40 of 100
+building tree 53 of 100
+building tree 64 of 100
+building tree 82 of 100
+building tree 94 of 100
+building tree 4 of 100
+building tree 19 of 100
+building tree 31 of 100
+building tree 44 of 100
+building tree 55 of 100
+building tree 70 of 100
+building tree 78 of 100
+building tree 89 of 100
+building tree 100 of 100
