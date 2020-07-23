@@ -4,6 +4,7 @@ import sys
 import tensorflow.keras as keras
 import logging
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.svm import SVC
 from sklearn.model_selection import cross_val_score, train_test_split
 from itertools import product
 import json
@@ -59,16 +60,10 @@ class outer_model:
         gen = closed_dataset(crop_length=self.params[0]["max_code_length"], k_cross_val=self.params[0]["k_cross_val"],
                              language=self.params[0]["language"])
         self.X1, self.y1, self.X2, self.y2 = gen.get_datasets()
-        print(type(self.X1))
-        print(type(self.y1))
-        print(type(self.X2))
-        print(type(self.y2))
-        print(self.X1.shape)
 
         self.X1 = intermediate_layer_model.predict(self.X1, batch_size=self.params[0]["batch_size"])
         self.X2 = intermediate_layer_model.predict(self.X2, batch_size=self.params[0]["batch_size"])
 
-        print(self.X1.shape)
         #TODO: Validate using train2 and val2 to lock params
 
         self.outer_model = create_random_forest(self.params, 0, None)
@@ -83,7 +78,7 @@ class outer_model:
 
     def train_and_val(self):
         print("train_and_val", flush=True)
-        score = cross_val_score(self.outer_model, self.X1, self.y1, verbose=2, cv=self.params[0]["k_cross_val"])
+        score = cross_val_score(self.outer_model, self.X1, self.y1, verbose=0, cv=self.params[0]["k_cross_val"])
         return score
 
     def train_and_test(self):
@@ -197,7 +192,8 @@ def accuracy(y_true, y_pred):
 
 
 def create_random_forest(params, index, logger):
-    return RandomForestClassifier(n_jobs=-1, verbose=2, warm_start=True, min_samples_leaf=5)
+    return SVC()
+    #return RandomForestClassifier(n_jobs=-1, verbose=0, warm_start=True, min_samples_leaf=5)
 
 if __name__ == "__main__":
     model = outer_model("placeholder", 1, "7-22-20")
