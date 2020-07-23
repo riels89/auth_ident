@@ -59,8 +59,6 @@ class trainer:
         self.root_logger.info("Parameter dict: " + str(self.params))
         self.root_logger.info("")
 
-        print(str(model.layers))
-
         copy("src/models/" + model.name + ".py", self.logdir)
 
         self.model = model
