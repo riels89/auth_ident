@@ -9,6 +9,7 @@ from itertools import product
 import json
 import glob
 from datetime import datetime
+import numpy as np
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '../..'))
 
@@ -95,6 +96,9 @@ class outer_model:
         #TODO Sanity check
         for i in y_test:
             assert i in y_train
+        num_auth=len(np.unique(np.array(y_test)))
+        print("Num_file in test_set: ", len(y_test))
+        print("Num_auth in test set: ", num_auth)
 
         self.outer_model.fit(X_train, y_train)
         return self.outer_model.score(X_test, y_test)
