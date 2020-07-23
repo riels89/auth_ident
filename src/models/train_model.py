@@ -34,6 +34,7 @@ from tensorflow.keras import backend as K
 from contrastive_by_line_cnn import contrastive_by_line_cnn
 from contrastive_1D_to_2D import contrastive_1D_to_2D
 from dilated_conv_by_line import dilated_conv_by_line
+from large_contrastive_cnn import large_contrastive_cnn
 from src import TRAIN_LEN, VAL_LEN, SL
 from shutil import copy
 
