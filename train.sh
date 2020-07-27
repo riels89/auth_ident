@@ -6,11 +6,11 @@ if [ "$#" -ne 4 ]; then
 fi
 
 cd src/models/ || exit
-cp train_model.py temp.py
-echo "from $1 import $1" >> temp.py
-echo "trainer($1(), \"$3\", $2, \"$4\").train()" >> temp.py
+temp_file="temp-training-$1-EXP$2.py"
+cp train_model.py $temp_file
+echo "from $1 import $1" >> $temp_file
+echo "trainer($1(), \"$3\", $2, \"$4\").train()" >> $temp_file
 
 cd ../../
-python src/models/temp.py &> "$1-EXP$2.out"
-cp "$1-EXP$2.out" "./models/$1/EXP$2-$3-$4/."
-rm src/models/temp.py
+python src/models/$temp_file &> "./models/$1/EXP$2-$3-$4/output"
+rm src/models/$temp_file
