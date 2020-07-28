@@ -1,0 +1,12 @@
+{
+  "k_cross_val": [5],
+  "encoder_model": ["contrastive_cnn"],
+  "encoder_exp": ["11"],
+  "bootstrap": [true],
+  "min_samples_leaf": [5],
+  "n_estimators": [100],
+  "min_samples_split": [10],
+  "max_features": ["sqrt"],
+  "max_depth": [null],
+  "max_leaf_nodes": [null]
+}

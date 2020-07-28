@@ -39,6 +39,7 @@ from dilated_conv_by_line import dilated_conv_by_line
 from large_contrastive_cnn import large_contrastive_cnn
 from src import TRAIN_LEN, VAL_LEN, SL
 from shutil import copy
+from train_outer import train_outer
 
 class trainer:
 
@@ -223,7 +224,18 @@ class trainer:
         return K.mean(y_true * square_pred + (1 - y_true) * margin_square)
 
 
+def main():
+    outer = False;
+    if len(sys.argv) > 2:
+        print("Usage: ./train_model.py <outer? (0/1)>")
+    elif len(sys.argv) == 2:
+        outer = bool(sys.argv[1])
 
+    if outer:
+        train_outer("contrastive_cnn", 8).train()
+
+if __name__ == "__main__":
+    main()
 
 # trainer(simple_lstm(), "first_runs", 1, date="13-10-19").train()
 # trainer(simpleNN(), "dropout_onehot", 5, date="12-10-19").train()
@@ -235,7 +247,7 @@ class trainer:
 # trainer(contrastive_bilstm(), "fixing_error", 2, "2-18-20").train()
 # trainer(contrastive_bilstm_v2(), "fixing_non_siamese_dense", 5, "5-12-20").train()
 # trainer(multi_attention_bilstm(), "fixing_non_siamese_dense", 5, "5-12-20").train()
-# trainer(contrastive_cnn(), "logan_test", 8, "5-29-20").train()
+#trainer(contrastive_cnn(), "logan_test", 8, "5-29-20").train()
 #trainer(dilated_conv_by_line(), "higher_learning_rate", 2, "6-4-20").train()
 #trainer(dilated_conv_by_line(), "more_epochs", 3, "6-5-20").train()
 # trainer(contrastive_by_line_cnn(), "adding_embedding", 5, "5-19-20").train()
