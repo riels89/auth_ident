@@ -232,7 +232,7 @@ def main():
         outer = bool(sys.argv[1])
 
     if outer:
-        train_outer("contrastive_cnn", 8).train()
+        outer_model("contrastive_cnn", 8).train()
 
 if __name__ == "__main__":
     main()
