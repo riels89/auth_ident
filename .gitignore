@@ -11,3 +11,4 @@ projector_config.pbtxt
 auth_ident.sublime-project
 auth_ident.sublime-workspace
 env
+data/loaded
