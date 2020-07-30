@@ -39,7 +39,7 @@ from dilated_conv_by_line import dilated_conv_by_line
 from large_contrastive_cnn import large_contrastive_cnn
 from src import TRAIN_LEN, VAL_LEN, SL
 from shutil import copy
-from train_outer import train_outer
+from outer_model import outer_model
 
 class trainer:
 
