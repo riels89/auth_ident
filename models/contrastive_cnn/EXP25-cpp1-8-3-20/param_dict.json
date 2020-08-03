@@ -1,0 +1,14 @@
+{
+  "optimizer": ["adam"],
+  "loss": ["contrastive"],
+  "lr": [0.00005, 0.00001, 0.0005, 0.001],
+  "decay": [0.0000025],
+  "margin": [1],
+  "epochs": [30],
+  "batch_size": [128, 256],
+  "binary_encoding": [false],
+  "max_code_length": [300, 600],
+  "embedding_size": [256],
+  "BN": [false],
+  "language":["c_cpp_h"]
+}
