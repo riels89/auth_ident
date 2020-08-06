@@ -1,0 +1,11 @@
+{
+  "optimizer": ["adam"],
+  "clipnorm": [1.0],
+  "lr": [0.0005],
+  "loss": ["contrastive"],
+  "margin": [1],
+  "epochs": [20],
+  "batch_size": [64, 128, 256],
+  "binary_encoding": [false],
+  "max_code_length": [600, 900, 1200, 1500]
+}
