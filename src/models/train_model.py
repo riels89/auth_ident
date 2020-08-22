@@ -140,8 +140,8 @@ class trainer:
                             validation_data=val_dataset,
                             epochs=self.params[index]['epochs'],
                             steps_per_epoch=TRAIN_LEN // self.params[index]['batch_size'],
-                            validation_steps=VAL_LEN // self.params[index]['batch_size'],
-                            callbacks=[tensorboard_callback, save_model_callback])
+                            validation_steps=VAL_LEN // self.params[index]['batch_size'])#,
+                            #callbacks=[tensorboard_callback, save_model_callback])
 
         return history.history
 
