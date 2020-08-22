@@ -101,6 +101,7 @@ class SimCLRDataset:
 
         dataset = dataset.batch(self.batch_size)
         dataset = dataset.prefetch(tf.data.experimental.AUTOTUNE)
+        dataset.repeat()
 
         return dataset
 
