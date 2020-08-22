@@ -223,7 +223,7 @@ class trainer:
         square_pred = K.square(y_pred)
         margin_square = K.square(K.maximum(self.margin - y_pred, 0))
         ret = K.mean(y_true * square_pred + (1 - y_true) * margin_square)
-        print(ret, flush=True)
+        print("\nin contrastive\n", ret, flush=True)
         return ret
 
     def simclr_loss(self, y_true, y_pred):
