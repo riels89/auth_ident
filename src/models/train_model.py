@@ -1,13 +1,11 @@
 import sys
 import os
-from time import perf_counter
-
 sys.path.append(os.path.join(os.path.dirname(__file__), '../..'))
 
 import matplotlib.pyplot as plt
 import tensorflow as tf
 import tensorflow.keras as keras
-from tensorflow.keras.callbacks import TensorBoard, ModelCheckpoint, EarlyStopping
+from tensorflow.keras.callbacks import TensorBoard, ModelCheckpoint
 import logging
 from itertools import product
 import json
@@ -21,6 +19,7 @@ from src.preprocessing import load_data
 from src.preprocessing.combined_dataset import combined_dataset
 from src.preprocessing.split_dataset import split_dataset
 from src.preprocessing.by_line_dataset import by_line_dataset
+from src.data_processing_expt.simclr_dataset import SimCLRDataset
 from split_cnn import split_cnn
 from largeNN import largeNN
 from split_NN import split_NN
@@ -36,10 +35,10 @@ from tensorflow.keras import backend as K
 from contrastive_by_line_cnn import contrastive_by_line_cnn
 from contrastive_1D_to_2D import contrastive_1D_to_2D
 from dilated_conv_by_line import dilated_conv_by_line
-from large_contrastive_cnn import large_contrastive_cnn
 from src import TRAIN_LEN, VAL_LEN, SL
 from shutil import copy
-from outer_model import outer_model
+from simclr.objective import add_contrastive_loss
+
 
 class trainer:
 
@@ -88,20 +87,14 @@ class trainer:
             logger.info("With parameters: " + str(self.params[index]))
             logger.info("")
 
-            start_time = perf_counter()
             history = self.train_one(index, logger)
-            elapsed_time = perf_counter() - start_time
 
             parameters.loc[index, 'val_loss'] = history['val_loss'][0]
             parameters.loc[index, 'val_accuracy'] = history['val_accuracy'][0]
-            parameters.loc[index, 'elapsed_time'] = elapsed_time
-            parameters.loc[index, 'epochs_run'] = len(history['loss'])
             parameters.iloc[index].to_json(curr_log_dir + '/params.json')
 
             logger.info("Val loss: " + str(history['val_loss'][0]))
             logger.info("Val accuracy: " + str(history['val_accuracy'][0]))
-            logger.info("Elapsed time: " + str(elapsed_time))
-            logger.info("Epochs run: " + str(len(history['loss'])))
 
         parameters.to_csv(self.logdir + "/hyperparameter_matrix.csv")
 
@@ -121,8 +114,6 @@ class trainer:
 
         save_model_callback = ModelCheckpoint(curr_log_dir + "/checkpoints/model.{epoch:02d}-{val_loss:.2f}.hdf5",
                                               monitor='val_loss', save_best_only=True, mode='min')
-        early_stop_callback = EarlyStopping(monitor='val_loss', patience=2)
-
 
         # def batchOutput(batch, logs):
         #     logger.info("Finished batch: " + str(batch))
@@ -149,8 +140,8 @@ class trainer:
                             validation_data=val_dataset,
                             epochs=self.params[index]['epochs'],
                             steps_per_epoch=TRAIN_LEN // self.params[index]['batch_size'],
-                            validation_steps=VAL_LEN // self.params[index]['batch_size'],
-                            callbacks=[tensorboard_callback, save_model_callback, early_stop_callback])
+                            validation_steps=VAL_LEN // self.params[index]['batch_size'])#,
+                            #callbacks=[tensorboard_callback, save_model_callback])
 
         return history.history
 
@@ -178,6 +169,11 @@ class trainer:
                                        binary_encoding=self.params[index]['binary_encoding'])
         elif dataset_type == "split":
             dataset = split_dataset(max_code_length=self.params[index]["max_code_length"],
+                                    batch_size=self.params[index]['batch_size'],
+                                    binary_encoding=self.params[index]['binary_encoding'],
+                                    language=self.params[index].get('language'))
+        elif dataset_type == "simclr":
+            dataset = SimCLRDataset(max_code_length=self.params[index]["max_code_length"],
                                     batch_size=self.params[index]['batch_size'],
                                     binary_encoding=self.params[index]['binary_encoding'],
                                     language=self.params[index].get('language'))
@@ -214,6 +210,11 @@ class trainer:
             if 'margin' in self.params[index]:
                 self.margin = self.params[index]['margin']
 
+        if self.params[index]['loss'] == 'simclr':
+            self.params[index]['loss'] = self.simclr_loss
+            if 'temperature' in self.params[index]:
+                self.temperature = self.params[index]['temperature']
+
 
     def contrastive_loss(self, y_true, y_pred):
         '''Contrastive loss from Hadsell-et-al.'06
@@ -221,21 +222,35 @@ class trainer:
         '''
         square_pred = K.square(y_pred)
         margin_square = K.square(K.maximum(self.margin - y_pred, 0))
-        return K.mean(y_true * square_pred + (1 - y_true) * margin_square)
+        ret = K.mean(y_true * square_pred + (1 - y_true) * margin_square)
+        print(ret, flush=True)
+        return ret
+
+    def simclr_loss(self, y_true, y_pred):
+        '''SimCLR loss from Chen-et-al.'20
+        http://arxiv.org/abs/2002.05709
+        '''
+        print("\nshape:\n", y_pred.shape, flush=True)
+        return add_contrastive_loss(y_pred, temperature=self.temperature)[0]
+        total_loss=0
+        #print((y_pred.shape.as_list())[0])
+        for i in range(y_pred.shape.as_list()[0]):
+            total_loss += self.loss_ij(y_pred, i, 0) + self.loss_ij(y_pred, i, 1)
+        return total_loss/len(y_pred)
+
+    def loss_ij(self, y_pred, i, pair):
+        numerator = np.exp(self.cosine_sim(y_pred[i][pair], y_pred[i][1-pair]) / self.temperature)
+        denom = 0
+        for k in range(2*len(y_pred)):
+            if not int(k/2) == i:
+                denom += np.exp(self.cosine_sim(y_pred[i][pair], y_pred[int(k/2)][k%2]) / self.temperature)
+        return -np.log(numerator / denom)
 
 
-def main():
-    outer = False;
-    if len(sys.argv) > 2:
-        print("Usage: ./train_model.py <outer? (0/1)>")
-    elif len(sys.argv) == 2:
-        outer = bool(sys.argv[1])
+    def cosine_sim(self, u, v):
+        return np.dot(u,v) / np.linalg.norm(u) * np.linalg.norm(v)
 
-    if outer:
-        outer_model("contrastive_cnn", 8).train()
 
-if __name__ == "__main__":
-    main()
 
 # trainer(simple_lstm(), "first_runs", 1, date="13-10-19").train()
 # trainer(simpleNN(), "dropout_onehot", 5, date="12-10-19").train()
@@ -247,7 +262,7 @@ if __name__ == "__main__":
 # trainer(contrastive_bilstm(), "fixing_error", 2, "2-18-20").train()
 # trainer(contrastive_bilstm_v2(), "fixing_non_siamese_dense", 5, "5-12-20").train()
 # trainer(multi_attention_bilstm(), "fixing_non_siamese_dense", 5, "5-12-20").train()
-#trainer(contrastive_cnn(), "logan_test", 8, "5-29-20").train()
+trainer(contrastive_cnn(), "logan_test", 8, "5-29-20").train()
 #trainer(dilated_conv_by_line(), "higher_learning_rate", 2, "6-4-20").train()
 #trainer(dilated_conv_by_line(), "more_epochs", 3, "6-5-20").train()
 # trainer(contrastive_by_line_cnn(), "adding_embedding", 5, "5-19-20").train()
