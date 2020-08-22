@@ -1,9 +1,10 @@
 {
   "optimizer": ["adam"],
-  "loss": ["contrastive"],
+  "loss": ["simclr"],
   "lr": [0.00001],
   "decay": [0.0000025],
-  "margin": [1],
+  "temperature": [0.5],
+  "margin":[1],
   "epochs": [4],
   "batch_size": [64],
   "binary_encoding": [false],

@@ -56,15 +56,15 @@ class SimCLRDataset:
 
     def create_dataset(self, language, split):
 
-        def encode_one_hot(files):
+        def encode_one_hot(files, label):
             files["input_1"] = self.encode_to_one_hot(files["input_1"])
             files["input_2"] = self.encode_to_one_hot(files["input_2"])
-            return files
+            return files, label
 
-        def set_shape(files):
+        def set_shape(files, label):
             files["input_1"].set_shape((self.max_code_length + 2, self.len_encoding))
             files["input_2"].set_shape((self.max_code_length + 2, self.len_encoding))
-            return files
+            return files, label
 
         if split == 'train':
             num_samples = TRAIN_LEN
@@ -87,16 +87,17 @@ class SimCLRDataset:
 
         dataset = tf.data.Dataset.from_generator(
             pg.gen,
-            ({"input_1": tf.string, "input_2": tf.string},),
+            ({"input_1": tf.string, "input_2": tf.string}, tf.bool),
             output_shapes=({"input_1": tf.TensorShape([]),
-                            "input_2": tf.TensorShape([])},))
+                            "input_2": tf.TensorShape([])},
+                           tf.TensorShape([])))
 
         print("Data Generated.", flush=True)
 
 
         dataset = dataset.map(encode_one_hot)
 
-        dataset = dataset.map(set_shape, 120)
+        #dataset = dataset.map(set_shape)
 
         dataset = dataset.batch(self.batch_size)
         dataset = dataset.prefetch(tf.data.experimental.AUTOTUNE)

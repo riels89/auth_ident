@@ -14,6 +14,7 @@ def just_multi_authors(frame):
 class SimCLRGen:
     def __init__(self, dataframe, crop_length,
                  batch_size=64, samples_per_epoch=1000):
+        self.samples_per_epoch=samples_per_epoch
         self.crop_length = crop_length
         self.batch_size = batch_size
         self.num_batches = samples_per_epoch // self.batch_size
@@ -62,7 +63,7 @@ class SimCLRGen:
                     input_1[i] = self.random_crop(rand_pair[0], self.crop_length)
                     input_2[i] = self.random_crop(rand_pair[1], self.crop_length)
 
-            yield ({'input_1': input_1[index], 'input_2': input_2[index]},)
+            yield ({'input_1': input_1[index], 'input_2': input_2[index]}, 1)
             index = (index + 1) % self.batch_size
 
 

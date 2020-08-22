@@ -26,7 +26,7 @@ class contrastive_cnn():
     def __init__(self):
 
         self.name = "contrastive_cnn"
-        self.dataset_type = "split"
+        self.dataset_type = "simclr"
         self.input_embedding_size = 32
 
     def create_cnn(self, params, index):

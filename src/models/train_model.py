@@ -19,6 +19,7 @@ from src.preprocessing import load_data
 from src.preprocessing.combined_dataset import combined_dataset
 from src.preprocessing.split_dataset import split_dataset
 from src.preprocessing.by_line_dataset import by_line_dataset
+from src.data_processing_expt.simclr_dataset import SimCLRDataset
 from split_cnn import split_cnn
 from largeNN import largeNN
 from split_NN import split_NN
@@ -36,6 +37,7 @@ from contrastive_1D_to_2D import contrastive_1D_to_2D
 from dilated_conv_by_line import dilated_conv_by_line
 from src import TRAIN_LEN, VAL_LEN, SL
 from shutil import copy
+from simclr.objective import add_contrastive_loss
 
 
 class trainer:
@@ -170,6 +172,11 @@ class trainer:
                                     batch_size=self.params[index]['batch_size'],
                                     binary_encoding=self.params[index]['binary_encoding'],
                                     language=self.params[index].get('language'))
+        elif dataset_type == "simclr":
+            dataset = SimCLRDataset(max_code_length=self.params[index]["max_code_length"],
+                                    batch_size=self.params[index]['batch_size'],
+                                    binary_encoding=self.params[index]['binary_encoding'],
+                                    language=self.params[index].get('language'))
         elif dataset_type == 'by_line':
             if self.params[index]['loss'] == 'contrastive':
                 dataset = by_line_dataset(max_lines=self.params[index]["max_lines"],
@@ -203,6 +210,11 @@ class trainer:
             if 'margin' in self.params[index]:
                 self.margin = self.params[index]['margin']
 
+        if self.params[index]['loss'] == 'simclr':
+            self.params[index]['loss'] = self.simclr_loss
+            if 'temperature' in self.params[index]:
+                self.temperature = self.params[index]['temperature']
+
 
     def contrastive_loss(self, y_true, y_pred):
         '''Contrastive loss from Hadsell-et-al.'06
@@ -210,8 +222,32 @@ class trainer:
         '''
         square_pred = K.square(y_pred)
         margin_square = K.square(K.maximum(self.margin - y_pred, 0))
-        return K.mean(y_true * square_pred + (1 - y_true) * margin_square)
+        ret = K.mean(y_true * square_pred + (1 - y_true) * margin_square)
+        print(ret, flush=True)
+        return ret
 
+    def simclr_loss(self, y_true, y_pred):
+        '''SimCLR loss from Chen-et-al.'20
+        http://arxiv.org/abs/2002.05709
+        '''
+        return add_contrastive_loss(y_pred, temperature=self.temperature)[0]
+        total_loss=0
+        #print((y_pred.shape.as_list())[0])
+        for i in range(y_pred.shape.as_list()[0]):
+            total_loss += self.loss_ij(y_pred, i, 0) + self.loss_ij(y_pred, i, 1)
+        return total_loss/len(y_pred)
+
+    def loss_ij(self, y_pred, i, pair):
+        numerator = np.exp(self.cosine_sim(y_pred[i][pair], y_pred[i][1-pair]) / self.temperature)
+        denom = 0
+        for k in range(2*len(y_pred)):
+            if not int(k/2) == i:
+                denom += np.exp(self.cosine_sim(y_pred[i][pair], y_pred[int(k/2)][k%2]) / self.temperature)
+        return -np.log(numerator / denom)
+
+
+    def cosine_sim(self, u, v):
+        return np.dot(u,v) / np.linalg.norm(u) * np.linalg.norm(v)
 
 
 
@@ -225,7 +261,7 @@ class trainer:
 # trainer(contrastive_bilstm(), "fixing_error", 2, "2-18-20").train()
 # trainer(contrastive_bilstm_v2(), "fixing_non_siamese_dense", 5, "5-12-20").train()
 # trainer(multi_attention_bilstm(), "fixing_non_siamese_dense", 5, "5-12-20").train()
-# trainer(contrastive_cnn(), "logan_test", 8, "5-29-20").train()
+trainer(contrastive_cnn(), "logan_test", 8, "5-29-20").train()
 #trainer(dilated_conv_by_line(), "higher_learning_rate", 2, "6-4-20").train()
 #trainer(dilated_conv_by_line(), "more_epochs", 3, "6-5-20").train()
 # trainer(contrastive_by_line_cnn(), "adding_embedding", 5, "5-19-20").train()
