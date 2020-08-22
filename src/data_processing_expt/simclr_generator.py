@@ -45,7 +45,7 @@ class SimCLRGen:
 
         """
         index = 0 # index into the current batch
-        for _ in range(2*self.samples_per_epoch):
+        for _ in range(self.samples_per_epoch):
             if index == 0:
                 # build the entire batch...
                 rand_auth = self.rng.choice(self.authors, self.batch_size,

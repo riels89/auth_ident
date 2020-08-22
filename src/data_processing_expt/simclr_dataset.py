@@ -52,9 +52,23 @@ class SimCLRDataset:
 
         return encoding
 
+    def encode_to_binary(self, code_to_embed):
+        reshaped = tf.strings.unicode_split(code_to_embed, 'UTF-8')
+        encoding = tf.cast(self.table.lookup(reshaped) + 1, tf.uint8)
+        unpacked = tf.reshape(tf.math.floormod(tf.cast(encoding[:, None] // self.bits, tf.int32), 2),
+                              shape=(-1, self.binary_encoding_len))
+
+        code_length = tf.shape(unpacked)[0]
+        padding = [[0, self.max_code_length - code_length], [0, 0]]
+        encoding = tf.pad(unpacked, padding, 'CONSTANT', constant_values=1)
 
 
     def create_dataset(self, language, split):
+
+        def encode_binary(files, label):
+            files["input_1"] = self.encode_to_binary(files["input_1"])
+            files["input_2"] = self.encode_to_binary(files["input_2"])
+            return files, label
 
         def encode_one_hot(files, label):
             files["input_1"] = self.encode_to_one_hot(files["input_1"])
@@ -94,14 +108,24 @@ class SimCLRDataset:
 
         print("Data Generated.", flush=True)
 
+        dataset = dataset.repeat()
 
-        dataset = dataset.map(encode_one_hot)
+        if self.binary_encoding:
+            dataset = dataset.map(encode_binary)
+        else:
+            dataset = dataset.map(encode_one_hot)
 
         #dataset = dataset.map(set_shape)
 
+        if self.flip_labels:
+            print("ERROR: Flip Labels not supported: split_dataset.create_dataset")
+            exit(1)
+            
+        dataset = dataset.map(set_shape, 120)
+
         dataset = dataset.batch(self.batch_size)
         dataset = dataset.prefetch(tf.data.experimental.AUTOTUNE)
-        dataset.repeat()
+
 
         return dataset
 

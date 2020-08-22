@@ -108,9 +108,6 @@ class split_dataset:
 
 
         print("Generating Data...", flush=True)
-        #data = np.array(list(pg.gen()))
-        #print("Data Generated.\nLoading Data...", flush=True)
-        #dataset = tf.data.Dataset.from(({"input_1": data[:, 0], "input_2": data[:, 1]}, data[:,2].astype(int)))
         dataset = tf.data.Dataset.from_generator(
             pg.gen,
             ({"input_1": tf.string, "input_2": tf.string}, tf.bool),
