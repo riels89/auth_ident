@@ -230,6 +230,7 @@ class trainer:
         '''SimCLR loss from Chen-et-al.'20
         http://arxiv.org/abs/2002.05709
         '''
+        print("\nshape:\n", y_pred.shape, flush=True)
         return add_contrastive_loss(y_pred, temperature=self.temperature)[0]
         total_loss=0
         #print((y_pred.shape.as_list())[0])
