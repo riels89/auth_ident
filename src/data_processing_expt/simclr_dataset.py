@@ -117,10 +117,6 @@ class SimCLRDataset:
 
         #dataset = dataset.map(set_shape)
 
-        if self.flip_labels:
-            print("ERROR: Flip Labels not supported: split_dataset.create_dataset")
-            exit(1)
-            
         dataset = dataset.map(set_shape, 120)
 
         dataset = dataset.batch(self.batch_size)
