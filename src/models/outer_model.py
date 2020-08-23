@@ -134,7 +134,7 @@ class outer_model:
         newest_model = max(paths, key=os.path.getctime)
         encoder.load_weights(newest_model)
 
-        self.params[0]["language"] = params[comb_num]["language"]
+        self.params[0]["language"] = params[comb_num].get("language")
         self.params[0]["binary_encoding"] = params[comb_num]["binary_encoding"]
         self.params[0]["max_code_length"] = params[comb_num]["max_code_length"]
         self.params[0]["embedding_size"] = params[comb_num]["embedding_size"]

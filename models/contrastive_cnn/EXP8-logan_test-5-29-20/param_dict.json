@@ -10,5 +10,6 @@
   "binary_encoding": [false],
   "max_code_length": [1200],
   "embedding_size": [256],
+  "language": {"python"].
   "BN": [false]
 }
