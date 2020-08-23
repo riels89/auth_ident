@@ -234,7 +234,7 @@ class trainer:
         #return add_contrastive_loss(y_pred, temperature=self.temperature)[0]
         total_loss=0
         #print((y_pred.shape.as_list())[0])
-        for i in range(y_pred.shape.as_list()[0]):
+        for i in range(y_pred.shape.as_list().as_int()):
             total_loss += self.loss_ij(y_pred, i, 0) + self.loss_ij(y_pred, i, 1)
         return total_loss/len(y_pred)
 
