@@ -116,7 +116,7 @@ class outer_model:
         params = json.load(open(params_path))
         params = generate_param_grid(params)
         self.map_dataset(model.dataset_type, comb_num, params)
-        map_params(params)
+        self.map_params(params)
         # print(str(params))
 
         # Create inner model
@@ -174,12 +174,12 @@ class outer_model:
             self.params[index]['optimizer'] = keras.optimizers.Adam(**kwargs)
 
         if self.params[index]['loss'] == 'contrastive':
-            self.params[index]['loss'] = contrastive_loss
+            self.params[index]['loss'] = self.contrastive_loss
             if 'margin' in self.params[index]:
                 self.margin = self.params[index]['margin']
 
         if self.params[index]['loss'] == 'simclr':
-            self.params[index]['loss'] = simclr_loss
+            self.params[index]['loss'] = self.simclr_loss
             if 'temperature' in self.params[index]:
                 self.temperature = self.params[index]['temperature']
 
@@ -197,32 +197,6 @@ class outer_model:
         square_pred = K.square(y_pred)
         margin_square = K.square(K.maximum(self.margin - y_pred, 0))
         return K.mean(y_true * square_pred + (1 - y_true) * margin_square)
-
-
-def map_params(params):
-    index = 0
-    if params[index]['optimizer'] == 'adam':
-        kwargs = {}
-        if 'lr' in params[index]:
-            kwargs['lr'] = params[index]['lr']
-        if 'clipvalue' in params[index]:
-            kwargs['clipvalue'] = params[index]['clipvalue']
-        elif 'clipnorm' in params[index]:
-            kwargs['clipnorm'] = params[index]['clipnorm']
-        if 'decay' in params[index]:
-            kwargs['decay'] = params[index]['decay']
-        params[index]['optimizer'] = keras.optimizers.Adam(**kwargs)
-
-    if params[index]['loss'] == 'contrastive':
-        params[index]['loss'] = contrastive_loss
-        if 'margin' in params[index]:
-            margin = params[index]['margin']
-
-    if params[index]['loss'] == 'simclr':
-        params[index]['loss'] = simclr_loss
-        if 'temperature' in params[index]:
-            temperature = params[index]['temperature']
-
 
 def generate_param_grid(params):
     return [dict(zip(params.keys(), values)) for values in product(*params.values())]
