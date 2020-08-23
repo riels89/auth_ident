@@ -159,29 +159,29 @@ class outer_model:
             exit(1)
         params[index]['dataset'] = dataset
 
-    def map_params(self):
+    def map_params(self, params):
         index = 0
-        if self.params[index]['optimizer'] == 'adam':
+        if params[index]['optimizer'] == 'adam':
             kwargs = {}
-            if 'lr' in self.params[index]:
-                kwargs['lr'] = self.params[index]['lr']
-            if 'clipvalue' in self.params[index]:
-                kwargs['clipvalue'] = self.params[index]['clipvalue']
-            elif 'clipnorm' in self.params[index]:
-                kwargs['clipnorm'] = self.params[index]['clipnorm']
-            if 'decay' in self.params[index]:
-                kwargs['decay'] = self.params[index]['decay']
-            self.params[index]['optimizer'] = keras.optimizers.Adam(**kwargs)
+            if 'lr' in params[index]:
+                kwargs['lr'] = params[index]['lr']
+            if 'clipvalue' in params[index]:
+                kwargs['clipvalue'] = params[index]['clipvalue']
+            elif 'clipnorm' in params[index]:
+                kwargs['clipnorm'] = params[index]['clipnorm']
+            if 'decay' in params[index]:
+                kwargs['decay'] = params[index]['decay']
+            params[index]['optimizer'] = keras.optimizers.Adam(**kwargs)
 
-        if self.params[index]['loss'] == 'contrastive':
-            self.params[index]['loss'] = self.contrastive_loss
-            if 'margin' in self.params[index]:
-                self.margin = self.params[index]['margin']
+        if params[index]['loss'] == 'contrastive':
+            params[index]['loss'] = self.contrastive_loss
+            if 'margin' in params[index]:
+                self.margin = params[index]['margin']
 
-        if self.params[index]['loss'] == 'simclr':
-            self.params[index]['loss'] = self.simclr_loss
-            if 'temperature' in self.params[index]:
-                self.temperature = self.params[index]['temperature']
+        if params[index]['loss'] == 'simclr':
+            params[index]['loss'] = self.simclr_loss
+            if 'temperature' in params[index]:
+                self.temperature = params[index]['temperature']
 
     def simclr_loss(self, y_true, y_pred):
         '''SimCLR loss from Chen-et-al.'20
