@@ -150,10 +150,10 @@ class outer_model:
                                     binary_encoding=params[index]['binary_encoding'],
                                     language=params[index].get('language'))
         elif dataset_type == "simclr":
-            dataset = SimCLRDataset(max_code_length=self.params[index]["max_code_length"],
-                                    batch_size=self.params[index]['batch_size'],
-                                    binary_encoding=self.params[index]['binary_encoding'],
-                                    language=self.params[index].get('language'))
+            dataset = SimCLRDataset(max_code_length=params[index]["max_code_length"],
+                                    batch_size=params[index]['batch_size'],
+                                    binary_encoding=params[index]['binary_encoding'],
+                                    language=params[index].get('language'))
         else :
             print("Error: Only split and simclr datasets are supported outer_model.map_dataset")
             exit(1)
