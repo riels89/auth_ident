@@ -73,12 +73,9 @@ class SimCLRLoss():
     
         pos = np.zeros((2 * b, 2 * b))
 
-        index_l = tf.transpose(tf.concat([tf.range(b, 2 * b)[np.newaxis], tf.range(b)[np.newaxis]], axis=0))
-        pos_l = tf.gather_nd(sim, index_l)
-
+        pos_l = tf.gather_nd(sim, self.index_l)
         # TODO: We don't need to compute the righ side separately do we?
-        index_r = tf.transpose(tf.concat([tf.range(b)[np.newaxis], tf.range(b, b * 2)[np.newaxis]], axis=0))
-        pos_r = tf.gather_nd(sim, index_r)
+        pos_r = tf.gather_nd(sim, self.index_r)
 
         pos = tf.concat([pos_l, pos_r], axis=0)[:, np.newaxis]
         neg = tf.reshape(tf.boolean_mask(sim, curr_neg_mask), (2 * b, -1))
