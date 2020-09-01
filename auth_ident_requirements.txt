@@ -1,0 +1,18 @@
+### auth_ident_requirements.txt ###
+##
+tensorboard >= 1.14.0
+tensorflow >= 2.2.0
+tensorflow-estimator >= 2.2.0
+tensorflow-gpu >= 1.14.0
+Keras >= 2.3.1
+Keras-Applications 
+keras-multi-head 
+Keras-Preprocessing 
+keras-self-attention
+matplotlib
+numpy >= 1.16.6
+numpydoc >= 0.7.0
+pandas >= 0.24.2
+bs4
+tables
+sklearn

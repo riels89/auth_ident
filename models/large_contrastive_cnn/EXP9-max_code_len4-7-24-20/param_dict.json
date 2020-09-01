@@ -1,0 +1,14 @@
+{
+  "optimizer": ["adam"],
+  "loss": ["contrastive"],
+  "lr": [0.00001, 0.0005, 0.0001],
+  "decay": [0.0000025],
+  "margin": [1],
+  "epochs": [30],
+  "batch_size": [64, 128, 258],
+  "binary_encoding": [false],
+  "max_code_length": [1800],
+  "embedding_size": [256],
+  "BN": [false],
+  "language":["python"]
+}
