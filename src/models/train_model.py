@@ -38,6 +38,7 @@ from dilated_conv_by_line import dilated_conv_by_line
 from src import TRAIN_LEN, VAL_LEN, SL
 from shutil import copy
 from simclr.objective import add_contrastive_loss
+from simclr_loss import SimCLRLoss
 
 
 class trainer:
@@ -103,7 +104,7 @@ class trainer:
         curr_log_dir = self.logdir + SL + "combination-" + str(index)
         logger.info("Current log dir: " + curr_log_dir)
 
-        training_dataset, val_dataset = self.map_dataset(self.model.dataset_type, index)
+        training_dataset, val_dataset, test_dataset = self.map_dataset(self.model.dataset_type, index)
 
         self.map_params(index)
 
@@ -211,9 +212,10 @@ class trainer:
                 self.margin = self.params[index]['margin']
 
         if self.params[index]['loss'] == 'simclr':
-            self.params[index]['loss'] = self.simclr_loss
-            if 'temperature' in self.params[index]:
-                self.temperature = self.params[index]['temperature']
+            # Will throw error if temp not specified, this is wanted
+            self.params[index]['loss'] = SimCLRLoss(
+                self.params[index]['batch_size'], 
+                temperature=self.params['temperature']) 
 
 
     def contrastive_loss(self, y_true, y_pred):
@@ -225,32 +227,6 @@ class trainer:
         ret = K.mean(y_true * square_pred + (1 - y_true) * margin_square)
         print("\nin contrastive\n", y_pred.shape, ret.shape, flush=True)
         return ret
-
-    def simclr_loss(self, y_true, y_pred):
-        '''SimCLR loss from Chen-et-al.'20
-        http://arxiv.org/abs/2002.05709
-        '''
-        #print("\nshape:\n", y_pred.shape, flush=True)
-        #return add_contrastive_loss(y_pred, temperature=self.temperature)[0]
-        total_loss=0
-        #print((y_pred.shape.as_list())[0])
-        for i in range(y_pred.shape.as_list()[0]):
-            total_loss += self.loss_ij(y_pred, i, 0) + self.loss_ij(y_pred, i, 1)
-        return total_loss/len(y_pred)
-
-    def loss_ij(self, y_pred, i, pair):
-        numerator = np.exp(self.cosine_sim(y_pred[i][pair], y_pred[i][1-pair]) / self.temperature)
-        denom = 0
-        for k in range(2*len(y_pred)):
-            if not int(k/2) == i:
-                denom += np.exp(self.cosine_sim(y_pred[i][pair], y_pred[int(k/2)][k%2]) / self.temperature)
-        return -np.log(numerator / denom)
-
-
-    def cosine_sim(self, u, v):
-        return np.dot(u,v) / np.linalg.norm(u) * np.linalg.norm(v)
-
-
 
 # trainer(simple_lstm(), "first_runs", 1, date="13-10-19").train()
 # trainer(simpleNN(), "dropout_onehot", 5, date="12-10-19").train()

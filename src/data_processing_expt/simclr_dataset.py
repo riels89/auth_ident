@@ -1,5 +1,4 @@
 import pandas as pd
-import numpy as np
 import os
 import tensorflow as tf
 
@@ -90,8 +89,8 @@ class SimCLRDataset:
             print("ERROR: Invalid split type in split_dataset.create_dataset: " + split)
             exit(1)
 
-        file="data/loaded/" + language + "_" + split + ".h5"
-        df = pd.read_hdf(file)
+        f = "data/loaded/" + language + "_" + split + ".h5"
+        df = pd.read_hdf(f)
         pg = simclr_generator.SimCLRGen(df, crop_length=self.max_code_length,
                                         batch_size=self.batch_size,
                                         samples_per_epoch=num_samples)
