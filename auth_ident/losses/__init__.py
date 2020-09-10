@@ -1,0 +1,2 @@
+from auth_ident.losses.simclr_loss import SimCLRLoss
+from auth_ident.losses.contrastive_margin_loss import ContrastiveMarginLoss
