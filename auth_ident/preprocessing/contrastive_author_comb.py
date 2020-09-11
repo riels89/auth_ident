@@ -4,7 +4,7 @@ import itertools
 from scipy.special import comb 
 
 
-class contrastive_author_comb():
+class ContrastiveAuthorComb():
     """Generates pairs of authors. Author pairs will be pairs of the same author,
     based on the match rate percentage. The rest of the time Author pairs will be
     of different authors."""

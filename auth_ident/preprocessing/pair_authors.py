@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import itertools
 
-class pair_authors():
+class PairAuthors():
     """Generates pairs of authors. Author pairs will be pairs of the same author,
     based on the match rate percentage. The rest of the time Author pairs will be
     of different authors."""

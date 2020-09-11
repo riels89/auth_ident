@@ -1,16 +1,11 @@
-import sys
-import os
 import tensorflow.keras as keras
 from tensorflow.keras import layers
-from src.preprocessing import load_data
 from tensorflow.keras.layers import Dense, Dropout
 from tensorflow.keras.layers import Embedding
 from tensorflow.keras.layers import LSTM
 
-sys.path.append(os.path.join(os.path.dirname(__file__), '../..'))
 
-
-class split_lstm():
+class SplitLSTM():
 
     def __init__(self):
 

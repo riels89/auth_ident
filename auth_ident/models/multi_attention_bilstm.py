@@ -1,19 +1,13 @@
-import sys
-import os
 import tensorflow.keras as keras
 from tensorflow.keras import backend as K
-from src.preprocessing import load_data
 from tensorflow.keras.layers import Dense, Dropout
 from tensorflow.keras.layers import Embedding
 from tensorflow.keras.layers import LSTM, Bidirectional, multiply, Lambda, Flatten
 from tensorflow.keras.losses import cosine_similarity
 from tensorflow.keras import backend
-import tensorflow as tf
 from tensorflow.keras import layers
-import numpy as np
 from keras_multi_head import MultiHeadAttention
 
-sys.path.append(os.path.join(os.path.dirname(__file__), '../..'))
 
 def euclidean_distance(vects):
     x, y = vects
@@ -25,7 +19,7 @@ def eucl_dist_output_shape(shapes):
     shape1, shape2 = shapes
     return [shape1[0], 1]
 
-class multi_attention_bilstm():
+class MultiHeadAttentionBiLSTM():
 
     def __init__(self):
 

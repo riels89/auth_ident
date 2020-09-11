@@ -1,0 +1,158 @@
+import os
+import sys
+import tensorflow.keras as keras
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.svm import SVC
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.model_selection import cross_val_score, train_test_split
+from itertools import product
+import json
+import glob
+from datetime import datetime
+import numpy as np
+import tensorflow as tf
+
+from tensorflow.keras import backend as K
+from auth_ident import GenericExecute
+from auth_ident import param_mapping
+import cPickle
+import pandas as pd
+
+
+class TrainSecondaryClassifier(GenericExecute):
+
+    def __init__(self):
+        super.__init__()
+
+        #TODO: Validate using train2 and val2 to lock params
+
+        #train on train3
+        #test on test3
+        #train3_labels = pd.factorize(train3['author'])[0]
+        #test3_labels = pd.factorize(test3['author'])[0]
+        #outer_model = outer_model.fit(train3, train3_labels)
+        #outer_model.set_params(outer_model_params)
+        #accuracy = outer_model.score(test3, test3_labels)
+        #print("Closed set problem accuracy: " + accuracy)
+
+    def get_embeddings(self, params, dataset):
+        contrastive_model = param_mapping(params)()
+        encoder = self.load_encoder(contrastive_model, params["encoder_exp"])
+
+        layer_name = 'output_embedding'
+        embedding_layer = keras.Model(inputs=encoder.input,
+                                      outputs=encoder.get_layer(layer_name).output)
+        embedding_layer.summary()
+
+        #self.params[0]["max_code_length"]=10
+        #split test1 -> train3 + test3
+        #gen = closed_dataset(crop_length=params[0]["max_code_len"], k_cross_val=params[0]["k_cross_val"], language=params[0]["language"])
+        file_param = "val_data" if self.mode == "train" else "test_data"
+        gen = dataset(crop_length=params["max_code_length"],
+                      k_cross_val=params["k_cross_val"],
+                      data_file=params[file_param])
+        train_data, train_labels, test_data, test_labels = gen.get_datasets()
+
+        train_data = embedding_layer.evaluate(
+            train_data, 
+            batch_size=params["batch_size"])
+        test_data = embedding_layer.evaluate(
+            test_data,
+            batch_size=params["batch_size"])
+
+        return train_data, train_labels, test_data, test_labels
+
+    def execute_one(self, contrastive_params, combination, logger):
+
+        self.parameter_metrics
+        param_mapping.map_params(contrastive_params)
+
+        for params in self.secondary_params:
+
+            secondary_logdir = os.path.join(self.logdir,
+                                            "secondary_classifier",
+                                            "combination-" + combination)
+            self.model = param_mapping.map_model(params)()
+
+            train_data, train_labels = self.get_embeddings(contrastive_params, self.model.dataset)
+
+            val_score = self.model.train(train_data, train_labels)
+
+            with open(os.path.join(secondary_logdir, self.model.name + ".pkl"),
+                      'wb') as f:
+                cPickle.dump(self.model, f)
+
+            self.save_metrics()
+            
+            return val_score
+
+    def load_hyperparameter_matrix(self):
+
+        hyperparameter_matrix_path = os.path.join(self.logdir, "secondary_hyperparameter_matrix.csv")
+        if os.path.isfile(hyperparameter_matrix_path):
+            parameter_metrics = pd.read_csv(hyperparameter_matrix_path)
+        else:
+            parameter_metrics = None
+
+        return parameter_metrics
+
+    def save_metrics(self, history, params, combination, curr_log_dir):
+
+        model_params = params['model_params'].copy()
+        model_params['combination'] = combination
+
+        if self.parameter_metrics is None:
+            self.parameter_metrics = pd.DataFrame(model_params)
+            self.parameter_metrics["val_accuracy"] = np.nan
+            self.parameter_metrics["val_loss"] = np.nan
+
+        self.parameter_metrics.loc[combination, 'val_loss'] = history['val_loss'][0]
+        self.parameter_metrics.loc[combination, 'val_accuracy'] = history['val_accuracy'][0]
+
+    def train_and_test(self):
+        print("train_and_test", flush=True)
+        test_proportion = 1/self.params[0]["k_cross_val"]
+        if test_proportion < .1:
+            test_proportion = .1
+        X_train, X_test, y_train, y_test = train_test_split(self.X2, self.y2, test_size=test_proportion,
+                                                            stratify=self.y2)
+        #TODO Sanity check
+        for i in y_test:
+            assert i in y_train
+        num_auth=len(np.unique(np.array(y_test)))
+        print("Num_file in test_set: ", len(y_test))
+        print("Num_auth in test set: ", num_auth)
+
+        self.outer_model.fit(X_train, y_train)
+        return self.outer_model.score(X_test, y_test)
+
+    def load_encoder(self, model, params, combinations):
+
+        # Create inner model
+        encoder = model.create_model(params, combinations, self.root_logger)
+
+        # Load most recent checkpoint
+        checkpoint_dir = os.path.join(self.logdir, "/checkpoints")
+        latest = tf.train.latest_checkpoint(checkpoint_dir)
+        encoder.load_weights(latest)
+
+        return encoder
+
+    def make_arg_parser(self):
+        super.make_arg_parser()
+        self.parser.add_argument("mode")
+
+    def get_args(self):
+
+        exp_type, exp, combination = super.get_args()
+
+        self.mode = self.args["mode"]
+
+        return exp_type, exp, combination
+
+if __name__ == "__main__":
+    model = outer_model("simclr_test", 2, "8-22-20")
+    score = model.train_and_val()
+    print("Train val scores: ", score)
+    test_acc = model.train_and_test()
+    print("Test accuracy: ", test_acc)

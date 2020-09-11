@@ -1,4 +1,4 @@
-from simclr_loss import SimCLRLoss
+from auth_ident.models.simclr_loss import SimCLRLoss
 import tensorflow as tf
 import math
 

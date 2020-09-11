@@ -1,16 +1,11 @@
-import sys
-import os
 import tensorflow.keras as keras
 from tensorflow.keras import layers
-from src.preprocessing import load_data
 from tensorflow.keras.layers import Dense, Dropout
 from tensorflow.keras.layers import Embedding
 from tensorflow.keras.layers import LSTM, Conv1D
 
-sys.path.append(os.path.join(os.path.dirname(__file__), '../..'))
 
-
-class cnn_lstm():
+class CNNLSTM():
 
     def __init__(self):
 

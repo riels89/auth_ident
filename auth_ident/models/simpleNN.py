@@ -1,17 +1,12 @@
-import sys
-import os
-sys.path.append(os.path.join(os.path.dirname(__file__),'../..'))
-
 import tensorflow.keras as keras
 from tensorflow.keras import layers
-from src.preprocessing import load_data
 
-class simpleNN():
+
+class SimpleNN():
 
     def __init__(self):
         self.name = "simpleNN"
         self.dataset_type = "combined"
-
 
     def create_model(self, params, index, logger):
 

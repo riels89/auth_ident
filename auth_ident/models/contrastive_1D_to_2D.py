@@ -1,14 +1,10 @@
-import sys
-import os
 import tensorflow.keras as keras
 from tensorflow.keras import layers
-from src.preprocessing import load_data
 from tensorflow.keras.layers import Dense, Dropout
 from tensorflow.keras.layers import Embedding, TimeDistributed
 from tensorflow.keras.layers import LSTM, Conv1D, Flatten, BatchNormalization, Lambda, Conv2D, Reshape, MaxPool1D
 from tensorflow.keras import backend as K
 
-sys.path.append(os.path.join(os.path.dirname(__file__), '../..'))
 
 def euclidean_distance(vects):
     x, y = vects
@@ -21,7 +17,7 @@ def eucl_dist_output_shape(shapes):
     return [shape1[0], 1]
 
 
-class contrastive_1D_to_2D():
+class Contrastive1DTo2D():
 
     def __init__(self):
 

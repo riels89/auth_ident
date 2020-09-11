@@ -1,16 +1,11 @@
-import sys
-import os
-sys.path.append(os.path.join(os.path.dirname(__file__), '../..'))
-
 import tensorflow.keras as keras
 from tensorflow.keras import layers
-from src.preprocessing import load_data
 from tensorflow.keras.layers import Dense, Dropout
 from tensorflow.keras.layers import Embedding
 from tensorflow.keras.layers import LSTM
 
 
-class simple_lstm():
+class SimpleLSTM():
 
     def __init__(self):
 

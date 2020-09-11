@@ -1,14 +1,10 @@
-import sys
-import os
 import tensorflow.keras as keras
 from tensorflow.keras import layers
-from src.preprocessing import load_data
 from tensorflow.keras.layers import Dense, Dropout
 from tensorflow.keras.layers import Embedding, TimeDistributed
 from tensorflow.keras.layers import LSTM, Conv1D, Flatten, BatchNormalization, Lambda, Conv2D, Reshape
 from tensorflow.keras import backend as K
 
-sys.path.append(os.path.join(os.path.dirname(__file__), '../..'))
 
 def euclidean_distance(vects):
     x, y = vects
@@ -21,11 +17,11 @@ def eucl_dist_output_shape(shapes):
     return [shape1[0], 1]
 
 
-class dilated_conv_by_line():
+class DilatedCNNByLine():
 
     def __init__(self):
 
-        self.name = "dilated_conv_by_line"
+        self.name = "dialated_conv_by_line"
         self.dataset_type = "by_line"
         self.input_embedding_size = 32
 
@@ -44,11 +40,11 @@ class dilated_conv_by_line():
         conv = Conv1D(128, 10, strides=1, padding="same", activation="relu", name='conv_2')(conv)
         if params[index]['BN']:
             conv = BatchNormalization()(conv)
-        conv = Conv1D(128, 4, strides=1, padding="same", activation="relu", dilation_rate=2, name='conv_3')(conv)
+        conv = Conv1D(128, 4, strides=2, padding="same", activation="relu", dialated=[2], name='conv_3')(conv)
         if params[index]['BN']:
             conv = BatchNormalization()(conv)
-        conv = Conv1D(128, 2, strides=1, padding="same", activation="relu", dilation_rate=4, name='conv_4')(conv)
-        conv = Conv1D(128, 2, strides=1, padding="same", activation="relu", dilation_rate=8, name='conv_5')(conv)
+        conv = Conv1D(128, 2, strides=1, padding="same", activation="relu", dialated=[4], name='conv_4')(conv)
+        conv = Conv1D(128, 2, strides=1, padding="same", activation="relu", dialated=[8], name='conv_5')(conv)
 
         conv = Flatten()(conv)
 

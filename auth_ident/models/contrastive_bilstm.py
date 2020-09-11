@@ -1,8 +1,5 @@
-import sys
-import os
 import tensorflow.keras as keras
 from tensorflow.keras import layers
-from src.preprocessing import load_data
 from tensorflow.keras.layers import Dense, Dropout
 from tensorflow.keras.layers import Embedding
 from tensorflow.keras.layers import LSTM, Bidirectional, multiply
@@ -10,10 +7,8 @@ from tensorflow.keras.losses import cosine_similarity
 from tensorflow.keras import backend
 import tensorflow as tf
 
-sys.path.append(os.path.join(os.path.dirname(__file__), '../..'))
 
-
-class contrastive_bilstm():
+class ContrastiveBiLSTM():
 
     def __init__(self):
 

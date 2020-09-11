@@ -2,22 +2,14 @@ import pandas as pd
 import numpy as np
 import os
 import tensorflow as tf
-import random
-import itertools
-import math
-
 from bs4 import UnicodeDammit
-import sys
-import os
-sys.path.append(os.path.join(os.path.dirname(__file__), '../..'))
-from src import TRAIN_LEN, SL
-from src.preprocessing.pair_authors import pair_authors
-# from src.preprocessing.contrastive_author_comb import pair_authors as contrastive_pair
-from src.preprocessing.contrastive_author_comb import contrastive_author_comb
+from auth_ident.preprocessing import PairAuthors
+from auth_ident.preprocessing import ContrastiveAuthorComb
 
 # max = 102400
 max_chars = 0
 counter = 0
+
 
 def make_csv(gcj_root="data/raw/gcj", new_csv="refrences/gcj.csv"):
     # ->contest_id/
@@ -50,9 +42,11 @@ def file_stats(file):
     print(counter)
     return file
 
+
 def tf_file_stats(file, username):
     tf.py_function(file_stats, [file], [tf.string])
     return file, username
+
 
 def load_paired_file_paths():
     train_pairs = np.load('data/paired_file_paths/train_pairs.npy', allow_pickle=True)
@@ -63,8 +57,9 @@ def load_paired_file_paths():
     test_labels = np.load('data/paired_file_paths/test_labels.npy', allow_pickle=True)
     return train_pairs, train_labels, val_pairs, val_labels, test_pairs, test_labels
 
+
 def create_and_save_dataset():
-    pa = pair_authors("refrences/gcj.csv")
+    pa = PairAuthors("refrences/gcj.csv")
     train_pairs, train_labels, val_pairs, val_labels, test_pairs, test_labels = pa.generate_pairs()
 
     np.save('data/paired_file_paths/train_pairs.npy', train_pairs, allow_pickle=True)
@@ -74,8 +69,9 @@ def create_and_save_dataset():
     np.save('data/paired_file_paths/test_pairs.npy', test_pairs, allow_pickle=True)
     np.save('data/paired_file_paths/test_labels.npy', test_labels, allow_pickle=True)
 
+
 def create_file_csv():
-    pa = contrastive_author_comb("refrences/gcj.csv")
+    pa = ContrastiveAuthorComb("refrences/gcj.csv")
     train_pairs, val_pairs, test_pairs = pa.generate_pairs()
     files = pd.read_csv("refrences/gcj.csv", keep_default_na=False)
     authors = list(set(files['username']))
@@ -95,8 +91,8 @@ def create_file_csv():
                 with open(pair_set[i][1], 'r', errors='surrogateescape') as file:
                     code = file.read()
                     files["file2"].append(code)
-                files["author1"].append(auth_to_idx[pair_set[i][0].split(SL)[4]])
-                files["author2"].append(auth_to_idx[pair_set[i][1].split(SL)[4]])
+                files["author1"].append(auth_to_idx[pair_set[i][0].split('/')[4]])
+                files["author2"].append(auth_to_idx[pair_set[i][1].split('/')[4]])
             except Exception as e:
                 print(e)
 

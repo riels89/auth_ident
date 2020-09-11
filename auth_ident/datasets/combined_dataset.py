@@ -1,18 +1,9 @@
-import pandas as pd
-import numpy as np
-import os
 import tensorflow as tf
-import random
-import itertools
-import math
+from auth_ident.preprocessing import PairAuthors
+from auth_ident.preprocessing import load_data
 
-import sys
-sys.path.append(os.path.join(os.path.dirname(__file__), '../..'))
-from src import TRAIN_LEN, SL
-from src.preprocessing.pair_authors import pair_authors
-from src.preprocessing import load_data
 
-class combined_dataset:
+class CombinedDataset:
 
     def __init__(self, max_code_length, batch_size, binary_encoding=False):
 

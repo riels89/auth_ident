@@ -1,22 +1,18 @@
 import pandas as pd
-import numpy as np
-import os
 import tensorflow as tf
-import random
-import itertools
-import math
 
-import sys
-sys.path.append(os.path.join(os.path.dirname(__file__), '../..'))
-from src import TRAIN_LEN, VAL_LEN, TEST_LEN, SL
-from src.preprocessing.pair_authors import pair_authors
-from src.preprocessing import load_data
-from src.data_processing_expt import pairs_generator
+from auth_ident.preprocessing import load_data
+from auth_ident.generators import PairGen
+import auth_ident
 
 
-class split_dataset:
-
-    def __init__(self, max_code_length, batch_size, binary_encoding=False, flip_labels=False, language=None):
+class SplitDataset:
+    def __init__(self,
+                 max_code_length,
+                 batch_size,
+                 binary_encoding=False,
+                 flip_labels=False,
+                 language=None):
         print("\nIn INIT\n", flush=True)
         chars_to_encode = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM\n\r\t " + r"1234567890-=!@#$%^&*()_+[]{}|;':\",./<>?"
         self.start = "<start>"
@@ -34,8 +30,12 @@ class split_dataset:
         if language is None:
             self.language = "python"
 
-        char_map = tf.lookup.KeyValueTensorInitializer(chars_to_encode, chars_index, key_dtype=tf.string, value_dtype=tf.int64)
-        self.table = tf.lookup.StaticVocabularyTable(char_map, num_oov_buckets=1)
+        char_map = tf.lookup.KeyValueTensorInitializer(chars_to_encode,
+                                                       chars_index,
+                                                       key_dtype=tf.string,
+                                                       value_dtype=tf.int64)
+        self.table = tf.lookup.StaticVocabularyTable(char_map,
+                                                     num_oov_buckets=1)
 
         self.max_code_length = max_code_length
         self.batch_size = batch_size
@@ -45,9 +45,14 @@ class split_dataset:
         self.flip_labels = flip_labels
 
     def encode_to_one_hot(self, code_to_embed):
-        reshaped = tf.concat([[self.start], tf.strings.unicode_split(code_to_embed, 'UTF-8'), [self.end]], axis=0)
+        reshaped = tf.concat(
+            [[self.start],
+             tf.strings.unicode_split(code_to_embed, 'UTF-8'), [self.end]],
+            axis=0)
         encoding = self.table.lookup(reshaped)
-        encoding = tf.reshape(tf.squeeze(tf.one_hot(encoding, self.len_encoding)), (-1, self.len_encoding))
+        encoding = tf.reshape(
+            tf.squeeze(tf.one_hot(encoding, self.len_encoding)),
+            (-1, self.len_encoding))
 
         code_length = tf.shape(encoding)[0]
         padding = [[0, self.max_code_length + 2 - code_length], [0, 0]]
@@ -58,8 +63,9 @@ class split_dataset:
     def encode_to_binary(self, code_to_embed):
         reshaped = tf.strings.unicode_split(code_to_embed, 'UTF-8')
         encoding = tf.cast(self.table.lookup(reshaped) + 1, tf.uint8)
-        unpacked = tf.reshape(tf.math.floormod(tf.cast(encoding[:, None] // self.bits, tf.int32), 2),
-                              shape=(-1, self.binary_encoding_len))
+        unpacked = tf.reshape(tf.math.floormod(
+            tf.cast(encoding[:, None] // self.bits, tf.int32), 2),
+            shape=(-1, self.binary_encoding_len))
 
         code_length = tf.shape(unpacked)[0]
         padding = [[0, self.max_code_length - code_length], [0, 0]]
@@ -75,7 +81,6 @@ class split_dataset:
         return files, label
 
     def create_dataset(self, language, split):
-
         def encode_binary(files, label):
             files["input_1"] = self.encode_to_binary(files["input_1"])
             files["input_2"] = self.encode_to_binary(files["input_2"])
@@ -87,33 +92,46 @@ class split_dataset:
             return files, label
 
         def set_shape(files, label):
-            files["input_1"].set_shape((self.max_code_length + 2, self.len_encoding))
-            files["input_2"].set_shape((self.max_code_length + 2, self.len_encoding))
+            files["input_1"].set_shape(
+                (self.max_code_length + 2, self.len_encoding))
+            files["input_2"].set_shape(
+                (self.max_code_length + 2, self.len_encoding))
             label = label
             return files, label
 
         if split == 'train':
-            num_samples = TRAIN_LEN
+            num_samples = auth_ident.TRAIN_LEN
         elif split == 'val':
-            num_samples = VAL_LEN
+            num_samples = auth_ident.VAL_LEN
         elif split == 'test':
-            num_samples = TEST_LEN
+            num_samples = auth_ident.TEST_LEN
         else:
-            print("ERROR: Invalid split type in split_dataset.create_dataset: " + split)
-            exit(1)
+            print(
+                "ERROR: Invalid split type in split_dataset.create_dataset: " +
+                split)
 
-        file="data/loaded/" + language + "_" + split + ".h5"
-        df = pd.read_hdf(file)
-        pg = pairs_generator.PairGen(df, crop_length=self.max_code_length, samples_per_epoch=num_samples)
-
+        f = "data/loaded/" + language + "_" + split + ".h5"
+        df = pd.read_hdf(f)
+        pg = PairGen(df,
+                     crop_length=self.max_code_length,
+                     samples_per_epoch=num_samples)
 
         print("Generating Data...", flush=True)
         dataset = tf.data.Dataset.from_generator(
-            pg.gen,
-            ({"input_1": tf.string, "input_2": tf.string}, tf.bool),
-            output_shapes=({"input_1": tf.TensorShape([]),
-                            "input_2": tf.TensorShape([])},
-                           tf.TensorShape([])))
+            pg.gen, 
+            ({
+                "input_1": tf.string,
+                "input_2": tf.string
+            }, tf.bool),
+            output_shapes=(
+                {
+                    "input_1":
+                    tf.TensorShape([]),
+                    "input_2":
+                    tf.TensorShape([])
+                }, 
+                tf.TensorShape([]))
+        )
 
         print("Data Generated.", flush=True)
 
@@ -126,7 +144,9 @@ class split_dataset:
             dataset = dataset.map(encode_one_hot)
 
         if self.flip_labels:
-            print("ERROR: Flip Labels not supported: split_dataset.create_dataset")
+            print(
+                "ERROR: Flip Labels not supported: split_dataset.create_dataset"
+            )
             exit(1)
 
         dataset = dataset.map(set_shape, 120)
@@ -143,6 +163,7 @@ class split_dataset:
         test_dataset = self.create_dataset(self.language, "test")
 
         return train_dataset, val_dataset, test_dataset
+
 
 if __name__ == "__main__":
     sds = SplitDataset(20, 4, language='java')

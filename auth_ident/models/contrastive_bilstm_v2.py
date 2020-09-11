@@ -1,17 +1,12 @@
-import sys
-import os
 import tensorflow.keras as keras
 from tensorflow.keras import backend as K
-from src.preprocessing import load_data
 from tensorflow.keras.layers import Dense, Dropout
 from tensorflow.keras.layers import Embedding
 from tensorflow.keras.layers import LSTM, Bidirectional, multiply, Lambda
 from tensorflow.keras.losses import cosine_similarity
 from tensorflow.keras import backend
-import tensorflow as tf
 from tensorflow.keras import layers
-import numpy as np
-sys.path.append(os.path.join(os.path.dirname(__file__), '../..'))
+
 
 def euclidean_distance(vects):
     x, y = vects
@@ -28,7 +23,7 @@ def test(tensors):
     sum_square = K.sum(K.square(x - y), axis=1, keepdims=True)
     return K.sqrt(K.maximum(sum_square, K.epsilon()))
 
-class contrastive_bilstm_v2():
+class ContrastiveBilstmV2():
 
     def __init__(self):
 
