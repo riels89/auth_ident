@@ -47,6 +47,9 @@ class GenericExecute:
         non_model_secondary_params = param_mapping.generate_param_grid(
             params['secondary'])
 
+        if -1 in self.combinations:
+            self.combinations = list(range(len(self.contrastive_params)))
+
         # Get param combs for each model's params
         self.secondary_params = []
         num_models = len(params['secondary']['model'])
