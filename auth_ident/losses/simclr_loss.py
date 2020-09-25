@@ -36,12 +36,19 @@ class SimCLRLoss():
         self.temperature = temperature
         self.batch_size = batch_size
         self.neg_mask = self._get_neg_mask(self.batch_size)
+
         bottom_half = tf.range(self.batch_size, 2 * self.batch_size)[np.newaxis]
         left_corner = tf.range(self.batch_size)[np.newaxis]
+
         self.index_l = tf.concat([bottom_half, left_corner], axis=0)
         self.index_l = tf.transpose(self.index_l, [1, 0])
 
-    def __call__(self, y_true, y_pred):
+        self.index_r = tf.concat([left_corner, bottom_half], axis=0)
+        self.index_r = tf.transpose(self.index_r, [1, 0])
+
+        self.__name__ = "simclr"
+
+    def __call__(self, y_true, y_pred, **kwargs):
         """
             Computes the loss of the stacked contrastive embeddings.
 
@@ -66,16 +73,15 @@ class SimCLRLoss():
             curr_neg_mask = self._get_neg_mask(b)
         else:
             curr_neg_mask = self.neg_mask
+        y_norm = tf.math.l2_normalize(y_pred, axis=1)
 
-        sim = tf.matmul(y_pred, y_pred, transpose_b=True)
-        print(sim)
-    
+        sim = tf.matmul(y_norm, y_norm, transpose_b=True)
         pos = np.zeros((2 * b, 2 * b))
 
         pos_l = tf.gather_nd(sim, self.index_l)
         # TODO: We don't need to compute the righ side separately do we?
         pos_r = tf.gather_nd(sim, self.index_r)
-
+        
         pos = tf.concat([pos_l, pos_r], axis=0)[:, np.newaxis]
         neg = tf.reshape(tf.boolean_mask(sim, curr_neg_mask), (2 * b, -1))
 
@@ -88,8 +94,7 @@ class SimCLRLoss():
         print("LOSS:", loss)
 
         # METHOD 2
-        v1, v2 = tf.split(y_pred, 2, 0)
-        b = tf.shape(v1)[0]
+        v1, v2 = tf.split(y_norm, 2, 0)
 
         labels = tf.range(b)
         masks = np.invert(np.identity(b, np.bool))
