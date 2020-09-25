@@ -5,7 +5,6 @@ from auth_ident import param_mapping
 from tensorflow.keras.callbacks import TensorBoard, ModelCheckpoint
 import pandas as pd
 import os
-import numpy as np
 
 
 class TrainContrastive(GenericExecute):
@@ -15,6 +14,7 @@ class TrainContrastive(GenericExecute):
     Uses the `contrastive` dictionary in json.
     """
     def execute_one(self, contrastive_params, combination, logger):
+        contrastive_params = contrastive_params.copy()
 
         curr_log_dir = os.path.join(self.logdir,
                                     "combination-" + str(combination))
@@ -39,32 +39,29 @@ class TrainContrastive(GenericExecute):
                                            profile_batch=0)
 
         save_model_callback = ModelCheckpoint(
-            curr_log_dir +
-            "/checkpoints/model.{epoch:02d}-{val_loss:.2f}.hdf5",
+            curr_log_dir + "/checkpoints/model.{epoch:02d}-{val_loss:.2f}.h5",
             monitor='val_loss',
             save_best_only=True,
             mode='min')
 
-        model.compile(optimizer=contrastive_params[combination]['optimizer'],
-                      loss=contrastive_params[combination]['loss'],
-                      metrics=[accuracy])
+        print(contrastive_params['optimizer'])
+        model.compile(optimizer=contrastive_params['optimizer'],
+                      loss=contrastive_params['loss'],
+                      metrics=[])
 
         model.summary()
 
         logger.info('Fit model on training data')
 
-        history = model.fit(training_dataset,
-                            validation_data=val_dataset,
-                            epochs=contrastive_params[combination]['epochs'],
-                            steps_per_epoch=TRAIN_LEN //
-                            contrastive_params[combination]['batch_size'],
-                            validation_steps=VAL_LEN //
-                            contrastive_params[combination]['batch_size'],
-                            callbacks=[
-                                tensorboard_callback, save_model_callback
-                            ])
-
-        self.save_metrics(history.history, combination, curr_log_dir)
+        history = model.fit(
+            training_dataset,
+            validation_data=val_dataset,
+            epochs=contrastive_params['epochs'],
+            steps_per_epoch=TRAIN_LEN // contrastive_params['batch_size'],
+            validation_steps=VAL_LEN // contrastive_params['batch_size'],
+            callbacks=[tensorboard_callback, save_model_callback])
+        history = {"val_loss": [0], "val_accuracy": [0]}
+        self.save_metrics(history, combination, curr_log_dir)
 
     def load_hyperparameter_matrix(self):
 
@@ -77,17 +74,22 @@ class TrainContrastive(GenericExecute):
 
         return parameter_metrics
 
-    def save_metrics(self, history, combination, curr_log_dir):
+    def save_metrics(self, results, combination, curr_log_dir):
 
+        model_params = {
+            "combination": combination,
+            **self.contrastive_params[combination]
+        }
+
+        results = {metric: hist[0] for metric, hist in results.items()}
         if self.parameter_metrics is None:
-            self.parameter_metrics = pd.DataFrame(self.contrastive_params)
-            self.parameter_metrics["val_accuracy"] = np.nan
-            self.parameter_metrics["val_loss"] = np.nan
+            results_dict = {**model_params, **results}
+            self.parameter_metrics = pd.DataFrame(results_dict, index=[0])
+            self.parameter_metrics.set_index(list(model_params.keys()),
+                                             inplace=True,
+                                             drop=True)
 
-        self.parameter_metrics.loc[combination,
-                                   'val_loss'] = history['val_loss'][0]
-        self.parameter_metrics.loc[combination,
-                                   'val_accuracy'] = history['val_accuracy'][0]
+        self.parameter_metrics.loc[tuple(model_params.values())] = results
 
 
 if __name__ == "__main__":

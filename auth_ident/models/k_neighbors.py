@@ -19,7 +19,7 @@ class KNeighborSecondaryClassifier(GenericSecondaryClassifier):
         self.dataset = ClosedDatset
 
         self.model = KNeighborsClassifier(
-            self.params["model_params"])
+            **self.params["model_params"])
 
     def train(self, X, y):
 
@@ -33,7 +33,7 @@ class KNeighborSecondaryClassifier(GenericSecondaryClassifier):
                                   verbose=0,
                                   cv=cv)
 
-        return results
+        return {"accuracy": sum(results) / float(self.params["k_cross_val"])}
 
     def evaluate(self, X, y=None): 
 

@@ -19,22 +19,21 @@ class RandomForestSecondaryClassifier(GenericSecondaryClassifier):
         self.dataset = ClosedDatset
 
         self.model = RandomForestClassifier(
-            self.params["model_params"])
+            **self.params["model_params"])
 
     def train(self, X, y):
 
         # Cross val is probably randomizing data then spliting.
         # This is an issue because we want to split on author
-        cv = KFold(n_splits=self.params["num_authors"], shuffle=False)
+        cv = KFold(n_splits=self.params["k_cross_val"], shuffle=False)
 
         results = cross_val_score(self.model,
                                   X,
                                   y,
                                   verbose=0,
-                                  cv=cv,
-                                  **self.params['model_params'])
+                                  cv=cv)
 
-        return results
+        return {"accuracy": sum(results) / float(self.params["k_cross_val"])}
 
     def evaluate(self, X, y=None): 
 
@@ -42,3 +41,4 @@ class RandomForestSecondaryClassifier(GenericSecondaryClassifier):
             return self.model.predict(X) 
         else:
             return self.model.score(X, y)
+

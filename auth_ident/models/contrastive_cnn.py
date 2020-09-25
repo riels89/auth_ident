@@ -1,6 +1,6 @@
 import tensorflow.keras as keras
 from tensorflow.keras import layers
-from tensorflow.keras.layers import Dense, Dropout
+from tensorflow.keras.layers import Dense, Dropout, Concatenate
 from tensorflow.keras.layers import Embedding, TimeDistributed, MaxPool1D
 from tensorflow.keras.layers import LSTM, Conv1D, Flatten, BatchNormalization, Lambda
 from tensorflow.keras import backend as K
@@ -134,13 +134,14 @@ class ContrastiveCNN():
         output_embedding1 = output_embedding(non_linearity1)
         output_embedding2 = output_embedding(non_linearity2)
 
-        distance = Lambda(
-            euclidean_distance,
-            output_shape=eucl_dist_output_shape,
-            name='distance')([output_embedding1, output_embedding2])
+        embs = Concatenate(axis=0)([output_embedding1, output_embedding2])
+        #distance = Lambda(
+        #    euclidean_distance,
+        #    output_shape=eucl_dist_output_shape,
+        #    name='distance')([output_embedding1, output_embedding2])
 
         model = keras.Model(inputs=(input1, input2),
-                            outputs=distance,
+                            outputs=embs,
                             name=self.name + "-" + str(index))
         model.summary()
 

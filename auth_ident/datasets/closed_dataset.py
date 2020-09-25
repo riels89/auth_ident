@@ -91,22 +91,27 @@ class ClosedDatset:
         # Create indices to grab one of each author in each fold
         cross_val_indicies = np.zeros(len(files), dtype=np.int32)
         # files should always be divizable by k
+        print("folding")
         fold_size = int(len(files) / self.k_cross_val)
         for i in range(self.k_cross_val):
             cross_val_indicies[i * fold_size:(i + 1) * fold_size] = np.arange(
                 i, len(files), self.k_cross_val)
 
+        print("reorganizing")
         # Reorganize labels
         y = y[cross_val_indicies]
 
         # crop = np.vectorize(self.random_crop)
         # files = crop(files, self.crop_length, df)
-        X = []
-        for i in cross_val_indicies:
-            X.append(
-                self.encode_to_one_hot(
-                    self.random_crop(files[i], self.crop_length, df)))
-        X = np.array(X)
+        print("encoding")
+        X = np.empty(
+            [cross_val_indicies.shape[0], self.crop_length + 2, self.len_encoding])
+        print(f"len encoding: {cross_val_indicies.shape}")
+        for i, cross_val_index in enumerate(cross_val_indicies):
+            print(i, end="\r")
+            X[i] = self.encode_to_one_hot(
+                self.random_crop(files[cross_val_index], self.crop_length, df))
+        print("finished dataset")
 
         return X, y
 

@@ -1,4 +1,4 @@
-import keras
+from tensorflow import keras
 from auth_ident.losses import SimCLRLoss, ContrastiveMarginLoss
 from auth_ident import models
 from auth_ident import datasets

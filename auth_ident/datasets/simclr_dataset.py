@@ -1,6 +1,7 @@
 import pandas as pd
 import tensorflow as tf
 from os.path import join
+import os
 
 from auth_ident.generators import SimCLRGen
 import auth_ident
@@ -98,6 +99,8 @@ class SimCLRDataset:
             exit(1)
 
         f = join("data/loaded/", self.data_file)
+        print(os.path.exists(f))
+        print(f)
         df = pd.read_hdf(f)
         pg = SimCLRGen(df,
                        crop_length=self.max_code_length,

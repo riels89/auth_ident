@@ -6,7 +6,6 @@ from auth_ident import param_mapping
 import os
 import tensorflow.keras as keras
 import tensorflow as tf
-import pickle
 import pandas as pd
 
 
@@ -33,27 +32,31 @@ class TrainSecondaryClassifier(GenericExecute):
                 'combination')['accuracy'].max()
         param_mapping.map_params(contrastive_params)
 
-        for params in self.secondary_params:
+        secondary_params_to_iterate = [self.secondary_params[comb] for comb in self.secondary_combs]
+        logger.info(f"secondary_params_to_iterate: {secondary_params_to_iterate}")
+        for secondary_comb, params in enumerate(secondary_params_to_iterate):
 
+            logger.info(f"secondary comb: {secondary_comb}, params: {params}")
             secondary_logdir = os.path.join(self.logdir,
+                                            f"combination-{combination}",
+                                            "validation",
                                             "secondary_classifier",
-                                            "combination-" + str(combination))
+                                            f"combination-{secondary_comb}")
+            os.makedirs(secondary_logdir, exist_ok=True) 
             self.model = param_mapping.map_model(params)(params, combination,
                                                          logger)
 
             train_data, train_labels = self.get_embeddings(
-                contrastive_params, self.model.dataset, params['k_cross_val'],
-                combination, logger)
+                 contrastive_params, self.model.dataset, params['k_cross_val'],
+                 combination, logger)
 
             results = self.model.train(train_data, train_labels)
-
-            with open(os.path.join(secondary_logdir, self.model.name + ".pkl"),
-                      'wb') as f:
-                pickle.dump(self.model, f)
+            logger.info(f"Results: {results}")
+            self.model.save(secondary_logdir)
 
             self.save_metrics(results, params, combination)
 
-            return results
+        return results
 
     def load_hyperparameter_matrix(self):
 
@@ -72,14 +75,16 @@ class TrainSecondaryClassifier(GenericExecute):
 
     def save_metrics(self, results, params, combination):
 
-        model_params = params['model_params'].copy()
-        model_params['combination'] = combination
-        results_dict = model_params + results
+        model_params = {"combination": combination, **params, **params['model_params'].copy()}
+        del model_params['model_params']
 
         if self.parameter_metrics is None:
-            self.parameter_metrics = pd.DataFrame(results_dict)
+            results_dict = {**model_params, **results}
+            self.parameter_metrics = pd.DataFrame(results_dict, index=[0])
+            self.parameter_metrics.set_index(list(model_params.keys()),
+                                             inplace=True, drop=True)
 
-        self.parameter_metrics.append(results_dict)
+        self.parameter_metrics.loc[tuple(model_params.values())] = results
 
     def output_hypeparameter_metrics(self, directory):
 
@@ -102,11 +107,12 @@ class TrainSecondaryClassifier(GenericExecute):
 
         layer_name = 'output_embedding'
         embedding_layer = keras.Model(
-            inputs=encoder.input, outputs=encoder.get_layer(layer_name).output)
+            inputs=encoder.input[0], outputs=tf.math.l2_normalize(encoder.get_layer(layer_name).output, axis=1))
         embedding_layer.summary()
 
-        embeddings = embedding_layer.evaluate(data,
-                                              batch_size=params["batch_size"])
+        embedding_layer.compile(loss=lambda a, b, **kwargs: 0.0)
+        embeddings = embedding_layer.predict(data,
+                                             batch_size=params["batch_size"])
 
         return embeddings, labels
 
@@ -116,20 +122,30 @@ class TrainSecondaryClassifier(GenericExecute):
         encoder = model.create_model(params, combination, self.root_logger)
 
         # Load most recent checkpoint
-        checkpoint_dir = os.path.join(self.logdir, "/checkpoints")
-        latest = tf.train.latest_checkpoint(checkpoint_dir)
-        encoder.load_weights(latest)
+        logger.info(f"Encoder logdir: {self.logdir}")
+        checkpoint_dir = os.path.join(self.logdir,
+                                      f"combination-{combination}",
+                                      "checkpoints")
+        checkpoints = [
+            os.path.join(checkpoint_dir, f) for f in os.listdir(checkpoint_dir)
+            if f.endswith(".h5")
+        ]
+        latest_checkpoint = max(checkpoints, key=os.path.getctime)
+
+        encoder.load_weights(latest_checkpoint)
 
         return encoder
 
     def make_arg_parser(self):
         super().make_arg_parser()
         self.parser.add_argument("-mode")
+        self.parser.add_argument("-second_combs", nargs='+', type=int)
 
     def get_args(self):
 
         exp_type, exp, combination = super().get_args()
 
+        self.secondary_combs = self.args["second_combs"]
         self.mode = self.args["mode"]
 
         return exp_type, exp, combination

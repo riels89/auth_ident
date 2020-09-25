@@ -1,5 +1,9 @@
+import os
+import pickle
+
+
 class GenericSecondaryClassifier():
-    def __init__(self, params, combination, logger):
+    def __init__(self, params=None, combination=None, logger=None):
         """
         Creates a new SecondaryClassifier:
 
@@ -18,6 +22,7 @@ class GenericSecondaryClassifier():
 
                 Logger for this model
         """
+        assert logger is not None, "must give logger param"
 
         self.params = params
         self.combination = combination
@@ -64,3 +69,26 @@ class GenericSecondaryClassifier():
                 
         """
         pass
+
+    def save(self, secondary_logdir):
+
+        with open(os.path.join(secondary_logdir, "secondary_classifier.pkl"),
+                  'wb') as f:
+            to_save = {"model": self.model, 
+                       "params": self.params,
+                       "combination": self.combination}
+            pickle.dump(to_save, f)
+
+    def load(self, secondary_logdir):
+
+        model_path = [
+            os.path.join(secondary_logdir, f) for f in os.listdir(secondary_logdir)
+            if f.endswith(".pkl")
+        ]
+        model_path = max(model_path, key=os.path.getctime)
+        data = pickle.loads(model_path)
+
+        self.model = data["model"]
+        self.params = data["params"]
+        self.combination = data["combination"]
+
