@@ -32,8 +32,11 @@ class TrainSecondaryClassifier(GenericExecute):
                 'combination')['accuracy'].max()
         param_mapping.map_params(contrastive_params)
 
-        secondary_params_to_iterate = [self.secondary_params[comb] for comb in self.secondary_combs]
-        logger.info(f"secondary_params_to_iterate: {secondary_params_to_iterate}")
+        secondary_params_to_iterate = [
+            self.secondary_params[comb] for comb in self.secondary_combs
+        ]
+        logger.info(
+            f"secondary_params_to_iterate: {secondary_params_to_iterate}")
         for secondary_comb, params in enumerate(secondary_params_to_iterate):
 
             logger.info(f"secondary comb: {secondary_comb}, params: {params}")
@@ -42,16 +45,17 @@ class TrainSecondaryClassifier(GenericExecute):
                                             "validation",
                                             "secondary_classifier",
                                             f"combination-{secondary_comb}")
-            os.makedirs(secondary_logdir, exist_ok=True) 
+            os.makedirs(secondary_logdir, exist_ok=True)
             self.model = param_mapping.map_model(params)(params, combination,
                                                          logger)
 
             train_data, train_labels = self.get_embeddings(
-                 contrastive_params, self.model.dataset, params['k_cross_val'],
-                 combination, logger)
+                contrastive_params, self.model.dataset, params['k_cross_val'],
+                combination, logger)
 
             results = self.model.train(train_data, train_labels)
-            logger.info(f"Results: {results}")
+
+            print(f"Results: {results}")
             self.model.save(secondary_logdir)
 
             self.save_metrics(results, params, combination)
@@ -62,34 +66,44 @@ class TrainSecondaryClassifier(GenericExecute):
 
         if self.mode == 'train':
             hyperparameter_matrix_path = os.path.join(
-                self.logdir, "secondary_train_results_matrix.csv")
+                self.logdir, "secondary_hyperparameter_matrix.csv")
         else:
             hyperparameter_matrix_path = os.path.join(
                 self.logdir, "secondary_test_results_matrix.csv")
         if os.path.isfile(hyperparameter_matrix_path):
-            parameter_metrics = pd.read_csv(hyperparameter_matrix_path)
+            parameter_metrics = pd.read_csv(
+                hyperparameter_matrix_path,
+                index_col=False).to_dict(orient='records')
         else:
             parameter_metrics = None
+        print(f"Loaded hyper parameters: {parameter_metrics}")
 
         return parameter_metrics
 
     def save_metrics(self, results, params, combination):
 
-        model_params = {"combination": combination, **params, **params['model_params'].copy()}
-        del model_params['model_params']
+        secondary_params = {"combination": combination, **params.copy()}
+        del secondary_params['model_params']
+
+        results_dict = {
+            **secondary_params, "model_params": params['model_params'],
+            **results
+        }
 
         if self.parameter_metrics is None:
-            results_dict = {**model_params, **results}
-            self.parameter_metrics = pd.DataFrame(results_dict, index=[0])
-            self.parameter_metrics.set_index(list(model_params.keys()),
-                                             inplace=True, drop=True)
-
-        self.parameter_metrics.loc[tuple(model_params.values())] = results
+            self.parameter_metrics = [results_dict]
+        else:
+            self.parameter_metrics.append(results_dict)
 
     def output_hypeparameter_metrics(self, directory):
 
-        self.parameter_metrics.to_csv(
-            os.path.join(directory, "secondary_hyperparameter_matrix.csv"))
+        if self.mode == 'train':
+            pd.DataFrame(self.parameter_metrics).to_csv(os.path.join(
+                directory, "secondary_hyperparameter_matrix.csv"),
+                                                        index=False)
+        else:
+            self.parameter_metrics.to_csv(
+                os.path.join(directory, "secondary_test_results.csv"))
 
     def get_embeddings(self, params, dataset, k_cross_val, combination,
                        logger):
@@ -106,8 +120,10 @@ class TrainSecondaryClassifier(GenericExecute):
                                     logger)
 
         layer_name = 'output_embedding'
-        embedding_layer = keras.Model(
-            inputs=encoder.input[0], outputs=tf.math.l2_normalize(encoder.get_layer(layer_name).output, axis=1))
+        embedding_layer = keras.Model(inputs=encoder.input[0],
+                                      outputs=tf.math.l2_normalize(
+                                          encoder.get_layer(layer_name).output,
+                                          axis=1))
         embedding_layer.summary()
 
         embedding_layer.compile(loss=lambda a, b, **kwargs: 0.0)
@@ -147,6 +163,8 @@ class TrainSecondaryClassifier(GenericExecute):
 
         self.secondary_combs = self.args["second_combs"]
         self.mode = self.args["mode"]
+        if self.mode is None:
+            self.mode = "train"
 
         return exp_type, exp, combination
 

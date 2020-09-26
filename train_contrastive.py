@@ -68,9 +68,12 @@ class TrainContrastive(GenericExecute):
         hyperparameter_matrix_path = os.path.join(self.logdir,
                                                   "hyperparameter_matrix.csv")
         if os.path.isfile(hyperparameter_matrix_path):
-            parameter_metrics = pd.read_csv(hyperparameter_matrix_path)
+            parameter_metrics = pd.read_csv(
+                hyperparameter_matrix_path,
+                index=['combination', *list(self.contrastive_params.keys())])
         else:
             parameter_metrics = None
+        print(parameter_metrics)
 
         return parameter_metrics
 
