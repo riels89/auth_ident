@@ -12,3 +12,4 @@ auth_ident.sublime-project
 auth_ident.sublime-workspace
 env
 data/loaded
+auth_ident.egg-info/
