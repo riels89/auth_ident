@@ -60,7 +60,7 @@ class TrainContrastive(GenericExecute):
             steps_per_epoch=TRAIN_LEN // contrastive_params['batch_size'],
             validation_steps=VAL_LEN // contrastive_params['batch_size'],
             callbacks=[tensorboard_callback, save_model_callback])
-        history = {"val_loss": [0], "val_accuracy": [0]}
+
         self.save_metrics(history, combination, curr_log_dir)
 
     def load_hyperparameter_matrix(self):
