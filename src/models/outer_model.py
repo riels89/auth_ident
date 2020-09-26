@@ -35,6 +35,8 @@ from contrastive_by_line_cnn import contrastive_by_line_cnn
 from contrastive_1D_to_2D import contrastive_1D_to_2D
 from dilated_conv_by_line import dilated_conv_by_line
 from src.data_processing_expt.closed_dataset import closed_dataset
+from simclr.objective import add_contrastive_loss
+from src.data_processing_expt.simclr_dataset import SimCLRDataset
 
 class outer_model:
 
@@ -114,7 +116,7 @@ class outer_model:
         params = json.load(open(params_path))
         params = generate_param_grid(params)
         self.map_dataset(model.dataset_type, comb_num, params)
-        map_params(params)
+        self.map_params(params)
         # print(str(params))
 
         # Create inner model
@@ -132,7 +134,7 @@ class outer_model:
         newest_model = max(paths, key=os.path.getctime)
         encoder.load_weights(newest_model)
 
-        self.params[0]["language"] = params[comb_num]["language"]
+        self.params[0]["language"] = params[comb_num].get("language")
         self.params[0]["binary_encoding"] = params[comb_num]["binary_encoding"]
         self.params[0]["max_code_length"] = params[comb_num]["max_code_length"]
         self.params[0]["embedding_size"] = params[comb_num]["embedding_size"]
@@ -147,40 +149,54 @@ class outer_model:
                                     batch_size=params[index]['batch_size'],
                                     binary_encoding=params[index]['binary_encoding'],
                                     language=params[index].get('language'))
+        elif dataset_type == "simclr":
+            dataset = SimCLRDataset(max_code_length=params[index]["max_code_length"],
+                                    batch_size=params[index]['batch_size'],
+                                    binary_encoding=params[index]['binary_encoding'],
+                                    language=params[index].get('language'))
         else :
-            print("Error: Only split dataset is supported outer_model.map_dataset")
+            print("Error: Only split and simclr datasets are supported outer_model.map_dataset")
             exit(1)
         params[index]['dataset'] = dataset
 
-def contrastive_loss(y_true, y_pred):
-    '''Contrastive loss from Hadsell-et-al.'06
-    http://yann.lecun.com/exdb/publis/pdf/hadsell-chopra-lecun-06.pdf
-    '''
-    margin = 1
-    square_pred = K.square(y_pred)
-    margin_square = K.square(K.maximum(margin - y_pred, 0))
-    return K.mean(y_true * square_pred + (1 - y_true) * margin_square)
+    def map_params(self, params):
+        index = 0
+        if params[index]['optimizer'] == 'adam':
+            kwargs = {}
+            if 'lr' in params[index]:
+                kwargs['lr'] = params[index]['lr']
+            if 'clipvalue' in params[index]:
+                kwargs['clipvalue'] = params[index]['clipvalue']
+            elif 'clipnorm' in params[index]:
+                kwargs['clipnorm'] = params[index]['clipnorm']
+            if 'decay' in params[index]:
+                kwargs['decay'] = params[index]['decay']
+            params[index]['optimizer'] = keras.optimizers.Adam(**kwargs)
 
+        if params[index]['loss'] == 'contrastive':
+            params[index]['loss'] = self.contrastive_loss
+            if 'margin' in params[index]:
+                self.margin = params[index]['margin']
 
-def map_params(params):
-    index = 0
-    if params[index]['optimizer'] == 'adam':
-        kwargs = {}
-        if 'lr' in params[index]:
-            kwargs['lr'] = params[index]['lr']
-        if 'clipvalue' in params[index]:
-            kwargs['clipvalue'] = params[index]['clipvalue']
-        elif 'clipnorm' in params[index]:
-            kwargs['clipnorm'] = params[index]['clipnorm']
-        if 'decay' in params[index]:
-            kwargs['decay'] = params[index]['decay']
-        params[index]['optimizer'] = keras.optimizers.Adam(**kwargs)
+        if params[index]['loss'] == 'simclr':
+            params[index]['loss'] = self.simclr_loss
+            if 'temperature' in params[index]:
+                self.temperature = params[index]['temperature']
 
-    if params[index]['loss'] == 'contrastive':
-        params[index]['loss'] = contrastive_loss
-        if 'margin' in params[index]:
-            margin = params[index]['margin']
+    def simclr_loss(self, y_true, y_pred):
+        '''SimCLR loss from Chen-et-al.'20
+           http://arxiv.org/abs/2002.05709
+        '''
+        print("\nshape:\n", y_pred.shape, flush=True)
+        return add_contrastive_loss(y_pred, temperature=self.temperature)[0]
 
+    def contrastive_loss(self, y_true, y_pred):
+        '''Contrastive loss from Hadsell-et-al.'06
+        http://yann.lecun.com/exdb/publis/pdf/hadsell-chopra-lecun-06.pdf
+        '''
+        square_pred = K.square(y_pred)
+        margin_square = K.square(K.maximum(self.margin - y_pred, 0))
+        return K.mean(y_true * square_pred + (1 - y_true) * margin_square)
 
 def generate_param_grid(params):
     return [dict(zip(params.keys(), values)) for values in product(*params.values())]
@@ -198,7 +214,7 @@ def create_random_forest(params, index, logger):
     #return RandomForestClassifier(n_jobs=-1, verbose=0, warm_start=True, min_samples_leaf=5)
 
 if __name__ == "__main__":
-    model = outer_model("placeholder", 1, "7-22-20")
+    model = outer_model("simclr_test", 2, "8-22-20")
     score = model.train_and_val()
     print("Train val scores: ", score)
     test_acc = model.train_and_test()

@@ -1,22 +1,16 @@
 import pandas as pd
-import numpy as np
 import os
 import tensorflow as tf
-import random
-import itertools
-import math
 
 import sys
 sys.path.append(os.path.join(os.path.dirname(__file__), '../..'))
-from src import TRAIN_LEN, VAL_LEN, TEST_LEN, SL
-from src.preprocessing.pair_authors import pair_authors
-from src.preprocessing import load_data
-from src.data_processing_expt import pairs_generator
+from src import TRAIN_LEN, VAL_LEN, TEST_LEN
+from src.data_processing_expt import simclr_generator
 
 
-class split_dataset:
+class SimCLRDataset:
 
-    def __init__(self, max_code_length, batch_size, binary_encoding=False, flip_labels=False, language=None):
+    def __init__(self, max_code_length, batch_size, binary_encoding=False, language=None):
         print("\nIn INIT\n", flush=True)
         chars_to_encode = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM\n\r\t " + r"1234567890-=!@#$%^&*()_+[]{}|;':\",./<>?"
         self.start = "<start>"
@@ -42,12 +36,14 @@ class split_dataset:
 
         self.bits = tf.constant((128, 64, 32, 16, 8, 4, 2, 1), dtype=tf.uint8)
 
-        self.flip_labels = flip_labels
-
     def encode_to_one_hot(self, code_to_embed):
-        reshaped = tf.concat([[self.start], tf.strings.unicode_split(code_to_embed, 'UTF-8'), [self.end]], axis=0)
+        reshaped = tf.concat(
+            [[self.start], tf.strings.unicode_split(code_to_embed, 'UTF-8'),
+             [self.end]], axis=0)
         encoding = self.table.lookup(reshaped)
-        encoding = tf.reshape(tf.squeeze(tf.one_hot(encoding, self.len_encoding)), (-1, self.len_encoding))
+        encoding = tf.reshape(
+            tf.squeeze(tf.one_hot(encoding, self.len_encoding)),
+            (-1, self.len_encoding))
 
         code_length = tf.shape(encoding)[0]
         padding = [[0, self.max_code_length + 2 - code_length], [0, 0]]
@@ -65,14 +61,6 @@ class split_dataset:
         padding = [[0, self.max_code_length - code_length], [0, 0]]
         encoding = tf.pad(unpacked, padding, 'CONSTANT', constant_values=1)
 
-        return encoding
-
-    def flip_labels(self, files, label):
-        if label == 0:
-            label = 1
-        else:
-            label = 1
-        return files, label
 
     def create_dataset(self, language, split):
 
@@ -89,7 +77,6 @@ class split_dataset:
         def set_shape(files, label):
             files["input_1"].set_shape((self.max_code_length + 2, self.len_encoding))
             files["input_2"].set_shape((self.max_code_length + 2, self.len_encoding))
-            label = label
             return files, label
 
         if split == 'train':
@@ -102,12 +89,15 @@ class split_dataset:
             print("ERROR: Invalid split type in split_dataset.create_dataset: " + split)
             exit(1)
 
-        file="data/loaded/" + language + "_" + split + ".h5"
-        df = pd.read_hdf(file)
-        pg = pairs_generator.PairGen(df, crop_length=self.max_code_length, samples_per_epoch=num_samples)
+        f = "data/loaded/" + language + "_" + split + ".h5"
+        df = pd.read_hdf(f)
+        pg = simclr_generator.SimCLRGen(df, crop_length=self.max_code_length,
+                                        batch_size=self.batch_size,
+                                        samples_per_epoch=num_samples)
 
 
         print("Generating Data...", flush=True)
+
         dataset = tf.data.Dataset.from_generator(
             pg.gen,
             ({"input_1": tf.string, "input_2": tf.string}, tf.bool),
@@ -117,7 +107,6 @@ class split_dataset:
 
         print("Data Generated.", flush=True)
 
-        #dataset = dataset.shuffle(4096)
         dataset = dataset.repeat()
 
         if self.binary_encoding:
@@ -125,14 +114,13 @@ class split_dataset:
         else:
             dataset = dataset.map(encode_one_hot)
 
-        if self.flip_labels:
-            print("ERROR: Flip Labels not supported: split_dataset.create_dataset")
-            exit(1)
+        #dataset = dataset.map(set_shape)
 
         dataset = dataset.map(set_shape, 120)
 
         dataset = dataset.batch(self.batch_size)
         dataset = dataset.prefetch(tf.data.experimental.AUTOTUNE)
+
 
         return dataset
 
@@ -145,6 +133,8 @@ class split_dataset:
         return train_dataset, val_dataset, test_dataset
 
 if __name__ == "__main__":
-    sds = SplitDataset(20, 4, language='java')
+    sds = SimCLRDataset(20, 4)
     train_dataset, val_dataset, test_dataset = sds.get_dataset()
-    print(list(train_dataset.take(3).as_numpy_iterator()))
+    for i in val_dataset.take(1):
+        print("I", i)
+        print("INPUT SHAPE", i['input_1'].shape)
