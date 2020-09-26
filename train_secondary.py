@@ -59,7 +59,8 @@ class TrainSecondaryClassifier(GenericExecute):
                                                       logdir=self.logdir)
 
             results = self.model.train(train_data, train_labels)
-            logger.info(f"Results: {results}")
+
+            print(f"Results: {results}")
             self.model.save(secondary_logdir)
 
             self.save_metrics(results, params, combination)
@@ -70,39 +71,44 @@ class TrainSecondaryClassifier(GenericExecute):
 
         if self.mode == 'train':
             hyperparameter_matrix_path = os.path.join(
-                self.logdir, "secondary_train_results_matrix.csv")
+                self.logdir, "secondary_hyperparameter_matrix.csv")
         else:
             hyperparameter_matrix_path = os.path.join(
                 self.logdir, "secondary_test_results_matrix.csv")
         if os.path.isfile(hyperparameter_matrix_path):
-            parameter_metrics = pd.read_csv(hyperparameter_matrix_path)
+            parameter_metrics = pd.read_csv(
+                hyperparameter_matrix_path,
+                index_col=False).to_dict(orient='records')
         else:
             parameter_metrics = None
+        print(f"Loaded hyper parameters: {parameter_metrics}")
 
         return parameter_metrics
 
     def save_metrics(self, results, params, combination):
 
-        model_params = {
-            "combination": combination,
-            **params,
-            **params['model_params'].copy()
+        secondary_params = {"combination": combination, **params.copy()}
+        del secondary_params['model_params']
+
+        results_dict = {
+            **secondary_params, "model_params": params['model_params'],
+            **results
         }
-        del model_params['model_params']
 
         if self.parameter_metrics is None:
-            results_dict = {**model_params, **results}
-            self.parameter_metrics = pd.DataFrame(results_dict, index=[0])
-            self.parameter_metrics.set_index(list(model_params.keys()),
-                                             inplace=True,
-                                             drop=True)
-
-        self.parameter_metrics.loc[tuple(model_params.values())] = results
+            self.parameter_metrics = [results_dict]
+        else:
+            self.parameter_metrics.append(results_dict)
 
     def output_hypeparameter_metrics(self, directory):
 
-        self.parameter_metrics.to_csv(
-            os.path.join(directory, "secondary_hyperparameter_matrix.csv"))
+        if self.mode == 'train':
+            pd.DataFrame(self.parameter_metrics).to_csv(os.path.join(
+                directory, "secondary_hyperparameter_matrix.csv"),
+                                                        index=False)
+        else:
+            self.parameter_metrics.to_csv(
+                os.path.join(directory, "secondary_test_results.csv"))
 
     def make_arg_parser(self):
         super().make_arg_parser()
@@ -115,6 +121,8 @@ class TrainSecondaryClassifier(GenericExecute):
 
         self.secondary_combs = self.args["second_combs"]
         self.mode = self.args["mode"]
+        if self.mode is None:
+            self.mode = "train"
 
         return exp_type, exp, combination
 
