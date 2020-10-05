@@ -100,7 +100,9 @@ class TrainSecondaryClassifier(GenericExecute):
         else:
             self.parameter_metrics.append(results_dict)
 
-    def output_hypeparameter_metrics(self, directory):
+        self.output_hyperparameter_metrics(self.logdir)
+
+    def output_hyperparameter_metrics(self, directory):
 
         if self.mode == 'train':
             pd.DataFrame(self.parameter_metrics).to_csv(os.path.join(

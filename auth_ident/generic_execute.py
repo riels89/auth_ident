@@ -103,7 +103,7 @@ class GenericExecute:
             self.execute_one(self.contrastive_params[combination], combination,
                              logger)
 
-        self.output_hypeparameter_metrics(self.logdir)
+        self.output_hyperparameter_metrics(self.logdir)
 
     def execute_one(self, contrastive_params, combination, logger):
         """
@@ -129,7 +129,7 @@ class GenericExecute:
 
         return None
 
-    def output_hypeparameter_metrics(self, directory):
+    def output_hyperparameter_metrics(self, directory):
         self.parameter_metrics.to_csv(
             os.path.join(directory, "hyperparameter_matrix.csv"))
 

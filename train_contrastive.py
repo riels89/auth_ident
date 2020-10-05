@@ -61,7 +61,7 @@ class TrainContrastive(GenericExecute):
             validation_steps=VAL_LEN // contrastive_params['batch_size'],
             callbacks=[tensorboard_callback, save_model_callback])
 
-        self.save_metrics(history, combination, curr_log_dir)
+        self.save_metrics(history.history, combination, curr_log_dir)
 
     def load_hyperparameter_matrix(self):
 
@@ -84,7 +84,10 @@ class TrainContrastive(GenericExecute):
             **self.contrastive_params[combination]
         }
 
-        results = {metric: hist[0] for metric, hist in results.items()}
+        best_index = results['val_loss'].index(min(results['val_loss']))
+        results = {metric: hist[best_index] for metric, hist in results.items()}
+        results["train_loss"] = results['loss']
+        del results['loss']
         if self.parameter_metrics is None:
             results_dict = {**model_params, **results}
             self.parameter_metrics = pd.DataFrame(results_dict, index=[0])
@@ -93,6 +96,8 @@ class TrainContrastive(GenericExecute):
                                              drop=True)
 
         self.parameter_metrics.loc[tuple(model_params.values())] = results
+
+        self.output_hyperparameter_metrics(self.logdir)
 
 
 if __name__ == "__main__":
