@@ -28,6 +28,7 @@ class GenericExecute:
     This class is set up in a way to easily overwrite each method for custom
     functions which can varry widley.
     """
+
     def __init__(self):
 
         self.make_arg_parser()
@@ -42,8 +43,29 @@ class GenericExecute:
         self.root_logger.info(
             f"Training with combinations: {self.combinations}")
 
+        # merge data files to avoid unwanted data combinations
+        params['contrastive']['data'] = [(train, val, test) for train, val, test in zip(
+            params['contrastive']['train_data'], 
+            params['contrastive']['train_data'],
+            params['contrastive']['train_data'])]
+        del params['contrastive']['train_data']
+        del params['contrastive']['val_data']
+        del params['contrastive']['test_data']
+
         self.contrastive_params = param_mapping.generate_param_grid(
             params['contrastive'])
+
+        # Unzip data tuple back into orginal train/val/test
+        for param in self.contrastive_params:
+            train, val, test = param['data']
+            del param['data']
+            param['train_data'] = train
+            param['val_data'] = val
+            param['test_data'] = test
+
+        print("contrastive_params:")
+        pprint(self.contrastive_params)
+
         non_model_secondary_params = param_mapping.generate_param_grid(
             params['secondary'])
 
@@ -126,7 +148,6 @@ class GenericExecute:
         pass
 
     def load_hyperparameter_matrix(self):
-
         return None
 
     def output_hyperparameter_metrics(self, directory):
