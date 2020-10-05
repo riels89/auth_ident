@@ -1,6 +1,6 @@
 from tensorflow.keras import backend as K
 from tensorflow.keras import Model
-from tensorflow.math import l2_normalize
+import tensorflow as tf
 from auth_ident import param_mapping
 import os
 
@@ -37,13 +37,17 @@ def get_embeddings(params,
                    data_file,
                    combination,
                    logger,
-                   logdir):
+                   logdir,
+                   return_file_indicies=False):
 
     dataset = dataset(crop_length=params["max_code_length"],
                       k_cross_val=k_cross_val,
                       data_file=data_file)
     params['dataset'] = dataset
-    data, labels = dataset.get_dataset()
+    if return_file_indicies:
+        data, labels, file_indicies = dataset.get_dataset(return_file_indicies=return_file_indicies)
+    else:
+        data, labels = dataset.get_dataset(return_file_indicies=return_file_indicies)
 
     contrastive_model = param_mapping.map_model(params)()
     encoder = load_encoder(contrastive_model, params, combination, logger,
@@ -51,11 +55,14 @@ def get_embeddings(params,
 
     layer_name = 'output_embedding'
     embedding_layer = Model(inputs=encoder.input[0],
-                            outputs=l2_normalize(
+                            outputs=tf.math.l2_normalize(
                                 encoder.get_layer(layer_name).output, axis=1))
     embedding_layer.summary()
 
     embedding_layer.compile(loss=lambda a, b, **kwargs: 0.0)
     embeddings = embedding_layer.predict(data, batch_size=params["batch_size"])
-
-    return embeddings, labels
+    
+    if return_file_indicies:
+        return embeddings, labels, file_indicies
+    else:
+        return embeddings, labels

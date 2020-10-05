@@ -37,10 +37,10 @@ class ClosedDatset:
         f = join("data/loaded/", data_file)
         self.dataframe = pd.read_hdf(f)
 
-    def get_dataset(self):
-        return list(self.get_two(self.dataframe))
+    def get_dataset(self, return_file_indicies=False):
+        return list(self.get_two(self.dataframe, return_file_indicies))
 
-    def get_two(self, df):
+    def get_two(self, df, return_file_indicies=False):
         """
         Generate file pairings where each file is equally likely to be
         included in a pairing.
@@ -112,8 +112,11 @@ class ClosedDatset:
             X[i] = self.encode_to_one_hot(
                 self.random_crop(files[cross_val_index], self.crop_length, df))
         print("finished dataset")
-
-        return X, y
+        
+        if return_file_indicies:
+            return X, y, files
+        else:
+            return X, y
 
     def random_crop(self, file_indx, crop_length, df):
         """

@@ -1,39 +1,45 @@
+from auth_ident.datasets import ClosedDatset
 from auth_ident import GenericExecute, param_mapping
 from auth_ident.utils import get_embeddings
 from sklearn.decomposition import PCA
 import seaborn as sns
 import os
 import numpy as np
+import pandas as pd
 
 
 class AuthorPCA(GenericExecute):
+
     def execute_one(self, contrastive_params, combination, logger):
 
-        self.model = param_mapping.map_model(contrastive_params)(
-            contrastive_params, combination, logger)
+        train_data, train_labels, file_indicies = get_embeddings(contrastive_params,
+                                                                 ClosedDatset,
+                                                                 self.num_files,
+                                                                 data_file=self.data_file,
+                                                                 combination=combination,
+                                                                 logger=logger,
+                                                                 logdir=self.logdir,
+                                                                 return_file_indicies=True)
 
-        train_data, train_labels = get_embeddings(contrastive_params,
-                                                  self.model.dataset,
-                                                  self.num_files,
-                                                  data_file=self.data_file,
-                                                  combination=combination,
-                                                  logger=logger,
-                                                  logdir=self.logdir)
+
+        f = os.path.join("data/loaded/", self.data_file)
+        raw_data = pd.read_hdf(f)
 
         authors_per_split = int(train_data.shape[0] / float(self.num_files))
         files = np.empty(
             (self.num_authors * self.num_files, train_data.shape[1]))
         labels = np.empty((self.num_authors * self.num_files), dtype=np.int16)
+        filepaths = np.empty((self.num_authors * self.num_files), dtype=object)
         for i in range(self.num_authors):
-            files[i * self.num_authors:i * self.num_authors +
-                  self.num_authors] = train_data[i * authors_per_split:self.
-                                                 num_authors +
-                                                 i * authors_per_split]
+            # n_authors_slice = slice(i * self.num_authors, (i + 1) * self.num_authors)
+            n_authors_per_split_slice = slice(i * authors_per_split, self.num_authors + i * authors_per_split)
+            k_files_slice = slice(i * self.num_files, (i + 1) * self.num_files)
 
-            labels[i * self.num_authors:self.num_authors * (i + 1)] = \
-                train_labels[i * authors_per_split:self.num_authors + i
-                             * authors_per_split]
-        pca = PCA(n_components=train_data.shape[1])
+            files[k_files_slice] = train_data[n_authors_per_split_slice]
+            labels[k_files_slice] = train_labels[n_authors_per_split_slice]
+            filepaths[k_files_slice] = raw_data['filepath'][file_indicies[k_files_slice]].values
+
+        pca = PCA(n_components=min(labels.shape[0], train_data.shape[1]))
         components = pca.fit_transform(files)
         print(f"explained variance: {pca.explained_variance_ratio_}")
 
@@ -51,6 +57,7 @@ class AuthorPCA(GenericExecute):
         fig.savefig(
             os.path.join(self.logdir, "combination-" + str(combination),
                          "pca.png"))
+        print(filepaths)
 
     def make_arg_parser(self):
         super().make_arg_parser()
@@ -68,7 +75,7 @@ class AuthorPCA(GenericExecute):
 
         return exp_type, exp, combination
 
-    def output_hypeparameter_metrics(self, directory):
+    def output_hyperparameter_metrics(self, directory):
 
         pass
 
