@@ -71,7 +71,9 @@ class TrainContrastive(GenericExecute):
         if os.path.isfile(hyperparameter_matrix_path):
             parameter_metrics = pd.read_csv(
                 hyperparameter_matrix_path,
-                index=['combination', *list(self.contrastive_params.keys())])
+                index_col=[
+                    'combination', *list(self.contrastive_params[0].keys())
+                ])
         else:
             parameter_metrics = None
         print(parameter_metrics)
@@ -86,7 +88,10 @@ class TrainContrastive(GenericExecute):
         }
 
         best_index = results['val_loss'].index(min(results['val_loss']))
-        results = {metric: hist[best_index] for metric, hist in results.items()}
+        results = {
+            metric: hist[best_index]
+            for metric, hist in results.items()
+        }
         results["train_loss"] = results['loss']
         del results['loss']
         if self.parameter_metrics is None:
