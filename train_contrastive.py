@@ -2,7 +2,7 @@ from auth_ident import GenericExecute
 from auth_ident import TRAIN_LEN, VAL_LEN
 from auth_ident.utils import accuracy
 from auth_ident import param_mapping
-from tensorflow.keras.callbacks import TensorBoard, ModelCheckpoint
+from tensorflow.keras.callbacks import TensorBoard, ModelCheckpoint, EarlyStopping
 import pandas as pd
 import os
 
@@ -43,8 +43,9 @@ class TrainContrastive(GenericExecute):
             monitor='val_loss',
             save_best_only=True,
             mode='min')
+        
+        es = EarlyStopping(monitor='val_loss', mode='min')
 
-        print(contrastive_params['optimizer'])
         model.compile(optimizer=contrastive_params['optimizer'],
                       loss=contrastive_params['loss'],
                       metrics=[])
@@ -59,7 +60,7 @@ class TrainContrastive(GenericExecute):
             epochs=contrastive_params['epochs'],
             steps_per_epoch=TRAIN_LEN // contrastive_params['batch_size'],
             validation_steps=VAL_LEN // contrastive_params['batch_size'],
-            callbacks=[tensorboard_callback, save_model_callback])
+            callbacks=[tensorboard_callback, save_model_callback, es])
 
         self.save_metrics(history.history, combination, curr_log_dir)
 
