@@ -193,9 +193,15 @@ class GenericExecute:
 
         exp_type = self.args['type']
 
-        combination = list(map(int, self.args['combinations']))
+        combinations = []
+        for comb in self.args['combinations']:
+            if ':' in comb:
+                start, end = comb.split(':')
+                combinations.extend(range(int(start), int(end)))
+            else:
+                combinations.append(int(comb))
 
-        return exp_type, exp, combination
+        return exp_type, exp, combinations
 
     def get_logdir(self, exp_type, expirement_num):
         """
