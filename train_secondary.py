@@ -6,6 +6,7 @@ from auth_ident import param_mapping
 import os
 import pandas as pd
 from auth_ident.utils import get_embeddings
+import time
 
 
 class TrainSecondaryClassifier(GenericExecute):
@@ -36,6 +37,8 @@ class TrainSecondaryClassifier(GenericExecute):
         ]
         logger.info(
             f"secondary_params_to_iterate: {secondary_params_to_iterate}")
+
+        curr_k_cross_val = None
         for secondary_comb, params in enumerate(secondary_params_to_iterate):
 
             logger.info(f"secondary comb: {secondary_comb}, params: {params}")
@@ -45,23 +48,28 @@ class TrainSecondaryClassifier(GenericExecute):
                                             "secondary_classifier",
                                             f"combination-{secondary_comb}")
             os.makedirs(secondary_logdir, exist_ok=True)
-            self.model = param_mapping.map_model(params)(params, combination,
-                                                         logger)
 
-            file_param = "val_data" if self.mode == "train" else "test_data"
-            data_file = params[file_param]
-            train_data, train_labels = get_embeddings(contrastive_params,
-                                                      self.model.dataset,
-                                                      params['k_cross_val'],
-                                                      data_file=data_file,
-                                                      combination=combination,
-                                                      logger=logger,
-                                                      logdir=self.logdir)
+            self.model = param_mapping.map_model(params)(params,
+                                                         combination,
+                                                         logger)
+            if params['k_cross_val'] != curr_k_cross_val:
+                curr_k_cross_val = params['k_cross_val']
+                file_param = "val_data" if self.mode == "train" else "test_data"
+                data_file = contrastive_params[file_param]
+                train_data, train_labels = get_embeddings(
+                    contrastive_params,
+                    self.model.dataset,
+                    params['k_cross_val'],
+                    data_file=data_file,
+                    combination=combination,
+                    logger=logger,
+                    logdir=self.logdir)
 
             results = self.model.train(train_data, train_labels)
 
             print(f"Results: {results}")
             self.model.save(secondary_logdir)
+            time.sleep(5)
 
             self.save_metrics(results, params, combination)
 
