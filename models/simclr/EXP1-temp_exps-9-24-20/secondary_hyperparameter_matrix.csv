@@ -1,0 +1,10 @@
+combination,model,k_cross_val,model_params,accuracy
+0,random_forest,5,{'n_jobs': -1},0.514598
+1,svm,5,{},0.6047118216238957
+1,k_neighbors,5,{'n_jobs': -1},0.5257888094236433
+1,random_forest,5,{'n_jobs': -1},0.5085401766933109
+2,k_neighbors,5,{'n_jobs': -1},0.30677324358435
+2,svm,5,{},0.2729490954985275
+2,random_forest,5,{'n_jobs': -1},
+0,k_neighbors,5,{'n_jobs': -1},0.5374842238115272
+0,svm,5,{},0.5988220445940262

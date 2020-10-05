@@ -1,0 +1,2 @@
+combination,optimizer,loss,temperature,lr,decay,epochs,batch_size,binary_encoding,max_code_length,embedding_size,BN,train_data,val_data,test_data,model,val_loss,train_loss
+0,adam,simclr,1.0,0.001,2.5e-06,5,32,False,2100,256,False,c_cpp_h_train.h5,c_cpp_h_val.h5,c_cpp_h_test.h5,contrastive_cnn,4.134345054626465,4.142889022827148

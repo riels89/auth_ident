@@ -1,0 +1,16 @@
+combination,optimizer,loss,temperature,lr,decay,epochs,batch_size,binary_encoding,max_code_length,embedding_size,BN,train_data,val_data,test_data,model,val_loss,train_loss
+0,adam,simclr,0.005,0.001,2.5e-06,5,32,False,2100,256,False,c_cpp_h_train.h5,c_cpp_h_val.h5,c_cpp_h_test.h5,contrastive_cnn,1.1431197050372175,0.70462061110425
+1,adam,simclr,0.005,0.01,2.5e-06,5,32,False,2100,256,False,c_cpp_h_train.h5,c_cpp_h_val.h5,c_cpp_h_test.h5,contrastive_cnn,1.234622880234532,0.8375162912826538
+2,adam,simclr,0.005,0.0001,2.5e-06,5,32,False,2100,256,False,c_cpp_h_train.h5,c_cpp_h_val.h5,c_cpp_h_test.h5,contrastive_cnn,1.0163321247069157,1.1824632441582679
+3,adam,simclr,0.025,0.001,2.5e-06,5,32,False,2100,256,False,c_cpp_h_train.h5,c_cpp_h_val.h5,c_cpp_h_test.h5,contrastive_cnn,1.1204825054076661,0.6884428862359524
+4,adam,simclr,0.025,0.01,2.5e-06,5,32,False,2100,256,False,c_cpp_h_train.h5,c_cpp_h_val.h5,c_cpp_h_test.h5,contrastive_cnn,1.1767826574483693,0.8652042137479782
+5,adam,simclr,0.025,0.0001,2.5e-06,5,32,False,2100,256,False,c_cpp_h_train.h5,c_cpp_h_val.h5,c_cpp_h_test.h5,contrastive_cnn,1.065443221818317,1.1846964483184814
+6,adam,simclr,0.05,0.001,2.5e-06,5,32,False,2100,256,False,c_cpp_h_train.h5,c_cpp_h_val.h5,c_cpp_h_test.h5,contrastive_cnn,1.1080162874619726,0.6650773142476082
+7,adam,simclr,0.05,0.01,2.5e-06,5,32,False,2100,256,False,c_cpp_h_train.h5,c_cpp_h_val.h5,c_cpp_h_test.h5,contrastive_cnn,1.1029699750807465,0.8181618937966824
+8,adam,simclr,0.05,0.0001,2.5e-06,5,32,False,2100,256,False,c_cpp_h_train.h5,c_cpp_h_val.h5,c_cpp_h_test.h5,contrastive_cnn,1.0529583858400011,1.173128799378395
+9,adam,simclr,0.075,0.001,2.5e-06,5,32,False,2100,256,False,c_cpp_h_train.h5,c_cpp_h_val.h5,c_cpp_h_test.h5,contrastive_cnn,1.0807732464829114,0.7544899206888676
+10,adam,simclr,0.075,0.01,2.5e-06,5,32,False,2100,256,False,c_cpp_h_train.h5,c_cpp_h_val.h5,c_cpp_h_test.h5,contrastive_cnn,1.091790808224037,0.5242776498577595
+11,adam,simclr,0.075,0.0001,2.5e-06,5,32,False,2100,256,False,c_cpp_h_train.h5,c_cpp_h_val.h5,c_cpp_h_test.h5,contrastive_cnn,1.016132508107627,0.4668521014939547
+12,adam,simclr,0.1,0.001,2.5e-06,5,32,False,2100,256,False,c_cpp_h_train.h5,c_cpp_h_val.h5,c_cpp_h_test.h5,contrastive_cnn,1.0858866665488474,0.7623332653784752
+13,adam,simclr,0.1,0.01,2.5e-06,5,32,False,2100,256,False,c_cpp_h_train.h5,c_cpp_h_val.h5,c_cpp_h_test.h5,contrastive_cnn,1.4140322792621642,2.116715229259491
+14,adam,simclr,0.1,0.0001,2.5e-06,5,32,False,2100,256,False,c_cpp_h_train.h5,c_cpp_h_val.h5,c_cpp_h_test.h5,contrastive_cnn,1.044983829964291,0.5245832834393979
