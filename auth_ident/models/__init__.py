@@ -18,6 +18,8 @@ from auth_ident.models.generic_secondary_classifier import GenericSecondaryClass
 from auth_ident.models.random_forest import RandomForestSecondaryClassifier
 from auth_ident.models.k_neighbors import KNeighborSecondaryClassifier
 from auth_ident.models.svm import SVMSecondaryClassifier
+from auth_ident.models.universal_transformer import UniversalTransformer
+from auth_ident.models.transformer import Transformer
 
 model_map = {
     "cnn_lstm": CNNLSTM,
@@ -36,6 +38,8 @@ model_map = {
     "split_lstm": SplitLSTM,
     "split_NN": SplitNN,
     "large_contrastive_cnn": LargeContrastiveCNN,
+    "universal_transformer": UniversalTransformer,
+    "transformer": Transformer,
 
     "random_forest": RandomForestSecondaryClassifier,
     "k_neighbors": KNeighborSecondaryClassifier,

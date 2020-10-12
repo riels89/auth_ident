@@ -1,0 +1,3 @@
+combination,model,k_cross_val,model_params,accuracy
+0,k_neighbors,5,"{'n_jobs': -1, 'algorithm': 'ball_tree', 'weights': 'distance'}",0.24644509886411442
+0,svm,5,{'C': 100},0.2591501893142617

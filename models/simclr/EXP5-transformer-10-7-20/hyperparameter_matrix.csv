@@ -1,0 +1,2 @@
+combination,optimizer,loss,temperature,lr,decay,epochs,batch_size,binary_encoding,max_code_length,embedding_size,BN,model,input_embedding_size,num_heads,residual_dropout,attention_dropout,transformer_depth,dropout_rate,encoder_num,decoder_num,d_model,train_data,val_data,test_data,val_loss,train_loss
+1,adam,simclr,0.005,0.001,2.5e-06,5,32,False,800,128,False,transformer,32,2,0.1,0.1,4,0.1,2,2,128,c_cpp_h_train.h5,c_cpp_h_val.h5,c_cpp_h_test.h5,4.143095970153809,4.142220497131348
