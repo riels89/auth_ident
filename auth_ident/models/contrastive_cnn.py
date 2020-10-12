@@ -123,7 +123,7 @@ class ContrastiveCNN():
                                 activation="relu",
                                 name="non_linearity_2")
 
-        output_embedding = Dense(256, name="output_embedding")
+        output_embedding = Dense(params['input_embedding_size'], name="output_embedding")
 
         non_linearity1 = non_linearity_1(cnn1)
         non_linearity2 = non_linearity_1(cnn2)
