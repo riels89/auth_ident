@@ -46,8 +46,8 @@ class GenericExecute:
         # merge data files to avoid unwanted data combinations
         params['contrastive']['data'] = [(train, val, test) for train, val, test in zip(
             params['contrastive']['train_data'], 
-            params['contrastive']['train_data'],
-            params['contrastive']['train_data'])]
+            params['contrastive']['val_data'],
+            params['contrastive']['test_data'])]
         del params['contrastive']['train_data']
         del params['contrastive']['val_data']
         del params['contrastive']['test_data']
@@ -136,9 +136,9 @@ class GenericExecute:
             contrastive_params (`dict`):
 
                 Contains the parameters for the current contrastive combination
-                
+
             combination (`int`):
-                
+
                 Current contrastive combination.
 
             logger (`python logger`):
