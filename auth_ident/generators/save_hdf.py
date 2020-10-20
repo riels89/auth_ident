@@ -3,6 +3,8 @@ Command line script for processing a directory hierarchy containing Google Code
 Jam submissions to create h5 files that can be read by Pandas.  The columns in
 the resultingpandas dataframes will be
 
+"year" - The year of the contest.
+"round" - The name of the round, prefixed with an integer for easy sorting.
 "username" - The user id of the author.
 "filepath" - The original relative path for the file.
 "file_content" - The full file contents in unicode.
@@ -43,6 +45,7 @@ This script expects that the gcj folders are organized as follows:
 
 import argparse
 import os
+import json
 import numpy as np
 import pandas as pd
 from bs4 import UnicodeDammit
@@ -70,6 +73,8 @@ def make_hdf(gcj_root, new_hdf, keep_repeats, extensions, val_test_split,
     replaced_files = 0
     loaded_files = 0
 
+    contest_dict = get_competition_data()
+
     gcj_root = os.path.normpath(gcj_root)
     for root, dir_names, files in os.walk(gcj_root):
 
@@ -92,6 +97,9 @@ def make_hdf(gcj_root, new_hdf, keep_repeats, extensions, val_test_split,
                 # pull out just the part of the path from constest_id forward
                 local_path = root[len(gcj_root) + 1:]
 
+                contest_id = local_path.split('/')[0]
+                get_competition_data()
+
                 if keep_repeats:
                     submission_key = '/'.join(
                         local_path.split('/')[0:4]) + '/' + file
@@ -105,17 +113,21 @@ def make_hdf(gcj_root, new_hdf, keep_repeats, extensions, val_test_split,
                     unicode = dammit.unicode_markup
 
                     if unicode is not None:
-                        submissions[submission_key] = (local_path.split('/')[1],
-                                                       os.path.join(local_path,
+                        submissions[submission_key] = (contest_dict[contest_id][0], # Year
+                                                       contest_dict[contest_id][1], # Round
+                                                       local_path.split('/')[1], # Name
+                                                       os.path.join(local_path,     # Path
                                                                     file),
-                                                       unicode)
+                                                       unicode)                     # code
                         loaded_files += 1
                         if dammit.contains_replacement_characters:
                             replaced_files += 1
 
-    frame = pd.DataFrame({"username": [v[0] for v in submissions.values()],
-                          "filepath": [v[1] for v in submissions.values()],
-                          "file_content": [v[2] for v in
+    frame = pd.DataFrame({"year": [v[0] for v in submissions.values()],
+                          "round": [v[1] for v in submissions.values()],
+                          "username": [v[2] for v in submissions.values()],
+                          "filepath": [v[3] for v in submissions.values()],
+                          "file_content": [v[4] for v in
                                            submissions.values()]})
 
     if val_test_split > 0:
@@ -152,6 +164,29 @@ def make_hdf(gcj_root, new_hdf, keep_repeats, extensions, val_test_split,
         frame.to_hdf(new_hdf + ".h5", key='df', mode='w')
 
     return file_count, loaded_files, replaced_files
+
+
+def get_competition_data():
+    """ Build a dictionary containing information for each contest id.
+
+    returns: dictionary mapping from contest ids to (year, round)
+    tuples.
+
+    """
+    script_dir = os.path.dirname(__file__)
+    rel_path = "CodeJamMetadata08to17.json"
+    abs_file_path = os.path.join(script_dir, rel_path)
+    with open(abs_file_path) as f:
+        data = json.load(f)
+
+    contest_dict = {}
+
+    for competition in data['competitions']:
+        year = competition['year']
+        for i, round in enumerate(competition['round']):
+            round_str = '{:03d} {}'.format(i,round['desc'])
+            contest_dict[round['contest']] = (year, round_str)
+    return contest_dict
 
 
 class CustomFormatter(argparse.ArgumentDefaultsHelpFormatter,
