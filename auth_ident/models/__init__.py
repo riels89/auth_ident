@@ -20,6 +20,7 @@ from auth_ident.models.k_neighbors import KNeighborSecondaryClassifier
 from auth_ident.models.svm import SVMSecondaryClassifier
 from auth_ident.models.universal_transformer import UniversalTransformer
 from auth_ident.models.transformer import Transformer
+from auth_ident.models.cosknn import CosKNNSecondaryClassifier
 
 model_map = {
     "cnn_lstm": CNNLSTM,
@@ -43,5 +44,6 @@ model_map = {
 
     "random_forest": RandomForestSecondaryClassifier,
     "k_neighbors": KNeighborSecondaryClassifier,
-    "svm": SVMSecondaryClassifier
+    "svm": SVMSecondaryClassifier,
+    "cosknn": CosKNNSecondaryClassifier
 }
