@@ -33,11 +33,19 @@ def map_dataset(dataset_type, params, data_file):
                 data_file=data_file)
 
         elif params['loss'] == "simclr":
-            dataset = datasets.SimCLRDataset(
-                max_code_length=params["max_code_length"],
-                batch_size=params['batch_size'],
-                binary_encoding=params['binary_encoding'],
-                data_file=data_file)
+            if "spm_model_file" in params:
+                dataset = datasets.SimCLRDataset(
+                    max_code_length=params["max_code_length"],
+                    batch_size=params['batch_size'],
+                    data_file=data_file,
+                    encoding_type=params['encoding_type'],
+                    spm_model_file=params['spm_model_file'])
+            else:
+                dataset = datasets.SimCLRDataset(
+                    max_code_length=params["max_code_length"],
+                    batch_size=params['batch_size'],
+                    data_file=data_file,
+                    encoding_type=params['encoding_type'])
 
     elif dataset_type == 'by_line':
         if params['loss'] == 'margin':

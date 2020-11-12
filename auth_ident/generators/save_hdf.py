@@ -45,7 +45,9 @@ import argparse
 import os
 import numpy as np
 import pandas as pd
+import pickle
 from bs4 import UnicodeDammit
+from bpe import Encoder
 
 
 def make_hdf(gcj_root, new_hdf, keep_repeats, extensions, val_test_split,
