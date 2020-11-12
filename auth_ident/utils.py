@@ -33,6 +33,7 @@ def load_encoder(model, params, combination, logger, logdir):
 
 def get_embeddings(params,
                    dataset,
+                   max_authors,
                    k_cross_val,
                    data_file,
                    combination,
@@ -41,6 +42,7 @@ def get_embeddings(params,
                    return_file_indicies=False):
 
     dataset = dataset(crop_length=params["max_code_length"],
+                      max_authors = max_authors,
                       k_cross_val=k_cross_val,
                       data_file=data_file)
     params['dataset'] = dataset

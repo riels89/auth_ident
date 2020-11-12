@@ -9,13 +9,14 @@ class ClosedDatset:
     """
     Code for creating on-the-fly random file pairings.
     """
-    def __init__(self, crop_length, k_cross_val=5, data_file=None):
+    def __init__(self, crop_length, max_authors, k_cross_val=5, data_file=None):
         if (k_cross_val < 2):
             print("k_cross_val ust be greater than 1.")
             exit(1)
 
         self.crop_length = crop_length
         self.k_cross_val = k_cross_val
+        self.max_authors = max_authors
 
         self.rng = np.random.default_rng(1)
 
@@ -74,6 +75,8 @@ class ClosedDatset:
             filter(lambda x: len(x[1]) >= self.k_cross_val,
                    self.files_by_auth_name.items()))
 
+        self.authors_with_k = {author: self.authors_with_k[author] for author in list(self.authors_with_k)[:self.max_authors]}
+
         # Modifies the map s.t. each author has exactly k files
         for k in self.authors_with_k:
             self.authors_with_k[k] = self.rng.choice(self.authors_with_k[k],
@@ -112,6 +115,7 @@ class ClosedDatset:
             X[i] = self.encode_to_one_hot(
                 self.random_crop(files[cross_val_index], self.crop_length, df))
         print("finished dataset")
+        print(f"num_authors {len(self.authors_with_k)}")
         
         if return_file_indicies:
             return X, y, files
