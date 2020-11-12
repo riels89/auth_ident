@@ -40,9 +40,18 @@ def get_embeddings(params,
                    logdir,
                    return_file_indicies=False):
 
-    dataset = dataset(crop_length=params["max_code_length"],
-                      k_cross_val=k_cross_val,
-                      data_file=data_file)
+    if params['encoding_type'] == 'spm':
+        dataset = dataset(crop_length=params["max_code_length"],
+                          k_cross_val=k_cross_val,
+                          data_file=data_file,
+                          encoding_type='spm',
+                          spm_model_file=params['spm_model_file'])
+    else:
+        dataset = dataset(crop_length=params["max_code_length"],
+                          k_cross_val=k_cross_val,
+                          data_file=data_file,
+                          encoding_type=params['encoding_type'])
+
     params['dataset'] = dataset
     if return_file_indicies:
         data, labels, file_indicies = dataset.get_dataset(return_file_indicies=return_file_indicies)

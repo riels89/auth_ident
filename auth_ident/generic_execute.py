@@ -3,6 +3,7 @@ from tensorflow.keras.callbacks import TensorBoard, ModelCheckpoint
 import logging
 from tensorflow.keras.callbacks import LambdaCallback
 from tensorflow.keras import backend as K
+import tensorflow as tf
 from shutil import copy
 from auth_ident import param_mapping
 import argparse
@@ -44,10 +45,18 @@ class GenericExecute:
             f"Training with combinations: {self.combinations}")
 
         # merge data files to avoid unwanted data combinations
-        params['contrastive']['data'] = [(train, val, test) for train, val, test in zip(
-            params['contrastive']['train_data'], 
-            params['contrastive']['val_data'],
-            params['contrastive']['test_data'])]
+        if "spm_model_file" in params['contrastive'].keys():
+            params['contrastive']['data'] = [(train, val, test, spm_model_file) for train, val, test, spm_model_file in zip(
+                params['contrastive']['train_data'], 
+                params['contrastive']['val_data'],
+                params['contrastive']['test_data'],
+                params['contrastive']['spm_model_file'])]
+            del params['contrastive']['spm_model_file']
+        else:
+            params['contrastive']['data'] = [(train, val, test) for train, val, test in zip(
+                params['contrastive']['train_data'], 
+                params['contrastive']['val_data'],
+                params['contrastive']['test_data'])]
         del params['contrastive']['train_data']
         del params['contrastive']['val_data']
         del params['contrastive']['test_data']
@@ -57,7 +66,11 @@ class GenericExecute:
 
         # Unzip data tuple back into orginal train/val/test
         for param in self.contrastive_params:
-            train, val, test = param['data']
+            if len(param['data']) == 4:
+                train, val, test, spm_model_file = param['data']
+                param['spm_model_file'] = spm_model_file
+            else:
+                train, val, test = param['data']
             del param['data']
             param['train_data'] = train
             param['val_data'] = val
@@ -65,6 +78,7 @@ class GenericExecute:
 
         print("contrastive_params:")
         pprint(self.contrastive_params)
+        print(f"NUMBER OF CONTRASTIVE PARAM COMBS: {len(self.contrastive_params)}")
 
         non_model_secondary_params = param_mapping.generate_param_grid(
             params['secondary'])
@@ -124,6 +138,7 @@ class GenericExecute:
 
             self.execute_one(self.contrastive_params[combination], combination,
                              logger)
+            tf.keras.backend.clear_session()
 
         self.output_hyperparameter_metrics(self.logdir)
 

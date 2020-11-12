@@ -2,8 +2,9 @@ import tensorflow.keras as keras
 from tensorflow.keras import layers
 from tensorflow.keras.layers import Dense, Dropout, Concatenate
 from tensorflow.keras.layers import Embedding, TimeDistributed, MaxPool1D
-from tensorflow.keras.layers import LSTM, Conv1D, Flatten, BatchNormalization, Lambda
+from tensorflow.keras.layers import LSTM, Conv1D, Flatten, BatchNormalization, Lambda, Add
 from tensorflow.keras import backend as K
+import tensorflow as tf
 
 
 def euclidean_distance(vects):
@@ -22,12 +23,11 @@ class ContrastiveCNN():
 
         self.name = "contrastive_cnn"
         self.dataset_type = "split"
-        self.input_embedding_size = 32
 
     def create_cnn(self, params):
         input = keras.Input(batch_shape=(params["batch_size"],
-                                         params["max_code_length"] + 2,
-                                         self.input_embedding_size),
+                                         params["max_code_length"],
+                                         params["input_embedding_size"]),
                             name='place_holder_input')
 
         conv = Conv1D(256,
@@ -95,20 +95,34 @@ class ContrastiveCNN():
 
         input1 = keras.Input(
             batch_shape=(params["batch_size"],
-                         params["max_code_length"] + 2,
-                         params['dataset'].len_encoding),
+                         params["max_code_length"]),
             name='input_1')
         input2 = keras.Input(
             batch_shape=(params["batch_size"],
-                         params["max_code_length"] + 2,
-                         params['dataset'].len_encoding),
+                         params["max_code_length"]),
             name='input_2')
 
-        embedding = Dense(self.input_embedding_size, name='input_embedding')
-        embedding = TimeDistributed(embedding)
-
+        #embedding = Dense(self.input_embedding_size, name='input_embedding')
+        #embedding = TimeDistributed(embedding)
+        embedding = Embedding(params['dataset'].len_encoding,
+                              params['input_embedding_size'],
+                              input_length=params["max_code_length"])
         embedding1 = embedding(input1)
         embedding2 = embedding(input2)
+        
+        if params["bias"]:
+            print("Adding bias")
+            bias = Embedding(params['dataset'].len_encoding,
+                             1,
+                             input_length=params["max_code_length"],
+                             embeddings_initializer="zeros",
+                             name="embeddings_bias")
+            bias1 = bias(input1)
+            bias2 = bias(input2)
+            add = Add()
+
+            embedding1 = add([embedding1, bias1])
+            embedding2 = add([embedding2, bias2])
 
         cnn = self.create_cnn(params)
         cnn.summary()
@@ -123,7 +137,7 @@ class ContrastiveCNN():
                                 activation="relu",
                                 name="non_linearity_2")
 
-        output_embedding = Dense(params['input_embedding_size'], name="output_embedding")
+        output_embedding = Dense(params['embedding_size'], name="output_embedding")
 
         non_linearity1 = non_linearity_1(cnn1)
         non_linearity2 = non_linearity_1(cnn2)
