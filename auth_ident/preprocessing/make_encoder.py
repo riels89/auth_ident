@@ -74,6 +74,8 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
     if args.raw_hdf is not None and args.by_line is not None:
+        print(f"ByLine: {args.by_line}")
+        print(f"ByLine type: {type(args.by_line)}")
         make_text_file(args.raw_hdf, args.by_line, args.text_file)
 
     args = vars(args)
