@@ -1,0 +1,35 @@
+{
+
+"contrastive": {
+    "optimizer": ["adam"],
+    "loss": ["simclr"],
+    "temperature": [0.005, 0.01],
+    "lr": [0.001, 0.0001],
+    "decay": [0.0000025],
+    "epochs": [15],
+    "batch_size": [512],
+    "max_code_length": [800],
+    "embedding_size": [256],
+    "encoding_type": ["spm"],
+    "spm_model_file": ["data/loaded/spm_models/c_cpp_h_program.model", "data/loaded/spm_models/c_cpp_h_by_line.model"],
+    "BN": [false],
+    "input_embedding_size": [256],
+
+    "train_data":["encoded_data/c_cpp_h_program_a0.5_l-1_train.h5", "encoded_data/c_cpp_h_by_line_a0.5_l-1_train.h5"],
+    "val_data":["encoded_data/c_cpp_h_program_a0.5_l-1_val.h5", "encoded_data/c_cpp_h_by_line_a0.5_l-1_val.h5"],
+    "test_data":["encoded_data/c_cpp_h_program_a0.5_l-1_test.h5", "encoded_data/c_cpp_h_by_line_a0.5_l-1_test.h5"],
+
+    "model": ["contrastive_cnn"]
+  },
+
+  "secondary": {
+    "model": ["k_neighbors"],
+    "model_params": [[{
+	"n_jobs": [-1],
+	"weights": ["uniform"]
+    } ]],
+    "k_cross_val": [5]
+  }
+
+}
+

@@ -1,0 +1,45 @@
+{
+
+"contrastive": {
+    "optimizer": ["adam"],
+    "loss": ["simclr"],
+    "temperature": [0.005],
+    "lr": [0.0001],
+    "decay": [0.0000025],
+    "epochs": [15],
+    "batch_size": [512],
+    "max_code_length": [800],
+    "embedding_size": [256],
+    "encoding_type": ["spm"],
+    "spm_model_file": ["data/loaded/spm_models/c_cpp_h_program_cc9995_vs128.model", "data/loaded/spm_models/c_cpp_h_program_cc9995_vs256.model", 
+	    	       "data/loaded/spm_models/c_cpp_h_program_cc9995_vs512.model", "data/loaded/spm_models/c_cpp_h_program_cc9995_vs1024.model",
+		       "data/loaded/spm_models/c_cpp_h_program_cc9995_vs8000.model"],
+    "BN": [false],
+    "input_embedding_size": [256],
+    "bias": [false],
+
+    "train_data":["encoded_data/c_cpp_h_program_cc9995_vs128_a0.5_l-1_train.h5", "encoded_data/c_cpp_h_program_cc9995_vs256_a0.5_l-1_train.h5",
+    		   "encoded_data/c_cpp_h_program_cc9995_vs512_a0.5_l-1_train.h5", "encoded_data/c_cpp_h_program_cc9995_vs1024_a0.5_l-1_train.h5",
+    		   "encoded_data/c_cpp_h_program_cc9995_vs8000_a0.5_l-1_train.h5"],
+    "val_data":["encoded_data/c_cpp_h_program_cc9995_vs128_a0.5_l-1_val.h5", "encoded_data/c_cpp_h_program_cc9995_vs256_a0.5_l-1_val.h5",
+    		   "encoded_data/c_cpp_h_program_cc9995_vs512_a0.5_l-1_val.h5", "encoded_data/c_cpp_h_program_cc9995_vs1024_a0.5_l-1_val.h5",
+    		   "encoded_data/c_cpp_h_program_cc9995_vs8000_a0.5_l-1_val.h5"],
+    "test_data":["encoded_data/c_cpp_h_program_cc9995_vs128_a0.5_l-1_test.h5", "encoded_data/c_cpp_h_program_cc9995_vs256_a0.5_l-1_test.h5",
+    		   "encoded_data/c_cpp_h_program_cc9995_vs512_a0.5_l-1_test.h5", "encoded_data/c_cpp_h_program_cc9995_vs1024_a0.5_l-1_test.h5",
+    		   "encoded_data/c_cpp_h_program_cc9995_vs8000_a0.5_l-1_test.h5"],
+
+    "model": ["contrastive_cnn"]
+  },
+
+  "secondary": {
+    "model": ["k_neighbors"],
+    "model_params": [[{
+	"n_jobs": [-1],
+	"weights": ["uniform", "distance"],
+	"n_neighbors": [5, 1]
+    } ]],
+    "k_cross_val": [5]
+  }
+
+}
+

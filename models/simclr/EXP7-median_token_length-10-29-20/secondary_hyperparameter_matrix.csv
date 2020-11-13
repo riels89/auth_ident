@@ -1,0 +1,9 @@
+combination,model,k_cross_val,model_params,accuracy
+0,k_neighbors,5,"{'n_jobs': -1, 'weights': 'uniform'}",0.5509465713083719
+1,k_neighbors,5,"{'n_jobs': -1, 'weights': 'uniform'}",0.5467395877156079
+2,k_neighbors,5,"{'n_jobs': -1, 'weights': 'uniform'}",0.5943626419856962
+3,k_neighbors,5,"{'n_jobs': -1, 'weights': 'uniform'}",0.5597812368531763
+4,k_neighbors,5,"{'n_jobs': -1, 'weights': 'uniform'}",0.5336137989061843
+5,k_neighbors,5,"{'n_jobs': -1, 'weights': 'uniform'}",0.5430374421539755
+6,k_neighbors,5,"{'n_jobs': -1, 'weights': 'uniform'}",0.5982330668910392
+7,k_neighbors,5,"{'n_jobs': -1, 'weights': 'uniform'}",0.5770298695835085
