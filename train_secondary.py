@@ -59,6 +59,7 @@ class TrainSecondaryClassifier(GenericExecute):
                 train_data, train_labels = get_embeddings(
                     contrastive_params,
                     self.model.dataset,
+                    params["max_authors"],
                     params['k_cross_val'],
                     data_file=data_file,
                     combination=combination,

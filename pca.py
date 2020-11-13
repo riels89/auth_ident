@@ -2,11 +2,12 @@ from auth_ident.datasets import ClosedDatset
 from auth_ident import GenericExecute, param_mapping
 from auth_ident.utils import get_embeddings
 from sklearn.decomposition import PCA
+from sklearn.decomposition import KernelPCA
 import seaborn as sns
+import matplotlib.pyplot as plt
 import os
 import numpy as np
 import pandas as pd
-
 
 class AuthorPCA(GenericExecute):
 
@@ -14,6 +15,7 @@ class AuthorPCA(GenericExecute):
 
         train_data, train_labels, file_indicies = get_embeddings(contrastive_params,
                                                                  ClosedDatset,
+                                                                 self.num_authors,
                                                                  self.num_files,
                                                                  data_file=self.data_file,
                                                                  combination=combination,
@@ -44,19 +46,30 @@ class AuthorPCA(GenericExecute):
         print(f"explained variance: {pca.explained_variance_ratio_}")
 
         data = {
-            "component_0": components[:, 0],
-            "component_1": components[:, 1]
+            "PCA Component 0": components[:, 0],
+            "PCA Component 1": components[:, 1]
         }
 
         plot = sns.scatterplot(data=data,
-                               x="component_0",
-                               y="component_1",
+                               x="PCA Component 0",
+                               y="PCA Component 1",
                                hue=labels,
                                palette="tab10")
+        plot.set_xlabel("PCA Component 0", fontsize=15)
+        plot.set_ylabel("PCA Component 1", fontsize=15)
+        plot.set_title("PCA of Trained Projections", fontsize=15)
+        # plot.set_title("PCA of Untrained Projections", fontsize=15)
+
+        labels = [f"Author {i}" for i in range(self.num_authors)]
+        plot.legend(loc="upper left", labels=labels, fontsize=10)
+        #plot.legend_.remove()
+
+
         fig = plot.get_figure()
         fig.savefig(
             os.path.join(self.logdir, "combination-" + str(combination),
-                         "pca.png"))
+                         "pca.png"),
+            bbox_inches='tight')
         print(filepaths)
 
     def make_arg_parser(self):
