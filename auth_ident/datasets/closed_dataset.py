@@ -3,13 +3,21 @@ import pandas as pd
 import numpy as np
 import tensorflow as tf
 from time import perf_counter
+import sentencepiece as spm
 
 
 class ClosedDatset:
     """
     Code for creating on-the-fly random file pairings.
     """
-    def __init__(self, crop_length, max_authors, k_cross_val=5, data_file=None):
+    def __init__(self,
+                 crop_length,
+                 max_authors,
+                 k_cross_val=5,
+                 data_file=None,
+                 encoding_type='spm',
+                 spm_model_file=None):
+
         if (k_cross_val < 2):
             print("k_cross_val ust be greater than 1.")
             exit(1)
@@ -25,8 +33,15 @@ class ClosedDatset:
         self.start = "<start>"
         self.end = "<end>"
         chars_to_encode = [self.start, self.end] + list(chars_to_encode)
-        self.len_encoding = len(chars_to_encode)
-        chars_index = [i for i in range(self.len_encoding)]
+
+        if encoding_type == "spm":
+            sp = spm.SentencePieceProcessor(model_file=spm_model_file)
+            self.len_encoding = sp.vocab_size()
+        else:
+            self.len_encoding = len(chars_to_encode) + 1
+
+        chars_index = [i for i in range(len(chars_to_encode))]
+
         char_map = tf.lookup.KeyValueTensorInitializer(chars_to_encode,
                                                        chars_index,
                                                        key_dtype=tf.string,
@@ -107,16 +122,17 @@ class ClosedDatset:
         # crop = np.vectorize(self.random_crop)
         # files = crop(files, self.crop_length, df)
         print("encoding")
-        X = np.empty(
-            [cross_val_indicies.shape[0], self.crop_length + 2, self.len_encoding])
+        X = np.zeros([cross_val_indicies.shape[0], self.crop_length])
         print(f"len encoding: {cross_val_indicies.shape}")
         for i, cross_val_index in enumerate(cross_val_indicies):
             print(i, end="\r")
-            X[i] = self.encode_to_one_hot(
-                self.random_crop(files[cross_val_index], self.crop_length, df))
+            cropped = self.random_crop(files[cross_val_index],
+                                       self.crop_length, df)
+            X[i, :len(cropped)] = cropped
         print("finished dataset")
+
         print(f"num_authors {len(self.authors_with_k)}")
-        
+
         if return_file_indicies:
             return X, y, files
         else:
@@ -132,7 +148,8 @@ class ClosedDatset:
         if len(contents) > crop_length:
             start = self.rng.integers(0, len(contents) - crop_length + 1)
             contents = contents[start:start + crop_length]
-        return contents.ljust(crop_length, '\0')
+        #return contents.ljust(crop_length, '\0')
+        return contents
 
     def encode_to_one_hot(self, code_to_embed):
         reshaped = tf.concat(

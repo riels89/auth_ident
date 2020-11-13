@@ -48,6 +48,9 @@ class SimCLRGen:
 
         """
         index = 0  # index into the current batch
+        input_1 = np.zeros((self.batch_size, self.crop_length), dtype=np.int32)
+        input_2 = np.zeros((self.batch_size, self.crop_length), dtype=np.int32)
+
         for _ in range(self.samples_per_epoch):
             if index == 0:
                 # build the entire batch...
@@ -56,19 +59,20 @@ class SimCLRGen:
                                             replace=False,
                                             p=self.author_probs,
                                             shuffle=False)
-                str_type = np.dtype([('crop', np.unicode_, self.crop_length)])
-                input_1 = np.empty((self.batch_size, ), dtype=str_type['crop'])
-                input_2 = np.empty((self.batch_size, ), dtype=str_type['crop'])
 
                 for i, auth in enumerate(rand_auth):
                     rand_pair = self.rng.choice(self.files_by_auth_name[auth],
                                                 2,
                                                 replace=False,
                                                 shuffle=False)
-                    input_1[i] = self.random_crop(rand_pair[0],
-                                                  self.crop_length)
-                    input_2[i] = self.random_crop(rand_pair[1],
-                                                  self.crop_length)
+
+                    cropped = self.random_crop(rand_pair[0], self.crop_length)
+                    input_1[i, :len(cropped)] = cropped
+                    input_1[i, len(cropped):] = 0
+
+                    cropped = self.random_crop(rand_pair[1], self.crop_length)
+                    input_2[i, :len(cropped)] = cropped
+                    input_2[i, len(cropped):] = 0
 
             yield ({'input_1': input_1[index], 'input_2': input_2[index]}, 1)
             index = (index + 1) % self.batch_size
@@ -80,11 +84,11 @@ class SimCLRGen:
         file will be returned.
         """
 
-        contents = self.dataframe['file_content'][file_indx]
+        contents = self.dataframe['file_content'][file_indx].numpy()
         if len(contents) > crop_length:
             start = self.rng.integers(0, len(contents) - crop_length + 1)
             contents = contents[start:start + crop_length]
-        return contents.ljust(crop_length, '\0')
+        return contents
 
 
 if __name__ == "__main__":

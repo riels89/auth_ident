@@ -1,18 +1,28 @@
 import pandas as pd
 import tensorflow as tf
+import os
 
 from auth_ident.preprocessing import load_data
 from auth_ident.generators import PairGen
 import auth_ident
+from tensorflow.keras.layers.experimental.preprocessing import TextVectorization
+from bpe import Encoder
+import pickle
 
 
 class SplitDataset:
     def __init__(self,
                  max_code_length,
                  batch_size,
-                 binary_encoding=False,
+                 encoding_type='bpe',
                  flip_labels=False,
-                 language=None):
+                 language='python'):
+        
+        self.max_code_length = max_code_length
+        self.batch_size = batch_size
+        self.encoding_type = encoding_type
+        self.flip_labels = flip_labels
+
         print("\nIn INIT\n", flush=True)
         chars_to_encode = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM\n\r\t " + r"1234567890-=!@#$%^&*()_+[]{}|;':\",./<>?"
         self.start = "<start>"
@@ -20,15 +30,6 @@ class SplitDataset:
         chars_to_encode = [self.start, self.end] + list(chars_to_encode)
         self.len_encoding = len(chars_to_encode)
         chars_index = [i for i in range(self.len_encoding)]
-        self.binary_encoding_len = 8
-
-        self.binary_encoding = binary_encoding
-        if binary_encoding:
-            self.len_encoding = self.binary_encoding_len
-
-        self.language = language
-        if language is None:
-            self.language = "python"
 
         char_map = tf.lookup.KeyValueTensorInitializer(chars_to_encode,
                                                        chars_index,
@@ -37,12 +38,9 @@ class SplitDataset:
         self.table = tf.lookup.StaticVocabularyTable(char_map,
                                                      num_oov_buckets=1)
 
-        self.max_code_length = max_code_length
-        self.batch_size = batch_size
+        pickleFile = open(os.path.join('data/loaded/encoders', language + "_encoder.pkl"), 'rb')
+        self.encoder = pickle.load(pickleFile)
 
-        self.bits = tf.constant((128, 64, 32, 16, 8, 4, 2, 1), dtype=tf.uint8)
-
-        self.flip_labels = flip_labels
 
     def encode_to_one_hot(self, code_to_embed):
         reshaped = tf.concat(
@@ -60,18 +58,10 @@ class SplitDataset:
 
         return encoding
 
-    def encode_to_binary(self, code_to_embed):
-        reshaped = tf.strings.unicode_split(code_to_embed, 'UTF-8')
-        encoding = tf.cast(self.table.lookup(reshaped) + 1, tf.uint8)
-        unpacked = tf.reshape(tf.math.floormod(
-            tf.cast(encoding[:, None] // self.bits, tf.int32), 2),
-            shape=(-1, self.binary_encoding_len))
-
-        code_length = tf.shape(unpacked)[0]
-        padding = [[0, self.max_code_length - code_length], [0, 0]]
-        encoding = tf.pad(unpacked, padding, 'CONSTANT', constant_values=1)
-
-        return encoding
+    def bpe_encode(self, code_to_encode):
+        
+        lines = [line.splt('\n') for line in code_to_encode]
+        self.encoder.transform(lines)
 
     def flip_labels(self, files, label):
         if label == 0:
@@ -81,10 +71,12 @@ class SplitDataset:
         return files, label
 
     def create_dataset(self, language, split):
-        def encode_binary(files, label):
-            files["input_1"] = self.encode_to_binary(files["input_1"])
-            files["input_2"] = self.encode_to_binary(files["input_2"])
-            return files, label
+
+        def bpe_encode_both(files, labels):
+            files['input_1'] = self.bpe_encode(files['input_1'])
+            files['input_2'] = self.bpe_encode(files['input_2'])
+
+            return files, labels
 
         def encode_one_hot(files, label):
             files["input_1"] = self.encode_to_one_hot(files["input_1"])
@@ -96,6 +88,15 @@ class SplitDataset:
                 (self.max_code_length + 2, self.len_encoding))
             files["input_2"].set_shape(
                 (self.max_code_length + 2, self.len_encoding))
+            label = label
+            return files, label
+
+        def set_batch_shape(files, label):
+             
+            files["input_1"].set_shape(
+                (None, self.max_code_length + 2, self.len_encoding))
+            files["input_2"].set_shape(
+                (None, self.max_code_length + 2, self.len_encoding))
             label = label
             return files, label
 
@@ -135,13 +136,16 @@ class SplitDataset:
 
         print("Data Generated.", flush=True)
 
-        #dataset = dataset.shuffle(4096)
         dataset = dataset.repeat()
 
-        if self.binary_encoding:
-            dataset = dataset.map(encode_binary)
-        else:
+        if self.encoding == 'bpe':
+            dataset = dataset.batch(self.batch_size)
+            dataset = dataset.map(self.bpe_encode, tf.data.experimental.AUTOTUNE)
+            dataset = dataset.map(set_batch_shape, tf.data.experimental.AUTOTUNE)
+        elif self.encoding == 'one_hot':
             dataset = dataset.map(encode_one_hot)
+            dataset = dataset.map(set_shape, tf.data.experimental.AUTOTUNE)
+            dataset = dataset.batch(self.batch_size)
 
         if self.flip_labels:
             print(
@@ -149,9 +153,6 @@ class SplitDataset:
             )
             exit(1)
 
-        dataset = dataset.map(set_shape, 120)
-
-        dataset = dataset.batch(self.batch_size)
         dataset = dataset.prefetch(tf.data.experimental.AUTOTUNE)
 
         return dataset
