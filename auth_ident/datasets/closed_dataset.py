@@ -126,7 +126,7 @@ class ClosedDatset:
         print(f"len encoding: {cross_val_indicies.shape}")
         for i, cross_val_index in enumerate(cross_val_indicies):
             print(i, end="\r")
-            cropped = self.random_crop(files[cross_val_index],
+            cropped = self.crop(files[cross_val_index],
                                        self.crop_length, df)
             X[i, :len(cropped)] = cropped
         print("finished dataset")
@@ -138,17 +138,15 @@ class ClosedDatset:
         else:
             return X, y
 
-    def random_crop(self, file_indx, crop_length, df):
+    def crop(self, file_indx, crop_length, df):
         """
-        Return a random crop from the file at the provided index. If
+        Return a crop from the file at the provided index. If
         crop_length is longer than the length of the file, then the entire
         file will be returned.
         """
         contents = df['file_content'][file_indx]
         if len(contents) > crop_length:
-            start = self.rng.integers(0, len(contents) - crop_length + 1)
-            contents = contents[start:start + crop_length]
-        #return contents.ljust(crop_length, '\0')
+            contents = contents[:crop_length]
         return contents
 
     def encode_to_one_hot(self, code_to_embed):

@@ -66,7 +66,7 @@ class SimCLRGen:
                                                 replace=False,
                                                 shuffle=False)
 
-                    cropped = self.random_crop(rand_pair[0], self.crop_length)
+                    cropped = self.crop(rand_pair[0], self.crop_length)
                     input_1[i, :len(cropped)] = cropped
                     input_1[i, len(cropped):] = 0
 
@@ -77,17 +77,16 @@ class SimCLRGen:
             yield ({'input_1': input_1[index], 'input_2': input_2[index]}, 1)
             index = (index + 1) % self.batch_size
 
-    def random_crop(self, file_indx, crop_length):
+    def crop(self, file_indx, crop_length):
         """
-        Return a random crop from the file at the provided index. If
+        Return a crop from the file at the provided index. If
         crop_length is longer than the length of the file, then the entire
         file will be returned.
         """
 
         contents = self.dataframe['file_content'][file_indx].numpy()
         if len(contents) > crop_length:
-            start = self.rng.integers(0, len(contents) - crop_length + 1)
-            contents = contents[start:start + crop_length]
+            contents = contents[:crop_length]
         return contents
 
 
