@@ -76,7 +76,11 @@ class SimCLRLoss():
         # METHOD 1
         # get actual batch_size and compare with given batch_size
         # if different recompute neg_mask
-        b = int(y_pred.shape[0] / 2)
+        if y_pred.shape[0] is not None:
+            b = int(y_pred.shape[0] / 2)
+        else:
+            b = self.batch_size
+        print(f"BATCH_SIZE {b}")
         y_norm = tf.math.l2_normalize(y_pred, axis=1)
 
         if self.method == 1:

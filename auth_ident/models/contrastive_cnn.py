@@ -25,7 +25,7 @@ class ContrastiveCNN():
         self.dataset_type = "split"
 
     def create_cnn(self, params):
-        input = keras.Input(batch_shape=(params["batch_size"],
+        input = keras.Input(batch_shape=(None,
                                          params["max_code_length"],
                                          params["input_embedding_size"]),
                             name='place_holder_input')
@@ -94,11 +94,11 @@ class ContrastiveCNN():
     def create_model(self, params, index, logger):
 
         input1 = keras.Input(
-            batch_shape=(params["batch_size"],
+            batch_shape=(None,
                          params["max_code_length"]),
             name='input_1')
         input2 = keras.Input(
-            batch_shape=(params["batch_size"],
+            batch_shape=(None,
                          params["max_code_length"]),
             name='input_2')
 
