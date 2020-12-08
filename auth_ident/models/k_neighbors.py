@@ -12,8 +12,8 @@ class KNeighborSecondaryClassifier(GenericSecondaryClassifier):
 
     Sk-learn KNeighborsClassifier wrapper.
     """
-    def __init__(self, params, combination, logger):
-        super().__init__(params, combination, logger)
+    def __init__(self, params, combination, logger, logdir):
+        super().__init__(params, combination, logger, logdir)
 
         self.name = "k_nearest_neighbor"
         self.dataset = ClosedDatset

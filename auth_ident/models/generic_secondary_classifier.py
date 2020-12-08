@@ -3,7 +3,7 @@ import pickle
 
 
 class GenericSecondaryClassifier():
-    def __init__(self, params=None, combination=None, logger=None):
+    def __init__(self, params=None, combination=None, logger=None, logdir=None):
         """
         Creates a new SecondaryClassifier:
 
@@ -21,12 +21,17 @@ class GenericSecondaryClassifier():
             logger (`python logger`):
 
                 Logger for this model
+
+            logdir ('str'):
+                
+                Logging directory
         """
         assert logger is not None, "must give logger param"
 
         self.params = params
         self.combination = combination
         self.logger = logger
+        self.logdir = logdir
 
         self.name = None
         self.dataset = None

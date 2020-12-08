@@ -12,8 +12,8 @@ class SVMSecondaryClassifier(GenericSecondaryClassifier):
 
     Sk-learn SGDClassifier wrapper.
     """
-    def __init__(self, params, combination, logger):
-        super().__init__(params, combination, logger)
+    def __init__(self, params, combination, logger, logdir):
+        super().__init__(params, combination, logger, logdir)
 
         self.name = "svm"
         self.dataset = ClosedDatset
