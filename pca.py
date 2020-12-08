@@ -17,6 +17,7 @@ class AuthorPCA(GenericExecute):
                                                                  ClosedDatset,
                                                                  self.num_authors,
                                                                  self.num_files,
+                                                                 "output_embedding",
                                                                  data_file=self.data_file,
                                                                  combination=combination,
                                                                  logger=logger,
@@ -32,14 +33,19 @@ class AuthorPCA(GenericExecute):
             (self.num_authors * self.num_files, train_data.shape[1]))
         labels = np.empty((self.num_authors * self.num_files), dtype=np.int16)
         filepaths = np.empty((self.num_authors * self.num_files), dtype=object)
-        for i in range(self.num_authors):
+        for i in range(self.num_files):
             # n_authors_slice = slice(i * self.num_authors, (i + 1) * self.num_authors)
             n_authors_per_split_slice = slice(i * authors_per_split, self.num_authors + i * authors_per_split)
-            k_files_slice = slice(i * self.num_files, (i + 1) * self.num_files)
+            k_files_slice = slice(i * self.num_authors, (i + 1) * self.num_authors)
 
             files[k_files_slice] = train_data[n_authors_per_split_slice]
             labels[k_files_slice] = train_labels[n_authors_per_split_slice]
             filepaths[k_files_slice] = raw_data['filepath'][file_indicies[k_files_slice]].values
+
+        labels = np.array([f"Author {i}" for i in labels])
+        print(files.shape)
+        print(labels.shape)
+
 
         pca = PCA(n_components=min(labels.shape[0], train_data.shape[1]))
         components = pca.fit_transform(files)
@@ -54,16 +60,16 @@ class AuthorPCA(GenericExecute):
                                x="PCA Component 0",
                                y="PCA Component 1",
                                hue=labels,
+                               style=labels,
+                               s=100,
                                palette="tab10")
         plot.set_xlabel("PCA Component 0", fontsize=15)
         plot.set_ylabel("PCA Component 1", fontsize=15)
         plot.set_title("PCA of Trained Projections", fontsize=15)
-        # plot.set_title("PCA of Untrained Projections", fontsize=15)
+        #plot.set_title("PCA of Untrained Projections", fontsize=15)
 
-        labels = [f"Author {i}" for i in range(self.num_authors)]
-        plot.legend(loc="upper left", labels=labels, fontsize=10)
+        plot.legend(loc="upper left", fontsize=12)
         #plot.legend_.remove()
-
 
         fig = plot.get_figure()
         fig.savefig(
