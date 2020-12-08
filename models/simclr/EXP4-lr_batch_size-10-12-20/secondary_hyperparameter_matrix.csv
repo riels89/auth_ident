@@ -1,0 +1,18 @@
+combination,model,k_cross_val,model_params,accuracy
+0,k_neighbors,5,"{'n_jobs': -1, 'weights': 'distance'}",0.0004206983592763989
+1,k_neighbors,5,"{'n_jobs': -1, 'weights': 'distance'}",0.0004206983592763989
+2,k_neighbors,5,"{'n_jobs': -1, 'weights': 'distance'}",0.0004206983592763989
+3,k_neighbors,5,"{'n_jobs': -1, 'weights': 'distance'}",0.0004206983592763989
+4,k_neighbors,5,"{'n_jobs': -1, 'weights': 'distance'}",0.0004206983592763989
+5,k_neighbors,5,"{'n_jobs': -1, 'weights': 'distance'}",0.0004206983592763989
+6,k_neighbors,5,"{'n_jobs': -1, 'weights': 'distance'}",0.012200252419015569
+7,k_neighbors,5,"{'n_jobs': -1, 'weights': 'distance'}",0.5013041649137568
+8,k_neighbors,5,"{'n_jobs': -1, 'weights': 'distance'}",0.6053007993268826
+9,k_neighbors,5,"{'n_jobs': -1, 'weights': 'distance'}",0.6475389145982329
+10,k_neighbors,5,"{'n_jobs': -1, 'weights': 'distance'}",0.6507362221287336
+11,k_neighbors,5,"{'n_jobs': -1, 'weights': 'distance'}",0.6748843079511989
+12,k_neighbors,5,"{'n_jobs': -1, 'weights': 'distance'}",0.6258308792595709
+13,k_neighbors,5,"{'n_jobs': -1, 'weights': 'distance'}",0.6501472444257468
+14,k_neighbors,5,"{'n_jobs': -1, 'weights': 'distance'}",0.6488010096760622
+15,k_neighbors,5,"{'n_jobs': -1, 'weights': 'distance'}",0.6661337820782499
+11,svm,5,{'C': 100},0.7336979385780396

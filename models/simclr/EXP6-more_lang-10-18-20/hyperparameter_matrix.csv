@@ -1,0 +1,4 @@
+combination,optimizer,loss,temperature,lr,decay,epochs,batch_size,binary_encoding,max_code_length,embedding_size,BN,model,train_data,val_data,test_data,val_loss,train_loss
+0,adam,simclr,0.005,0.01,2.5e-06,10,1024,False,1200,256,False,contrastive_cnn,c_cpp_train.h5,c_cpp_val.h5,c_cpp_test.h5,3.035159111022949,2.0747711658477783
+1,adam,simclr,0.005,0.01,2.5e-06,10,1024,False,1200,256,False,contrastive_cnn,java_train.h5,java_val.h5,java_test.h5,3.796056032180786,2.699620008468628
+2,adam,simclr,0.005,0.01,2.5e-06,10,1024,False,1200,256,False,contrastive_cnn,python_train.h5,python_val.h5,python_test.h5,4.4657464027404785,5.024431228637695

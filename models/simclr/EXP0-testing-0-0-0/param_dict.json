@@ -3,34 +3,55 @@
 "contrastive": {
     "optimizer": ["adam"],
     "loss": ["simclr"],
-    "temperature": [1.0],
+    "temperature": [0.0005],
     "lr": [0.001],
+    "clip": [1.0],
     "decay": [0.0000025],
-    "epochs": [5, 3],
-    "batch_size": [32],
+    "epochs": [10],
+    "batch_size": [1900],
     "binary_encoding": [false],
-    "max_code_length": [2100],
+    "max_code_length": [1200],
     "embedding_size": [256],
     "BN": [false],
+    "input_embedding_size": [32],
+    "encoding_type": ["char"],
+    "spm_model_file": ["data/organized_hdfs/spm_models/c_cpp_h_by_line_cc9995_vs1024", "data/organized_hdfs/spm_models/c_cpp_h_by_line_cc9995_vs8000.model","data/organized_hdfs/spm_models/c_cpp_h_by_line_cc9995_vs1024"],
+    "bias": [false],
+    "max_authors": [1600],
 
-    "train_data":["c_cpp_h_train.h5"],
-    "val_data":["c_cpp_h_val.h5"],
-    "test_data":["c_cpp_h_test.h5"],
+    "train_data":["../loaded/char_encoded_data/char_encoding_train.h5", "encoded_data/c_cpp_h_by_line_cc9995_vs8000_a0.5_l-1_train.h5", "python_train.h5"],
+    "val_data":["../loaded/char_encoded_data/char_encoding_val.h5", "encoded_data/c_cpp_h_by_line_cc9995_vs1024_a0.5_l-1_val.h5", "python_val.h5"],
+    "test_data":["c_cpp_test.h5", "java_test.h5", "python_test.h5"],
 
     "model": ["contrastive_cnn"]
   },
 
   "secondary": {
-    "model": ["random_forest", "svm", "k_neighbors"],
+    "model": ["cosknn", "k_neighbors", "svm", "end_to_end_mlp"],
     "model_params": [[{
-	"n_jobs": [-1]
+	"n_neighbors": [5, 4, 1],
+	"output_layer": ["output_embedding"]
     },{
-	
+	"n_jobs": [-1],
+	"weights": ["distance"],
+	"algorithm": ["brute"],
+	"n_neighbors": [5, 4, 1],
+	"output_layer": ["output_embedding"]
     },{
-	"n_jobs": [-1]
+	"C": [100],
+	"output_layer": ["output_embedding"]
+    },{
+        "epochs": [150],
+        "loss": ["cross_entropy"],
+        "optimizer": ["adam"],
+        "lr": [0.001],
+        "batch_size": [128],
+	"output_layer": ["non_linearity_2"]
     }
-    ]],
-    "k_cross_val": [5]
+	]],
+
+    "k_cross_val": [9, 7, 5, 2],
+    "max_authors": [1600]
   }
 
 }

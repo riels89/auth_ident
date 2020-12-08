@@ -1,0 +1,49 @@
+combination,model,k_cross_val,max_authors,model_params,accuracy
+0,k_neighbors,9,1261,"{'n_jobs': -1, 'weights': 'distance', 'n_neighbors': 5}",0.7721385144065556
+0,k_neighbors,9,1261,"{'n_jobs': -1, 'weights': 'distance', 'n_neighbors': 4}",0.7832408141686492
+0,k_neighbors,9,1261,"{'n_jobs': -1, 'weights': 'distance', 'n_neighbors': 1}",0.7953123623226716
+0,k_neighbors,7,1261,"{'n_jobs': -1, 'weights': 'distance', 'n_neighbors': 5}",0.7554095389146935
+0,k_neighbors,7,1261,"{'n_jobs': -1, 'weights': 'distance', 'n_neighbors': 4}",0.7683244590461085
+0,k_neighbors,7,1261,"{'n_jobs': -1, 'weights': 'distance', 'n_neighbors': 1}",0.7866772402854877
+0,k_neighbors,5,1261,"{'n_jobs': -1, 'weights': 'distance', 'n_neighbors': 5}",0.7226011102299763
+0,k_neighbors,5,1261,"{'n_jobs': -1, 'weights': 'distance', 'n_neighbors': 4}",0.734496431403648
+0,k_neighbors,5,1261,"{'n_jobs': -1, 'weights': 'distance', 'n_neighbors': 1}",0.7546391752577319
+0,k_neighbors,2,1261,"{'n_jobs': -1, 'weights': 'distance', 'n_neighbors': 5}",0.6256938937351308
+0,k_neighbors,2,1261,"{'n_jobs': -1, 'weights': 'distance', 'n_neighbors': 4}",0.6256938937351308
+0,k_neighbors,2,1261,"{'n_jobs': -1, 'weights': 'distance', 'n_neighbors': 1}",0.6256938937351308
+0,svm,9,1261,{'C': 100},0.8116133580051105
+0,svm,7,1261,{'C': 100},0.8023110909708847
+0,svm,5,1261,{'C': 100},0.7711340206185566
+0,svm,2,1261,{'C': 100},0.6256938937351308
+1,k_neighbors,9,1261,"{'n_jobs': -1, 'weights': 'distance', 'n_neighbors': 5}",0.7190980711763109
+1,k_neighbors,9,1261,"{'n_jobs': -1, 'weights': 'distance', 'n_neighbors': 4}",0.725889703884814
+1,k_neighbors,9,1261,"{'n_jobs': -1, 'weights': 'distance', 'n_neighbors': 1}",0.7356696549850584
+1,k_neighbors,7,1261,"{'n_jobs': -1, 'weights': 'distance', 'n_neighbors': 5}",0.6544794188861985
+1,k_neighbors,7,1261,"{'n_jobs': -1, 'weights': 'distance', 'n_neighbors': 4}",0.6687651331719129
+1,k_neighbors,7,1261,"{'n_jobs': -1, 'weights': 'distance', 'n_neighbors': 1}",0.6840193704600483
+1,k_neighbors,5,1261,"{'n_jobs': -1, 'weights': 'distance', 'n_neighbors': 5}",0.5935627081021088
+1,k_neighbors,5,1261,"{'n_jobs': -1, 'weights': 'distance', 'n_neighbors': 4}",0.6075471698113207
+1,k_neighbors,5,1261,"{'n_jobs': -1, 'weights': 'distance', 'n_neighbors': 1}",0.6237513873473919
+1,k_neighbors,2,1261,"{'n_jobs': -1, 'weights': 'distance', 'n_neighbors': 5}",0.43536875495638383
+1,k_neighbors,2,1261,"{'n_jobs': -1, 'weights': 'distance', 'n_neighbors': 4}",0.43536875495638383
+1,k_neighbors,2,1261,"{'n_jobs': -1, 'weights': 'distance', 'n_neighbors': 1}",0.43536875495638383
+1,svm,9,1261,{'C': 100},0.7419179570768812
+1,svm,7,1261,{'C': 100},0.7014527845036319
+1,svm,5,1261,{'C': 100},0.6399556048834628
+1,svm,2,1261,{'C': 100},0.43536875495638383
+2,k_neighbors,9,1261,"{'n_jobs': -1, 'weights': 'distance', 'n_neighbors': 5}",0.5867026055705301
+2,k_neighbors,9,1261,"{'n_jobs': -1, 'weights': 'distance', 'n_neighbors': 4}",0.5953878406708595
+2,k_neighbors,9,1261,"{'n_jobs': -1, 'weights': 'distance', 'n_neighbors': 1}",0.6127583108715184
+2,k_neighbors,7,1261,"{'n_jobs': -1, 'weights': 'distance', 'n_neighbors': 5}",0.5676335050149092
+2,k_neighbors,7,1261,"{'n_jobs': -1, 'weights': 'distance', 'n_neighbors': 4}",0.5811873136351313
+2,k_neighbors,7,1261,"{'n_jobs': -1, 'weights': 'distance', 'n_neighbors': 1}",0.5939278937381404
+2,k_neighbors,5,1261,"{'n_jobs': -1, 'weights': 'distance', 'n_neighbors': 5}",0.4974834437086092
+2,k_neighbors,5,1261,"{'n_jobs': -1, 'weights': 'distance', 'n_neighbors': 4}",0.5049006622516556
+2,k_neighbors,5,1261,"{'n_jobs': -1, 'weights': 'distance', 'n_neighbors': 1}",0.5210596026490066
+2,k_neighbors,2,1261,"{'n_jobs': -1, 'weights': 'distance', 'n_neighbors': 5}",0.3992862807295797
+2,k_neighbors,2,1261,"{'n_jobs': -1, 'weights': 'distance', 'n_neighbors': 4}",0.3992862807295797
+2,k_neighbors,2,1261,"{'n_jobs': -1, 'weights': 'distance', 'n_neighbors': 1}",0.3992862807295797
+2,svm,9,1261,{'C': 100},0.6082659478885895
+2,svm,7,1261,{'C': 100},0.5963675792897805
+2,svm,5,1261,{'C': 100},0.5327152317880794
+2,svm,2,1261,{'C': 100},0.3992862807295797

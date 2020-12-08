@@ -1,0 +1,22 @@
+combination,model,k_cross_val,model_params,accuracy
+0,k_neighbors,5,"{'n_jobs': -1, 'weights': 'distance'}",0.6373580143037442
+1,k_neighbors,5,"{'n_jobs': -1, 'weights': 'distance'}",0.6737904922170804
+3,k_neighbors,5,"{'n_jobs': -1, 'weights': 'distance'}",0.629785443836769
+4,k_neighbors,5,"{'n_jobs': -1, 'weights': 'distance'}",0.6027766091712242
+5,k_neighbors,5,"{'n_jobs': -1, 'weights': 'distance'}",0.5367269667648296
+6,k_neighbors,5,"{'n_jobs': -1, 'weights': 'distance'}",0.5306689103912495
+7,k_neighbors,5,"{'n_jobs': -1, 'weights': 'distance'}",0.590071518721077
+8,k_neighbors,5,"{'n_jobs': -1, 'weights': 'distance'}",0.5516196886832142
+9,k_neighbors,5,"{'n_jobs': -1, 'weights': 'distance'}",0.4994530921329407
+10,k_neighbors,5,"{'n_jobs': -1, 'weights': 'distance'}",0.16079091291543962
+11,k_neighbors,5,"{'n_jobs': -1, 'weights': 'distance'}",0.19108119478334035
+12,k_neighbors,5,"{'n_jobs': -1, 'weights': 'distance'}",0.20597391670172485
+13,k_neighbors,5,"{'n_jobs': -1, 'weights': 'distance'}",0.2431636516617585
+14,k_neighbors,5,"{'n_jobs': -1, 'weights': 'distance'}",0.2161548169962137
+15,k_neighbors,5,"{'n_jobs': -1, 'weights': 'distance'}",0.08506520824568782
+16,k_neighbors,5,"{'n_jobs': -1, 'weights': 'distance'}",0.1217501051745898
+17,k_neighbors,5,"{'n_jobs': -1, 'weights': 'distance'}",0.1147665124106016
+18,k_neighbors,5,"{'n_jobs': -1, 'weights': 'distance'}",0.1464030290281868
+19,k_neighbors,5,"{'n_jobs': -1, 'weights': 'distance'}",0.13108960875052586
+1,svm,5,{'C': 100},0.7302482120319731
+4,svm,5,{'C': 100},0.6780816154816997

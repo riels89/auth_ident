@@ -1,0 +1,53 @@
+{
+
+"contrastive": {
+    "optimizer": ["adam"],
+    "loss": ["simclr"],
+    "temperature": [0.005],
+    "lr": [0.01],
+    "decay": [0.0000025],
+    "epochs": [10],
+    "batch_size": [1024],
+    "binary_encoding": [false],
+    "max_code_length": [1200],
+    "embedding_size": [256],
+    "BN": [false],
+    "input_embedding_size": [256],
+    "encoding_type": ["char"],
+    "bias": [false],
+    "max_authors": [1261],
+
+    "train_data":["char_encoded_data/char_encoding_train.h5", "java_train.h5", "python_train.h5"],
+    "val_data":["char_encoded_data/char_encoding_val.h5", "java_val.h5", "python_val.h5"],
+    "test_data":["c_cpp_test.h5", "java_test.h5", "python_test.h5"],
+
+    "model": ["contrastive_cnn"]
+  },
+
+  "secondary": {
+    "model": ["cosknn", "k_neighbors", "svm", "end_to_end_mlp"],
+    "model_params": [[{
+	"n_neighbors": [5, 4, 1]
+    },{
+	"n_jobs": [-1],
+	"weights": ["distance"],
+	"algorithm": ["brute"],
+	"n_neighbors": [5, 4, 1]
+    },{
+	"C": [100]
+    },{
+        "epochs": [50],
+        "loss": ["cross_entropy"],
+        "optimizer": ["adam"],
+        "lr": [0.001],
+        "batch_size": [32],
+	"output_layer": ["non_linearity_2"]
+    }
+	]],
+
+    "k_cross_val": [9, 7, 5, 2],
+    "max_authors": [1261]
+  }
+
+}
+

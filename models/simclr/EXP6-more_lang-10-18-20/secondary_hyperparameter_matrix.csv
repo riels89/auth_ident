@@ -1,0 +1,73 @@
+combination,model,k_cross_val,max_authors,model_params,accuracy
+0,k_neighbors,9,1261,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 5}",0.7263194995153759
+0,k_neighbors,9,1261,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 4}",0.7300202661027404
+0,k_neighbors,9,1261,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1}",0.7953123623226716
+0,k_neighbors,7,1261,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 5}",0.7011442166081342
+0,k_neighbors,7,1261,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 4}",0.7139458479664665
+0,k_neighbors,7,1261,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1}",0.7866772402854877
+0,k_neighbors,5,1261,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 5}",0.6477398889770023
+0,k_neighbors,5,1261,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 4}",0.6607454401268834
+0,k_neighbors,5,1261,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1}",0.7546391752577319
+0,k_neighbors,2,1261,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 5}",0.1534496431403648
+0,k_neighbors,2,1261,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 4}",0.1851704996034893
+0,k_neighbors,2,1261,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1}",0.6256938937351308
+1,k_neighbors,9,1261,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 5}",0.6734582993751698
+1,k_neighbors,9,1261,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 4}",0.6794349361586526
+1,k_neighbors,9,1261,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1}",0.7356696549850584
+1,k_neighbors,7,1261,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 5}",0.5905569007263922
+1,k_neighbors,7,1261,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 4}",0.6004842615012106
+1,k_neighbors,7,1261,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1}",0.6840193704600483
+1,k_neighbors,5,1261,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 5}",0.5092119866814651
+1,k_neighbors,5,1261,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 4}",0.5205327413984462
+1,k_neighbors,5,1261,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1}",0.6237513873473919
+1,k_neighbors,2,1261,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 5}",0.12172878667724027
+1,k_neighbors,2,1261,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 4}",0.14195083267248215
+1,k_neighbors,2,1261,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1}",0.43536875495638383
+2,k_neighbors,9,1261,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 5}",0.5339922132374961
+2,k_neighbors,9,1261,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 4}",0.5444743935309972
+2,k_neighbors,9,1261,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1}",0.6127583108715184
+2,k_neighbors,7,1261,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 5}",0.5036595283274601
+2,k_neighbors,7,1261,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 4}",0.5142314990512334
+2,k_neighbors,7,1261,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1}",0.5939278937381404
+2,k_neighbors,5,1261,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 5}",0.4124503311258277
+2,k_neighbors,5,1261,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 4}",0.41801324503311255
+2,k_neighbors,5,1261,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1}",0.5215894039735101
+2,k_neighbors,2,1261,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 5}",0.11934972244250595
+2,k_neighbors,2,1261,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 4}",0.14512291831879462
+2,k_neighbors,2,1261,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1}",0.3992862807295797
+0,cosknn,9,1261,{'n_neighbors': 5},0.7263194995153759
+0,cosknn,9,1261,{'n_neighbors': 4},0.7300202661027404
+0,cosknn,9,1261,{'n_neighbors': 1},0.7953123623226716
+0,cosknn,7,1261,{'n_neighbors': 5},0.7011442166081342
+0,cosknn,7,1261,{'n_neighbors': 4},0.7139458479664665
+0,cosknn,7,1261,{'n_neighbors': 1},0.7866772402854877
+0,cosknn,5,1261,{'n_neighbors': 5},0.6477398889770023
+0,cosknn,5,1261,{'n_neighbors': 4},0.6607454401268834
+0,cosknn,5,1261,{'n_neighbors': 1},0.7546391752577319
+0,cosknn,2,1261,{'n_neighbors': 5},0.1534496431403648
+0,cosknn,2,1261,{'n_neighbors': 4},0.1851704996034893
+0,cosknn,2,1261,{'n_neighbors': 1},0.6256938937351308
+1,cosknn,9,1261,{'n_neighbors': 5},0.6734582993751698
+1,cosknn,9,1261,{'n_neighbors': 4},0.6794349361586526
+1,cosknn,9,1261,{'n_neighbors': 1},0.7356696549850584
+1,cosknn,7,1261,{'n_neighbors': 5},0.5905569007263922
+1,cosknn,7,1261,{'n_neighbors': 4},0.6004842615012106
+1,cosknn,7,1261,{'n_neighbors': 1},0.6840193704600483
+1,cosknn,5,1261,{'n_neighbors': 5},0.5092119866814651
+1,cosknn,5,1261,{'n_neighbors': 4},0.5205327413984462
+1,cosknn,5,1261,{'n_neighbors': 1},0.6237513873473919
+1,cosknn,2,1261,{'n_neighbors': 5},0.12172878667724028
+1,cosknn,2,1261,{'n_neighbors': 4},0.14195083267248215
+1,cosknn,2,1261,{'n_neighbors': 1},0.43536875495638383
+2,cosknn,9,1261,{'n_neighbors': 5},0.5339922132374961
+2,cosknn,9,1261,{'n_neighbors': 4},0.5444743935309972
+2,cosknn,9,1261,{'n_neighbors': 1},0.6127583108715184
+2,cosknn,7,1261,{'n_neighbors': 5},0.5036595283274601
+2,cosknn,7,1261,{'n_neighbors': 4},0.5142314990512334
+2,cosknn,7,1261,{'n_neighbors': 1},0.5939278937381404
+2,cosknn,5,1261,{'n_neighbors': 5},0.41245033112582774
+2,cosknn,5,1261,{'n_neighbors': 4},0.41801324503311255
+2,cosknn,5,1261,{'n_neighbors': 1},0.52158940397351
+2,cosknn,2,1261,{'n_neighbors': 5},0.11934972244250594
+2,cosknn,2,1261,{'n_neighbors': 4},0.14512291831879462
+2,cosknn,2,1261,{'n_neighbors': 1},0.3992862807295797

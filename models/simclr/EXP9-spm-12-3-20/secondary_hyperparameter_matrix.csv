@@ -1,0 +1,28 @@
+combination,model,k_cross_val,max_authors,model_params,accuracy
+0,cosknn,9,1600,{'n_neighbors': 1},0.07173611111111113
+0,k_neighbors,9,1600,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1}",0.07173611111111113
+1,cosknn,9,1600,{'n_neighbors': 1},0.07319444444444446
+1,k_neighbors,9,1600,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1}",0.07319444444444446
+2,cosknn,9,1600,{'n_neighbors': 1},0.07048611111111111
+2,k_neighbors,9,1600,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1}",0.07048611111111111
+3,cosknn,9,1600,{'n_neighbors': 1},0.08618055555555555
+0,cosknn,9,1600,{'n_neighbors': 1},0.8430555555555556
+0,k_neighbors,9,1600,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1}",0.8430555555555556
+1,cosknn,9,1600,{'n_neighbors': 1},0.8386111111111111
+1,k_neighbors,9,1600,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1}",0.8386111111111111
+2,cosknn,9,1600,{'n_neighbors': 1},0.8345833333333333
+2,k_neighbors,9,1600,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1}",0.8345833333333333
+0,cosknn,9,1600,{'n_neighbors': 1},0.00027777777777777783
+0,k_neighbors,9,1600,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1}",0.07972222222222221
+3,cosknn,9,1600,{'n_neighbors': 1},0.8386111111111111
+3,k_neighbors,9,1600,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1}",0.8386111111111111
+4,cosknn,9,1600,"{'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.8259027777777777
+4,k_neighbors,9,1600,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.8259027777777777
+5,cosknn,9,1600,"{'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.831875
+5,k_neighbors,9,1600,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.8318055555555557
+6,cosknn,9,1600,"{'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.8353472222222221
+6,k_neighbors,9,1600,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.8353472222222221
+7,cosknn,9,1600,"{'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.8238194444444445
+7,k_neighbors,9,1600,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.8238194444444445
+8,cosknn,9,1600,"{'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.8352083333333333
+8,k_neighbors,9,1600,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.8352083333333333
