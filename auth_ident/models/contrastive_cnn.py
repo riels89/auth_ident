@@ -25,6 +25,9 @@ class ContrastiveCNN():
         self.dataset_type = "split"
 
     def create_cnn(self, params):
+
+        l2 = tf.keras.regularizers.l2(params['l2'])
+
         input = keras.Input(batch_shape=(None,
                                          params["max_code_length"],
                                          params["input_embedding_size"]),
@@ -35,6 +38,7 @@ class ContrastiveCNN():
                       strides=1,
                       padding="same",
                       activation="relu",
+                      kernel_regularizer=l2,
                       name='conv_1')(input)
         if params['BN']:
             conv = BatchNormalization()(conv)
@@ -45,6 +49,7 @@ class ContrastiveCNN():
                       strides=1,
                       padding="same",
                       activation="relu",
+                      kernel_regularizer=l2,
                       name='conv_2')(conv)
         if params['BN']:
             conv = BatchNormalization()(conv)
@@ -55,6 +60,7 @@ class ContrastiveCNN():
                       strides=1,
                       padding="same",
                       activation="relu",
+                      kernel_regularizer=l2,
                       name='conv_3')(conv)
         if params['BN']:
             conv = BatchNormalization()(conv)
@@ -64,6 +70,7 @@ class ContrastiveCNN():
                       strides=1,
                       padding="same",
                       activation="relu",
+                      kernel_regularizer=l2,
                       name='conv_4')(conv)
         if params['BN']:
             conv = BatchNormalization()(conv)
@@ -73,6 +80,7 @@ class ContrastiveCNN():
                       strides=1,
                       padding="same",
                       activation="relu",
+                      kernel_regularizer=l2,
                       name='conv_5')(conv)
         if params['BN']:
             conv = BatchNormalization()(conv)
@@ -82,6 +90,7 @@ class ContrastiveCNN():
                       strides=1,
                       padding="same",
                       activation="relu",
+                      kernel_regularizer=l2,
                       name='conv_6')(conv)
         if params['BN']:
             conv = BatchNormalization()(conv)
@@ -130,20 +139,27 @@ class ContrastiveCNN():
         cnn1 = cnn(embedding1)
         cnn2 = cnn(embedding2)
 
-        non_linearity_1 = Dense(1048,
+        l2 = tf.keras.regularizers.l2(params['l2'])
+
+        non_linearity_1 = Dense(1028,
                                 activation="relu",
+                                kernel_regularizer=l2,
                                 name="non_linearity_1")
-        non_linearity_2 = Dense(1048,
+        non_linearity_2 = Dense(1028,
                                 activation="relu",
+                                kernel_regularizer=l2,
                                 name="non_linearity_2")
 
-        output_embedding = Dense(params['embedding_size'], name="output_embedding")
+        output_embedding = Dense(params['embedding_size'], 
+                                kernel_regularizer=l2,
+                                name="output_embedding")
 
-        non_linearity1 = non_linearity_1(cnn1)
-        non_linearity2 = non_linearity_1(cnn2)
+        dropout = Dropout(rate=params['dropout'])
+        non_linearity1 = dropout(non_linearity_1(cnn1))
+        non_linearity2 = dropout(non_linearity_1(cnn2))
 
-        non_linearity1 = non_linearity_2(non_linearity1)
-        non_linearity2 = non_linearity_2(non_linearity2)
+        non_linearity1 = dropout(non_linearity_2(non_linearity1))
+        non_linearity2 = dropout(non_linearity_2(non_linearity2))
 
         output_embedding1 = output_embedding(non_linearity1)
         output_embedding2 = output_embedding(non_linearity2)
