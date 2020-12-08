@@ -38,21 +38,23 @@ class SimCLRLoss():
         self.method = method
 
         # Method 1 pre compute
-        self.neg_mask = self._get_neg_mask(self.batch_size)
+        if method == 1:
+            self.neg_mask = self._get_neg_mask(self.batch_size)
 
-        bottom_half = tf.range(self.batch_size,
-                               2 * self.batch_size)[np.newaxis]
-        left_corner = tf.range(self.batch_size)[np.newaxis]
+            bottom_half = tf.range(self.batch_size,
+                                   2 * self.batch_size)[np.newaxis]
+            left_corner = tf.range(self.batch_size)[np.newaxis]
 
-        self.index_l = tf.concat([bottom_half, left_corner], axis=0)
-        self.index_l = tf.transpose(self.index_l, [1, 0])
+            self.index_l = tf.concat([bottom_half, left_corner], axis=0)
+            self.index_l = tf.transpose(self.index_l, [1, 0])
 
-        self.index_r = tf.concat([left_corner, bottom_half], axis=0)
-        self.index_r = tf.transpose(self.index_r, [1, 0])
+            self.index_r = tf.concat([left_corner, bottom_half], axis=0)
+            self.index_r = tf.transpose(self.index_r, [1, 0])
 
         # Method 2 pre compute
-        self.inv_masks = np.invert(np.identity(batch_size, np.bool))
-        self.labels = np.arange(batch_size)
+        if method ==2 :
+            self.inv_masks = np.invert(np.identity(batch_size, np.bool))
+            self.labels = np.arange(batch_size)
 
         self.__name__ = "simclr"
 
