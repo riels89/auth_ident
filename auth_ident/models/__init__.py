@@ -21,6 +21,7 @@ from auth_ident.models.svm import SVMSecondaryClassifier
 from auth_ident.models.universal_transformer import UniversalTransformer
 from auth_ident.models.transformer import Transformer
 from auth_ident.models.cosknn import CosKNNSecondaryClassifier
+from auth_ident.models.end_to_end_secondary import EndToEndMLP
 
 model_map = {
     "cnn_lstm": CNNLSTM,
@@ -45,5 +46,6 @@ model_map = {
     "random_forest": RandomForestSecondaryClassifier,
     "k_neighbors": KNeighborSecondaryClassifier,
     "svm": SVMSecondaryClassifier,
-    "cosknn": CosKNNSecondaryClassifier
+    "cosknn": CosKNNSecondaryClassifier,
+    "end_to_end_mlp": EndToEndMLP 
 }

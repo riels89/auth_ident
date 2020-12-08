@@ -5,7 +5,7 @@ from auth_ident import GenericExecute
 from auth_ident import param_mapping
 import os
 import pandas as pd
-from auth_ident.utils import get_embeddings
+from auth_ident.utils import get_embeddings, get_data, get_model
 import time
 
 
@@ -49,28 +49,62 @@ class TrainSecondaryClassifier(GenericExecute):
                                             f"combination-{secondary_comb}")
             os.makedirs(secondary_logdir, exist_ok=True)
 
+            file_param = "val_data" if self.mode == "train" else "test_data"
+
+            if "output_layer" in params["model_params"]:
+                output_layer_name = params["model_params"]["output_layer"]
+            else:
+                output_layer_name = 'output_embedding'
+            del params['model_params']['output_layer']
+
             self.model = param_mapping.map_model(params)(params,
                                                          combination,
-                                                         logger)
-            if params['k_cross_val'] != curr_k_cross_val:
+                                                         logger,
+                                                         self.logdir)
+            params['model_params']['output_layer'] = output_layer_name
+
+            if self.model.name != "end_to_end_mlp" and params['k_cross_val'] != curr_k_cross_val:
                 curr_k_cross_val = params['k_cross_val']
-                file_param = "val_data" if self.mode == "train" else "test_data"
                 data_file = contrastive_params[file_param]
+
                 train_data, train_labels = get_embeddings(
                     contrastive_params,
                     self.model.dataset,
                     params["max_authors"],
                     params['k_cross_val'],
+                    output_layer_name,
                     data_file=data_file,
                     combination=combination,
                     logger=logger,
-                    logdir=self.logdir)
+                    logdir=self.logdir,
+                    normalize= output_layer_name == "output_embedding")
+                print("not end to end")
+
+            elif self.model.name == "end_to_end_mlp":
+                data_file = contrastive_params[file_param]
+                curr_k_cross_val = params['k_cross_val']
+
+                train_data, train_labels = get_data(contrastive_params, 
+                                      self.model.dataset, 
+                                      curr_k_cross_val,
+                                      data_file)
+
+                base_model = get_model(contrastive_params,
+                                       output_layer_name,
+                                       normalize=False,
+                                       combination=combination,
+                                       logger=logger,
+                                       logdir=self.logdir)
+
+                print("end to end")
+                self.model.set_base_model(base_model)
+                self.model.set_encoding_len(contrastive_params['dataset'].len_encoding)
+            print(train_data.shape)
 
             results = self.model.train(train_data, train_labels)
 
             print(f"Results: {results}")
             self.model.save(secondary_logdir)
-            time.sleep(5)
 
             self.save_metrics(results, params, combination)
 
