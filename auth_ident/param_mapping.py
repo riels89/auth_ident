@@ -1,5 +1,6 @@
 from tensorflow import keras
 from auth_ident.losses import SimCLRLoss, ContrastiveMarginLoss
+from tensorflow.keras.losses import SparseCategoricalCrossentropy
 from auth_ident import models
 from auth_ident import datasets
 from itertools import product
@@ -67,17 +68,27 @@ def map_dataset(dataset_type, params, data_file):
 
 
 def map_params(params):
+    kwargs = {}
+    if 'lr' in params:
+        kwargs['lr'] = params['lr']
+    if 'clipvalue' in params:
+        kwargs['clipvalue'] = params['clipvalue']
+    elif 'clipnorm' in params:
+        kwargs['clipnorm'] = params['clipnorm']
+    if 'decay' in params:
+        kwargs['decay'] = params['decay']
+    if "momentum" in params:
+        kwargs['momentum'] = params['momentum']
+    if 'nesterov' in params:
+        kwargs['nesterov'] = params['nesterov']
+    params["optimizer_kwargs"] = kwargs
+
     if params['optimizer'] == 'adam':
-        kwargs = {}
-        if 'lr' in params:
-            kwargs['lr'] = params['lr']
-        if 'clipvalue' in params:
-            kwargs['clipvalue'] = params['clipvalue']
-        elif 'clipnorm' in params:
-            kwargs['clipnorm'] = params['clipnorm']
-        if 'decay' in params:
-            kwargs['decay'] = params['decay']
         params['optimizer'] = keras.optimizers.Adam(**kwargs)
+    elif params['optimizer'] == 'rmsprop':
+        params['optimizer'] = keras.optimizers.RMSprop(**kwargs)
+    elif params['optimizer'] == 'sgd':
+        params['optimizer'] = keras.optimizers.SGD(**kwargs)
 
     if params['loss'] == 'contrastive':
         margin = 1.0
@@ -85,8 +96,15 @@ def map_params(params):
             margin = params['margin']
         params['loss'] = ContrastiveMarginLoss(margin)
 
-    if params['loss'] == 'simclr':
+    elif params['loss'] == 'simclr':
         # Will throw error if temp not specified, this is wanted
         params['loss'] = SimCLRLoss(
             params['batch_size'],
             temperature=params['temperature'])
+    elif params["loss"] == "cross_entropy":
+        params["loss"] = SparseCategoricalCrossentropy()
+
+
+
+
+
