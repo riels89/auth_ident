@@ -44,7 +44,7 @@ class TrainContrastive(GenericExecute):
             save_best_only=True,
             mode='min')
         
-        es = EarlyStopping(monitor='val_loss', mode='min')
+        es = EarlyStopping(monitor='val_loss', mode='min', patience=2)
 
         model.compile(optimizer=contrastive_params['optimizer'],
                       loss=contrastive_params['loss'],
