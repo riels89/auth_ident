@@ -50,7 +50,7 @@ class ClosedDatset:
                                                      num_oov_buckets=1)
 
         # Load dataframe
-        f = join("data/loaded/", data_file)
+        f = join("data/organized_hdfs/", data_file)
         self.dataframe = pd.read_hdf(f)
 
     def get_dataset(self, return_file_indicies=False):

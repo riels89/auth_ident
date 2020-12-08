@@ -77,7 +77,7 @@ class SimCLRDataset:
                 self.data_file)
             exit(1)
 
-        f = join("data/loaded/", self.data_file)
+        f = join("data/organized_hdfs/", self.data_file)
         print(os.path.exists(f))
         print(f)
         df = pd.read_hdf(f)

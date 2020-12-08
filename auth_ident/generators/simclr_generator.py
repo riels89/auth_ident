@@ -70,11 +70,12 @@ class SimCLRGen:
                     input_1[i, :len(cropped)] = cropped
                     input_1[i, len(cropped):] = 0
 
-                    cropped = self.random_crop(rand_pair[1], self.crop_length)
+                    cropped = self.crop(rand_pair[1], self.crop_length)
                     input_2[i, :len(cropped)] = cropped
                     input_2[i, len(cropped):] = 0
 
             yield ({'input_1': input_1[index], 'input_2': input_2[index]}, 1)
+            #yield (np.concatenate([input_1, input_2], axis=0), labels)
             index = (index + 1) % self.batch_size
 
     def crop(self, file_indx, crop_length):
@@ -84,7 +85,7 @@ class SimCLRGen:
         file will be returned.
         """
 
-        contents = self.dataframe['file_content'][file_indx].numpy()
+        contents = np.array(self.dataframe['file_content'][file_indx])
         if len(contents) > crop_length:
             contents = contents[:crop_length]
         return contents
