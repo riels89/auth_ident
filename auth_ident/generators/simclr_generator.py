@@ -75,7 +75,6 @@ class SimCLRGen:
                     input_2[i, len(cropped):] = 0
 
             yield ({'input_1': input_1[index], 'input_2': input_2[index]}, 1)
-            #yield (np.concatenate([input_1, input_2], axis=0), labels)
             index = (index + 1) % self.batch_size
 
     def crop(self, file_indx, crop_length):
