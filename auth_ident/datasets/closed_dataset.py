@@ -6,7 +6,7 @@ from time import perf_counter
 import sentencepiece as spm
 
 
-class ClosedDatset:
+class ClosedDataset:
     """
     Code for creating on-the-fly random file pairings.
     """
@@ -52,6 +52,9 @@ class ClosedDatset:
         # Load dataframe
         f = join("data/organized_hdfs/", data_file)
         self.dataframe = pd.read_hdf(f)
+
+        self.bos_id = 1
+        self.eos_id = 2
 
     def get_dataset(self, return_file_indicies=False):
         return list(self.get_two(self.dataframe, return_file_indicies))
@@ -128,7 +131,7 @@ class ClosedDatset:
             print(i, end="\r")
             cropped = self.crop(files[cross_val_index],
                                        self.crop_length, df)
-            X[i, :len(cropped)] = cropped
+            X[i, :cropped.shape[0] + 1] = self.add_end_tokens(cropped)
         print("finished dataset")
 
         print(f"num_authors {len(self.authors_with_k)}")
@@ -144,26 +147,17 @@ class ClosedDatset:
         crop_length is longer than the length of the file, then the entire
         file will be returned.
         """
-        contents = df['file_content'][file_indx]
-        if len(contents) > crop_length:
-            contents = contents[:crop_length]
-        return contents
+        contents = np.array(df['file_content'][file_indx])
+        # Minus two to account for bos and eso tokens
+        max_crop = min(len(contents), crop_length) - 1
+        cropped_contents = contents[:max_crop]
 
-    def encode_to_one_hot(self, code_to_embed):
-        reshaped = tf.concat(
-            [[self.start],
-             tf.strings.unicode_split(code_to_embed, 'UTF-8'), [self.end]],
-            axis=0)
-        encoding = self.table.lookup(reshaped)
-        encoding = tf.reshape(
-            tf.squeeze(tf.one_hot(encoding, self.len_encoding)),
-            (-1, self.len_encoding))
+        return cropped_contents
 
-        code_length = tf.shape(encoding)[0]
-        padding = [[0, self.crop_length + 2 - code_length], [0, 0]]
-        encoding = tf.pad(encoding, padding, 'CONSTANT', constant_values=1)
-        return encoding
-
+    def add_end_tokens(self, cropped_contents):
+        cropped_contents[-1] = self.eos_id
+        cropped_contents = np.insert(cropped_contents, 0, self.eos_id)
+        return cropped_contents
 
 if __name__ == "__main__":
     df = pd.read_hdf('data/loaded/cpp_test.h5')

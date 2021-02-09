@@ -38,6 +38,9 @@ class SimCLRGen:
         self.author_probs = file_counts / self.num_files
         assert np.isclose(np.sum(self.author_probs), 1.0)
 
+        self.bos_id = 1
+        self.eos_id = 2
+
     def gen(self):
         """
         Generate file pairings where each file is equally likely to be
@@ -67,12 +70,14 @@ class SimCLRGen:
                                                 shuffle=False)
 
                     cropped = self.crop(rand_pair[0], self.crop_length)
-                    input_1[i, :len(cropped)] = cropped
-                    input_1[i, len(cropped):] = 0
+                    cropped = self.add_end_tokens(cropped)
+                    input_1[i, :cropped.shape[0]] = cropped
+                    input_1[i, cropped.shape[0]:] = 0
 
                     cropped = self.crop(rand_pair[1], self.crop_length)
-                    input_2[i, :len(cropped)] = cropped
-                    input_2[i, len(cropped):] = 0
+                    cropped = self.add_end_tokens(cropped)
+                    input_2[i, :cropped.shape[0]] = cropped
+                    input_2[i, cropped.shape[0]:] = 0
 
             yield ({'input_1': input_1[index], 'input_2': input_2[index]}, 1)
             index = (index + 1) % self.batch_size
@@ -83,11 +88,18 @@ class SimCLRGen:
         crop_length is longer than the length of the file, then the entire
         file will be returned.
         """
-
         contents = np.array(self.dataframe['file_content'][file_indx])
-        if len(contents) > crop_length:
-            contents = contents[:crop_length]
-        return contents
+        # Minus two to account for bos and eso tokens
+        max_crop = min(len(contents), crop_length) - 1
+        cropped_contents = contents[:max_crop]
+
+        return cropped_contents
+    
+    def add_end_tokens(self, cropped_contents):
+        cropped_contents[-1] = self.eos_id
+        cropped_contents = np.insert(cropped_contents, 0, self.eos_id)
+
+        return cropped_contents
 
 
 if __name__ == "__main__":
