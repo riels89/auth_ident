@@ -1,5 +1,5 @@
 from auth_ident.models import GenericSecondaryClassifier 
-from auth_ident.datasets import ClosedDatset
+from auth_ident.datasets import ClosedDataset
 
 from sklearn.neighbors import KNeighborsClassifier
 
@@ -16,7 +16,7 @@ class KNeighborSecondaryClassifier(GenericSecondaryClassifier):
         super().__init__(params, combination, logger, logdir)
 
         self.name = "k_nearest_neighbor"
-        self.dataset = ClosedDatset
+        self.dataset = ClosedDataset
 
         self.model = KNeighborsClassifier(
             **self.params["model_params"])

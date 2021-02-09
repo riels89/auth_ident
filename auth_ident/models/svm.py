@@ -1,5 +1,5 @@
 from auth_ident.models import GenericSecondaryClassifier 
-from auth_ident.datasets import ClosedDatset
+from auth_ident.datasets import ClosedDataset
 
 from sklearn.svm import SVC
 
@@ -16,7 +16,7 @@ class SVMSecondaryClassifier(GenericSecondaryClassifier):
         super().__init__(params, combination, logger, logdir)
 
         self.name = "svm"
-        self.dataset = ClosedDatset
+        self.dataset = ClosedDataset
 
         self.model = SVC(
             **self.params["model_params"])

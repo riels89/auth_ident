@@ -1,5 +1,5 @@
 from auth_ident.models import GenericSecondaryClassifier 
-from auth_ident.datasets import ClosedDatset
+from auth_ident.datasets import ClosedDataset
 from auth_ident import param_mapping
 import numpy as np
 import tensorflow as tf
@@ -23,7 +23,7 @@ class EndToEndMLP(GenericSecondaryClassifier):
         super().__init__(params, combination, logger, logdir)
 
         self.name = "end_to_end_mlp"
-        self.dataset = ClosedDatset
+        self.dataset = ClosedDataset
         self.base_model = None
     
     def shuffle_and_batch(self, X_train, y_train):

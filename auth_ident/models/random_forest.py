@@ -1,8 +1,6 @@
 from auth_ident.models import GenericSecondaryClassifier 
-from auth_ident.datasets import ClosedDatset
-
+from auth_ident.datasets import ClosedDataset
 from sklearn.ensemble import RandomForestClassifier
-
 from sklearn.model_selection import cross_val_score, train_test_split, KFold
 
 

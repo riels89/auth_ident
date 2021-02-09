@@ -1,5 +1,5 @@
 from auth_ident.models import GenericSecondaryClassifier 
-from auth_ident.datasets import ClosedDatset
+from auth_ident.datasets import ClosedDataset
 
 from sklearn.model_selection import cross_val_score, train_test_split, KFold
 
@@ -42,7 +42,7 @@ class CosKNNSecondaryClassifier(GenericSecondaryClassifier):
         super().__init__(params, combination, logger, logdir)
 
         self.name = "k_nearest_neighbor"
-        self.dataset = ClosedDatset
+        self.dataset = ClosedDataset
         self.n_neighbors = params["model_params"]["n_neighbors"]
 
         self.model = CosKNN(self.n_neighbors)
