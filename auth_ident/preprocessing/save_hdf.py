@@ -2,7 +2,6 @@
 Command line script for processing a directory hierarchy containing Google Code
 Jam submissions to create h5 files that can be read by Pandas.  The columns in
 the resultingpandas dataframes will be
-
 "year" - The year of the contest.
 "round" - The name of the round, prefixed with an integer for easy sorting.
 "username" - The user id of the author.
@@ -50,7 +49,6 @@ import numpy as np
 import pandas as pd
 import pickle
 from bs4 import UnicodeDammit
-from bpe import Encoder
 
 
 def make_hdf(gcj_root, new_hdf, keep_repeats, extensions, val_test_split,
@@ -142,7 +140,7 @@ def make_hdf(gcj_root, new_hdf, keep_repeats, extensions, val_test_split,
 
     frame = pd.DataFrame({"year": [v[0] for v in submissions.values()],
                           "round": [v[1] for v in submissions.values()],
-                          "problem": [v[2] for v in submission.values()]
+                          "problem": [v[2] for v in submissions.values()],
                           "username": [v[3] for v in submissions.values()],
                           "filepath": [v[4] for v in submissions.values()],
                           "file_content": [v[5] for v in
@@ -204,10 +202,11 @@ def get_competition_data():
         year = competition['year']
         for i, round in enumerate(competition['round']):
             problem_dict = {}
-            for problem in round['problems']:
-                problem_str = '{:03d} {}'.format(global_problem_index, problem["name"])
-                problem_dict[problem["id"]] = problem_str
-                global_problem_index += 1
+            if 'problems' in round.keys():
+                for problem in round['problems']:
+                    problem_str = '{:03d} {}'.format(global_problem_index, problem["name"])
+                    problem_dict[problem["id"]] = problem_str
+                    global_problem_index += 1
 
             round_str = '{:03d} {}'.format(i,round['desc'])
             contest_dict[round['contest']] = (year, round_str, problem_dict)

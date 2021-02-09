@@ -35,7 +35,7 @@ def encode_data(model_file, data_file, alpha, length, by_line):
             _newline_regex = re.compile(r"\n")
             eol_processed = _newline_regex.sub(r"[EOL]", tab_repl)
         else:
-            eol_processed = [split + '\n' for split in tab_repl.split("\n")]
+            eol_processed = [split + '[EOL]\n' for split in tab_repl.split("\n")]
 
         encoded = spm.encode(eol_processed,
                              alpha=alpha,

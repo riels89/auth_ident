@@ -4,6 +4,7 @@ import argparse
 import os
 import pandas as pd
 import re
+import time
 
 
 def make_text_file(data_file, by_line, text_file):
@@ -25,6 +26,9 @@ def make_text_file(data_file, by_line, text_file):
             if not by_line:
                 _newline_regex = re.compile(r"\n")
                 code_file = _newline_regex.sub(r"[EOL]", code_file)
+            elif by_line:
+                _newline_regex = re.compile(r"\n")
+                code_file = _newline_regex.sub(r"[EOL]\n", code_file)
 
             if '\0' in code_file:
                 null_char_counter += 1
@@ -54,6 +58,10 @@ def spm_train(text_file: str, model_prefix: str, vocab_size: int,
                                    unk_piece="[UNK]",
                                    pad_piece="[PAD]",
                                    user_defined_symbols=['[EOL]', '[TAB]'],
+                                   pad_id=0,
+                                   bos_id=1,
+                                   eos_id=2,
+                                   unk_id=3,
                                    hard_vocab_limit=False,
                                    max_sentence_length=max_sentence_length,
                                    num_threads=128,
