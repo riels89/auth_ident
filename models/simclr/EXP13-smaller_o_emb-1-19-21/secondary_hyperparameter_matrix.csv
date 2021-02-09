@@ -1,0 +1,4 @@
+combination,model,k_cross_val,max_authors,model_params,accuracy
+0,cosknn,9,1600,"{'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.8300694444444444
+1,cosknn,9,1600,"{'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.8552777777777778
+1,k_neighbors,9,1600,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 5, 'output_layer': 'output_embedding'}",0.8153472222222223
