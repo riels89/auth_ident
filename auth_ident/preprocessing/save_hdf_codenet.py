@@ -6,7 +6,8 @@ by Pandas.  The columns in the resulting pandas dataframes will be
 "problem_id"
 "user_id"
 "language"
-"file_content" - The full file contents.
+"filepath"
+"file_content" - The full file contents. (Optional)
 
 """
 
@@ -43,7 +44,7 @@ def get_dups(codenet_path, language):
 
 
 def make_hdf(codenet_root, new_hdf, keep_repeats, languages, val_test_split,
-             min_file_size, dataset):
+             min_file_size, dataset, include_contents):
     """
     Create .h5 file(s) from Google code jam submissions.
 
@@ -55,6 +56,7 @@ def make_hdf(codenet_root, new_hdf, keep_repeats, languages, val_test_split,
     each of validation and testing.
     :param min_file_size (int): Minimum file size to keep (in bytes).
     :param dataset (string): Restrict to single dataset AIZU or AtCoder.
+    :param include_contents (boolean): Include full file contents.
 
     """
     submissions = []
@@ -101,20 +103,38 @@ def make_hdf(codenet_root, new_hdf, keep_repeats, languages, val_test_split,
 
                 file_name = (frame['submission_id'] + "."
                              + frame['filename_ext'])
-                full_path = os.path.join(data_root,
-                                         frame['problem_id'],
-                                         language, file_name)
-                with open(full_path, 'rb') as content_file:
-                    contents = content_file.read()
-                    submissions.append((frame['problem_id'],
-                                        frame['user_id'],
-                                        language,
-                                        contents))
+                local_path = os.path.join(frame['problem_id'],
+                                          language, file_name)
+                full_path = os.path.join(data_root, local_path)
 
-    frame = pd.DataFrame({"problem_id": [v[0] for v in submissions],
-                          "user_id": [v[1] for v in submissions],
-                          "language": [v[2] for v in submissions],
-                          "file_content": [v[3] for v in submissions]})
+                if include_contents:
+                    with open(full_path, 'rb') as content_file:
+                        contents = content_file.read()
+                        submission = (frame['problem_id'],
+                                      frame['user_id'],
+                                      language,
+                                      local_path,
+                                      contents)
+                else:
+                    submission = (frame['problem_id'],
+                                  frame['user_id'],
+                                  language,
+                                  local_path)
+
+                submissions.append(submission)
+
+
+    if include_contents:
+        frame = pd.DataFrame({"problem_id": [v[0] for v in submissions],
+                              "user_id": [v[1] for v in submissions],
+                              "language": [v[2] for v in submissions],
+                              "filepath": [v[3] for v in submissions],
+                              "file_content": [v[4] for v in submissions]})
+    else:
+        frame = pd.DataFrame({"problem_id": [v[0] for v in submissions],
+                              "user_id": [v[1] for v in submissions],
+                              "language": [v[2] for v in submissions],
+                              "filepath": [v[3] for v in submissions]})
 
     if val_test_split > 0:
         authors = frame['user_id'].unique()
@@ -178,6 +198,8 @@ The columns in the resulting pandas dataframes will be
                         help='Root directory of codenet dataset.')
     parser.add_argument('--keep-repeats', default=False, action='store_true',
                         help='Keep duplicate/near duplicate files.')
+    parser.add_argument('--include-contents', default=False, action='store_true',
+                        help='Include full file contents.')
     parser.add_argument('--out', required=True, help='Destination file. (.h5 '
                                                      'will be appended)')
     parser.add_argument('--languages', default=['Python'], nargs='*',
@@ -199,7 +221,8 @@ The columns in the resulting pandas dataframes will be
                                                   args.languages,
                                                   args.val_test_split,
                                                   args.min_file_size,
-                                                  args.dataset)
+                                                  args.dataset,
+                                                  args.include_contents)
 
     # Print info about the dataset
     with open(args.out + ".info", 'w') as f:
