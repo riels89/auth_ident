@@ -102,7 +102,8 @@ def encode(type):
         ])
 
     # Load csv and convert to h5
-    f = pd.read_csv(path + f"_{type}_encoded.csv", sep="|", encoding="latin1")
+    f = pd.read_csv(path + f"_{type}_encoded.csv", sep="|", encoding="latin1",
+            converters={"file_content": lambda x: [int(i) for i in x[1:-1].split(",")[:-1]]})
     print(f)
     f.to_hdf(path + f"_{type}_encoded.h5", key='data', mode='w')
     #os.remove(path + f"_{type}_encoded.csv")
