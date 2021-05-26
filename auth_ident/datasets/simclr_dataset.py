@@ -6,6 +6,7 @@ import os
 from auth_ident.generators import SimCLRGen
 import sentencepiece as spm
 import auth_ident
+from auth_ident import CPP_JAVA_INDEX_BUFFER
 
 
 class SimCLRDataset:
@@ -30,6 +31,21 @@ class SimCLRDataset:
         if self.encoding_type == "spm":
             sp = spm.SentencePieceProcessor(model_file=spm_model_file)
             self.len_encoding = sp.vocab_size()
+        elif self.encoding_type == "tokens":
+            
+            if data_file.str.contains("cpp"):
+                self.len_encoding = CPP_JAVA_INDEX_BUFFER
+            elif data_file.str.contains("java"):
+                self.len_encoding = CPP_JAVA_INDEX_BUFFER
+            else:
+                assert False, "No python length encoding known"
+
+            # Assume format data/.../{language}_{type}_encoded.h5
+            top_ids_file = "_".join(data_file.split("_")[:-2]) + "_top_identifiers"
+            with open(top_ids_file) as f:
+                num_reserved_identifiers = sum([1 for line in f])
+
+            self.len_encoding += num_reserved_identifiers
         else:
             self.len_encoding = len(chars_to_encode) + 1
 

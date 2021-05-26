@@ -9,3 +9,5 @@ DATA_SIZE = TRAIN_LEN + VAL_LEN + TEST_LEN
 os.environ["TF_KERAS"] = '1' 
 
 from auth_ident.generic_execute import GenericExecute
+
+CPP_JAVA_INDEX_BUFFER = 158

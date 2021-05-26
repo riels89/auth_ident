@@ -35,14 +35,20 @@ def get_data(params, dataset, k_nieghbors, data_file, return_file_indicies=False
     print(params)
     if params['encoding_type'] == 'spm':
         dataset = dataset(crop_length=params["max_code_length"],
-                          max_authors =params["max_authors"],
+                          max_authors=params["max_authors"],
                           k_cross_val=k_nieghbors,
                           data_file=data_file,
                           encoding_type='spm',
                           spm_model_file=params['spm_model_file'])
+    elif params['encoding_type'] == 'tokens':
+        dataset = dataset(crop_length=params["max_code_length"],
+                          max_authors=params["max_authors"],
+                          k_cross_val=k_nieghbors,
+                          data_file=data_file,
+                          encoding_type='tokens')
     else:
         dataset = dataset(crop_length=params["max_code_length"],
-                          max_authors = params["max_authors"],
+                          max_authors=params["max_authors"],
                           k_cross_val=k_nieghbors,
                           data_file=data_file,
                           encoding_type=params['encoding_type'])
