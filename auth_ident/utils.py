@@ -30,19 +30,21 @@ def load_encoder(model, params, combination, logger, logdir):
 
     return encoder
 
-def get_data(params, dataset, k_nieghbors, data_file, return_file_indicies=False):
+def get_data(params, dataset, k_nieghbors, data_file, return_file_indicies=False, max_authors=None):
 
     print(params)
+    if max_authors is None:
+        max_authors = params['max_authors']
     if params['encoding_type'] == 'spm':
         dataset = dataset(crop_length=params["max_code_length"],
-                          max_authors =params["max_authors"],
+                          max_authors = max_authors,
                           k_cross_val=k_nieghbors,
                           data_file=data_file,
                           encoding_type='spm',
                           spm_model_file=params['spm_model_file'])
     else:
         dataset = dataset(crop_length=params["max_code_length"],
-                          max_authors = params["max_authors"],
+                          max_authors = max_authors,
                           k_cross_val=k_nieghbors,
                           data_file=data_file,
                           encoding_type=params['encoding_type'])
@@ -57,10 +59,14 @@ def get_model(contrastive_params,
               combination,
               logger,
               logdir):
+
     print(contrastive_params)
+    K.clear_session()
     contrastive_model = param_mapping.map_model(contrastive_params)()
     encoder = load_encoder(contrastive_model, contrastive_params, combination, logger,
                            logdir)
+    for layer in encoder.layers:
+        print(layer.name)
     if normalize:
         output = tf.math.l2_normalize(
             encoder.get_layer(layer_name).output, axis=1)
@@ -89,7 +95,7 @@ def get_embeddings(params,
 
 
     # Save as list to avoid extra if statement
-    data = get_data(params, dataset, k_cross_val, data_file, return_file_indicies)
+    data = get_data(params, dataset, k_cross_val, data_file, return_file_indicies, max_authors)
     X = data[0]
     y = data[1]
 
