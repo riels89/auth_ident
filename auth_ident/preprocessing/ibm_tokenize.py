@@ -88,9 +88,9 @@ if not args.l and not args.le:
     print(f"tokens shape: {tokens.shape}")
 
     u, counts = np.unique(tokens, return_counts=True)
-    sorted_count_args = np.argsort(-counts)[:10000]
+    sorted_count_args = np.argsort(-counts)[:n + 100]
     alphabet = np.array(list("_abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"))
-    top_ids = np.setdiff1d(u[sorted_count_args], alphabet, assume_unique=True)
+    top_ids = np.setdiff1d(u[sorted_count_args], alphabet, assume_unique=True)[:n]
     np.savetxt(path + "_top_identifiers.txt", top_ids, fmt="%s", delimiter="\n")
 
 
@@ -105,6 +105,8 @@ def encode(type):
     f = pd.read_csv(path + f"_{type}_encoded.csv", sep="|", encoding="latin1",
             converters={"file_content": lambda x: [int(i) for i in x[1:-1].split(",")[:-1]]})
     print(f)
+    # Filter out small files
+    f=f[f["file_content"].map(len) > 10]
     f.to_hdf(path + f"_{type}_encoded.h5", key='data', mode='w')
     #os.remove(path + f"_{type}_encoded.csv")
 

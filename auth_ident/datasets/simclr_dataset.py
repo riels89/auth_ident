@@ -33,19 +33,20 @@ class SimCLRDataset:
             self.len_encoding = sp.vocab_size()
         elif self.encoding_type == "tokens":
             
-            if data_file.str.contains("cpp"):
+            if "cpp" in data_file:
                 self.len_encoding = CPP_JAVA_INDEX_BUFFER
-            elif data_file.str.contains("java"):
+            elif "java" in data_file:
                 self.len_encoding = CPP_JAVA_INDEX_BUFFER
             else:
                 assert False, "No python length encoding known"
 
             # Assume format data/.../{language}_{type}_encoded.h5
-            top_ids_file = "_".join(data_file.split("_")[:-2]) + "_top_identifiers"
+            top_ids_file = "data/" + "_".join(data_file.split("_")[:-2]) + "_top_identifiers.txt"
             with open(top_ids_file) as f:
                 num_reserved_identifiers = sum([1 for line in f])
 
             self.len_encoding += num_reserved_identifiers
+            print(f"ENCODING_LEN: {self.len_encoding}")
         else:
             self.len_encoding = len(chars_to_encode) + 1
 
@@ -93,7 +94,7 @@ class SimCLRDataset:
                 self.data_file)
             exit(1)
 
-        f = join("data/organized_hdfs/", self.data_file)
+        f = join("data/", self.data_file)
         print(os.path.exists(f))
         print(f)
         df = pd.read_hdf(f)
@@ -104,10 +105,7 @@ class SimCLRDataset:
 
         print("Generating Data...", flush=True)
 
-        if self.encoding_type == 'spm':
-            shape = [self.max_code_length]
-        elif self.encoding_type == 'char':
-            shape = [self.max_code_length]
+        shape = [self.max_code_length]
 
         dataset = tf.data.Dataset.from_generator(pg.gen, ({
             "input_1": tf.int32,
