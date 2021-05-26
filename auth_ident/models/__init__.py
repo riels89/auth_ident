@@ -27,7 +27,7 @@ model_map = {
     "cnn_lstm": CNNLSTM,
     "contrastive_1D_to_2D": Contrastive1DTo2D,
     "contrastive_bilstm_v2": ContrastiveBilstmV2,
-    "contrastive_bilstm": ContrastiveStackedBiLSTM,
+    "contrastive_bilstm": ContrastiveBiLSTM,
     "contrastive_by_line_cnn": ContrastiveByLineCNN,
     "contrastive_cnn": ContrastiveCNN,
     "contrastive_stacked_bilstm": ContrastiveStackedBiLSTM,
