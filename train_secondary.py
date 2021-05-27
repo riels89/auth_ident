@@ -39,6 +39,7 @@ class TrainSecondaryClassifier(GenericExecute):
             f"secondary_params_to_iterate: {secondary_params_to_iterate}")
 
         curr_k_cross_val = None
+        curr_max_authors = None
         for secondary_comb, params in enumerate(secondary_params_to_iterate):
 
             logger.info(f"secondary comb: {secondary_comb}, params: {params}")
@@ -63,16 +64,21 @@ class TrainSecondaryClassifier(GenericExecute):
                                                          self.logdir)
             params['model_params']['output_layer'] = output_layer_name
 
-            if self.model.name != "end_to_end_mlp" and params['k_cross_val'] != curr_k_cross_val:
+            print(f"max_authors {params['max_authors']}")
+            print(f"curr_max_authors {curr_max_authors}")
+            print(f"k_cross_val: {params['k_cross_val']}")
+            print(f"curr k_cross_val: {curr_k_cross_val}")
+            if self.model.name != "end_to_end_mlp" and (params['k_cross_val'] != curr_k_cross_val or curr_max_authors != params["max_authors"]):
                 curr_k_cross_val = params['k_cross_val']
+                curr_max_authors = params['max_authors']
                 data_file = contrastive_params[file_param]
 
                 train_data, train_labels = get_embeddings(
-                    contrastive_params,
-                    self.model.dataset,
-                    params["max_authors"],
-                    params['k_cross_val'],
-                    output_layer_name,
+                    params=contrastive_params,
+                    dataset=self.model.dataset,
+                    max_authors=params["max_authors"],
+                    k_cross_val=params['k_cross_val'],
+                    output_layer_name=output_layer_name,
                     data_file=data_file,
                     combination=combination,
                     logger=logger,
