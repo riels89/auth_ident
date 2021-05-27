@@ -11,12 +11,14 @@ static enum language {C, JAVA, PYTHON};
 *    0,  # unknown
 *   1,  # start
 *   2,  # end
-*   3,  # newline
-*   4,  # integer
-*   5,  # floating
-*   6,  # char
-*   7.  # string
-*   8   # preprocessor
+*   3,  # space
+*   4,  # tab
+*   5,  # newline
+*   6,  # integer
+*   7,  # floating
+*   8,  # char
+*   9.  # string
+*   10   # preprocessor
 ] */
 static char alphabet[] = "_abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 static const char * ops[] = {
@@ -67,7 +69,7 @@ char* get_username(char *filename) {
 
 #define BUFFER_SIZE 300
 void process(FILE *input_file, FILE *output_file) {
-    int alphabet_index_buffer = 9;
+    int alphabet_index_buffer = 11;
     int op_index_buffer = alphabet_index_buffer + 26 * 2 + 10 + 1;
     int num_opereators = (sizeof(ops) / sizeof(ops[0]));
     int keyword_index_buffer = alphabet_index_buffer + num_opereators;
@@ -101,23 +103,29 @@ void process(FILE *input_file, FILE *output_file) {
             //printf("usernme: %s\n", curr_username);
             fprintf(output_file,"%s|%s|\"[", curr_username, curr_filename);
         }
-        else if (strcmp(class, "newline") == 0) {
+        else if (strcmp(class, "s") == 0) {
             fprintf(output_file, "3, ");
         }
-        else if (strcmp(class, "integer") == 0) {
+        else if (strcmp(class, "t") == 0) {
             fprintf(output_file, "4, ");
         }
-        else if (strcmp(class, "floating") == 0) {
+        else if (strcmp(class, "newline") == 0) {
             fprintf(output_file, "5, ");
         }
-        else if (strcmp(class, "char") == 0) {
+        else if (strcmp(class, "integer") == 0) {
             fprintf(output_file, "6, ");
         }
-        else if (strcmp(class, "string") == 0) {
+        else if (strcmp(class, "floating") == 0) {
             fprintf(output_file, "7, ");
         }
-        else if (strcmp(class, "preprocessor") == 0) {
+        else if (strcmp(class, "char") == 0) {
             fprintf(output_file, "8, ");
+        }
+        else if (strcmp(class, "string") == 0) {
+            fprintf(output_file, "9, ");
+        }
+        else if (strcmp(class, "preprocessor") == 0) {
+            fprintf(output_file, "10, ");
         }
         else if (strcmp(class, "operator") == 0) {
             curr_token = strtok(NULL, ",");
