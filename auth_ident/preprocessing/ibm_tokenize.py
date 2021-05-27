@@ -106,7 +106,7 @@ def encode(type):
             converters={"file_content": lambda x: [int(i) for i in x[1:-1].split(",")[:-1]]})
     print(f)
     # Filter out small files
-    f=f[f["file_content"].map(len) > 10]
+    f=f[f["file_content"].map(len) > 10].reset_index()
     f.to_hdf(path + f"_{type}_encoded.h5", key='data', mode='w')
     #os.remove(path + f"_{type}_encoded.csv")
 
