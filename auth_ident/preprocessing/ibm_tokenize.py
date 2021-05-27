@@ -49,7 +49,7 @@ def tokenize(type):
 
     command = [
         "./../Project_CodeNet/tools/tokenizer/tokenize", "-lC++", "-mcsv",
-        "-n", "-s", "-1", "-a", "", f"-o{tokenized_path}"
+        "-n", "-s", "-1", "-a", "-K", f"-o{tokenized_path}"
     ]
 
     batch_size = 25000

@@ -69,7 +69,7 @@ char* get_username(char *filename) {
 
 #define BUFFER_SIZE 300
 void process(FILE *input_file, FILE *output_file) {
-    int alphabet_index_buffer = 11;
+    int alphabet_index_buffer = 13;
     int op_index_buffer = alphabet_index_buffer + 26 * 2 + 10 + 1;
     int num_opereators = (sizeof(ops) / sizeof(ops[0]));
     int keyword_index_buffer = alphabet_index_buffer + num_opereators;
@@ -109,23 +109,29 @@ void process(FILE *input_file, FILE *output_file) {
         else if (strcmp(class, "t") == 0) {
             fprintf(output_file, "4, ");
         }
-        else if (strcmp(class, "newline") == 0) {
+        else if (strcmp(class, "c") == 0) {
             fprintf(output_file, "5, ");
         }
-        else if (strcmp(class, "integer") == 0) {
+        else if (strcmp(class, "lc") == 0) {
             fprintf(output_file, "6, ");
         }
-        else if (strcmp(class, "floating") == 0) {
+        else if (strcmp(class, "newline") == 0) {
             fprintf(output_file, "7, ");
         }
-        else if (strcmp(class, "char") == 0) {
+        else if (strcmp(class, "integer") == 0) {
             fprintf(output_file, "8, ");
         }
-        else if (strcmp(class, "string") == 0) {
+        else if (strcmp(class, "floating") == 0) {
             fprintf(output_file, "9, ");
         }
-        else if (strcmp(class, "preprocessor") == 0) {
+        else if (strcmp(class, "char") == 0) {
             fprintf(output_file, "10, ");
+        }
+        else if (strcmp(class, "string") == 0) {
+            fprintf(output_file, "11, ");
+        }
+        else if (strcmp(class, "preprocessor") == 0) {
+            fprintf(output_file, "12, ");
         }
         else if (strcmp(class, "operator") == 0) {
             curr_token = strtok(NULL, ",");
