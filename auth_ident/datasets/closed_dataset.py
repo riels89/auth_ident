@@ -4,6 +4,7 @@ import numpy as np
 import tensorflow as tf
 from time import perf_counter
 import sentencepiece as spm
+from auth_ident import CPP_JAVA_INDEX_BUFFER
 
 
 class ClosedDataset:
@@ -37,6 +38,22 @@ class ClosedDataset:
         if encoding_type == "spm":
             sp = spm.SentencePieceProcessor(model_file=spm_model_file)
             self.len_encoding = sp.vocab_size()
+        elif encoding_type == "tokens":
+            
+            if "cpp" in data_file:
+                self.len_encoding = CPP_JAVA_INDEX_BUFFER
+            elif "java" in data_file:
+                self.len_encoding = CPP_JAVA_INDEX_BUFFER
+            else:
+                assert False, "No python length encoding known"
+
+            # Assume format data/.../{language}_{type}_encoded.h5
+            top_ids_file = "data/" + "_".join(data_file.split("_")[:-2]) + "_top_identifiers.txt"
+            with open(top_ids_file) as f:
+                num_reserved_identifiers = sum([1 for line in f])
+
+            self.len_encoding += num_reserved_identifiers
+            print(f"ENCODING_LEN: {self.len_encoding}")
         else:
             self.len_encoding = len(chars_to_encode) + 1
 
@@ -50,7 +67,7 @@ class ClosedDataset:
                                                      num_oov_buckets=1)
 
         # Load dataframe
-        f = join("data/organized_hdfs/", data_file)
+        f = join("data/", data_file)
         self.dataframe = pd.read_hdf(f)
 
         self.bos_id = 1

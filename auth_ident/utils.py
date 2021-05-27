@@ -15,6 +15,7 @@ def load_encoder(model, params, combination, logger, logdir):
 
     # Create inner model
     encoder = model.create_model(params, combination, logger)
+    encoder.summary()
 
     # Load most recent checkpoint
     logger.info(f"Encoder logdir: {logdir}")
