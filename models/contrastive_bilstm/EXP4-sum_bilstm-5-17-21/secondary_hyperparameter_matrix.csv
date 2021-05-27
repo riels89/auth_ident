@@ -1,0 +1,19 @@
+combination,model,k_cross_val,max_authors,model_params,accuracy
+0,k_neighbors,9,1600,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'bidirectional'}",0.8835416666666667
+0,k_neighbors,9,800,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'bidirectional'}",0.9098611111111112
+0,k_neighbors,9,150,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'bidirectional'}",0.9488888888888888
+0,k_neighbors,5,1600,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'bidirectional'}",0.8338750000000001
+0,k_neighbors,5,800,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'bidirectional'}",0.8564999999999999
+0,k_neighbors,5,150,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'bidirectional'}",0.8853333333333333
+0,k_neighbors,2,1600,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'bidirectional'}",0.6890624999999999
+0,k_neighbors,2,800,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'bidirectional'}",0.713125
+0,k_neighbors,2,150,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'bidirectional'}",0.77
+0,svm,9,1600,"{'C': 100, 'output_layer': 'bidirectional'}",0.893125
+0,svm,9,800,"{'C': 100, 'output_layer': 'bidirectional'}",0.9159722222222223
+0,svm,9,150,"{'C': 100, 'output_layer': 'bidirectional'}",0.957037037037037
+0,svm,5,1600,"{'C': 100, 'output_layer': 'bidirectional'}",0.843875
+0,svm,5,800,"{'C': 100, 'output_layer': 'bidirectional'}",0.865
+0,svm,5,150,"{'C': 100, 'output_layer': 'bidirectional'}",0.884
+0,svm,2,1600,"{'C': 100, 'output_layer': 'bidirectional'}",0.6890624999999999
+0,svm,2,800,"{'C': 100, 'output_layer': 'bidirectional'}",0.713125
+0,svm,2,150,"{'C': 100, 'output_layer': 'bidirectional'}",0.77

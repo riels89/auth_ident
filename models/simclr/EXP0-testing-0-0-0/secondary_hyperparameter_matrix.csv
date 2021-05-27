@@ -22,7 +22,7 @@ combination,model,k_cross_val,max_authors,model_params,accuracy
 0,svm,9,1261,{'C': 100},0.8636884306987401
 0,svm,9,1000,{'C': 100},0.8763333333333334
 0,svm,9,500,{'C': 100},0.9077777777777778
-0,svm,9,150,{'C': 100},0.9340740740740741
+0,svm,9,150,{'C': 100},0.934074074074074
 0,svm,9,1261,{'C': 100},0.8472993215261255
 0,cosknn,9,1261,{'n_neighbors': 1},0.8480923429377036
 0,k_neighbors,9,1261,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1}",0.8257115164331659
@@ -38,4 +38,5 @@ combination,model,k_cross_val,max_authors,model_params,accuracy
 3,k_neighbors,9,1261,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1}",0.0007930214115781125
 3,cosknn,9,1261,{'n_neighbors': 1},0.0007930214115781125
 3,k_neighbors,9,1261,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1}",0.0007049079214027668
-1,svm,2,1261,{'C': 100},0.023394131641554322
+1,svm,2,1261,{'C': 100},0.02339413164155432
+0,cosknn,9,1600,"{'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.6599700414133404

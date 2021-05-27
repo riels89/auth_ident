@@ -22,7 +22,7 @@
     "bias": [false],
     "dropout": [0.0],
     "l2": [0.0],
-    "max_authors": [1600],
+    "max_authors": [150],
 
     "train_data":["encoded_data/c_cpp_h_by_line_cc9995_vs8000_a0.5_l-1_train.h5","encoded_data/c_cpp_h_by_line_cc9995_vs1024_a0.5_l-1_train.h5","encoded_data/c_cpp_h_by_line_cc9995_vs512_a0.5_l-1_train.h5","encoded_data/c_cpp_h_by_line_cc9995_vs256_a0.5_l-1_train.h5",
 	    	  "encoded_data/c_cpp_h_by_line_cc9995_vs128_a0.5_l-1_train.h5", 
@@ -64,7 +64,7 @@
 	]],
 
     "k_cross_val": [9, 7, 5, 2],
-    "max_authors": [1600]
+    "max_authors": [150]
   }
 
 }

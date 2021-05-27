@@ -1,0 +1,37 @@
+combination,model,k_cross_val,max_authors,model_params,accuracy
+0,k_neighbors,9,1600,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.8927083333333334
+0,k_neighbors,9,800,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.9206944444444445
+0,k_neighbors,9,150,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.9607407407407407
+0,k_neighbors,5,1600,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.8467499999999999
+0,k_neighbors,5,800,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.868
+0,k_neighbors,5,150,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.9013333333333333
+0,k_neighbors,2,1600,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.701875
+0,k_neighbors,2,800,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.743125
+0,k_neighbors,2,150,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.7733333333333333
+0,svm,9,1600,"{'C': 100, 'output_layer': 'output_embedding'}",0.9002777777777777
+0,svm,9,800,"{'C': 100, 'output_layer': 'output_embedding'}",0.9258333333333333
+0,svm,9,150,"{'C': 100, 'output_layer': 'output_embedding'}",0.9585185185185185
+0,svm,5,1600,"{'C': 100, 'output_layer': 'output_embedding'}",0.852625
+0,svm,5,800,"{'C': 100, 'output_layer': 'output_embedding'}",0.8727499999999999
+0,svm,5,150,"{'C': 100, 'output_layer': 'output_embedding'}",0.9093333333333333
+0,svm,2,1600,"{'C': 100, 'output_layer': 'output_embedding'}",0.701875
+0,svm,2,800,"{'C': 100, 'output_layer': 'output_embedding'}",0.743125
+0,svm,2,150,"{'C': 100, 'output_layer': 'output_embedding'}",0.7733333333333333
+1,k_neighbors,9,1600,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.7929861111111112
+1,k_neighbors,9,800,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.8338888888888888
+1,k_neighbors,9,150,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.9074074074074073
+1,k_neighbors,5,1600,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.732375
+1,k_neighbors,5,800,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.76575
+1,k_neighbors,5,150,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.8373333333333333
+1,k_neighbors,2,1600,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.5743750000000001
+1,k_neighbors,2,800,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.6231249999999999
+1,k_neighbors,2,150,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.7166666666666667
+1,svm,9,1600,"{'C': 100, 'output_layer': 'output_embedding'}",0.7969444444444445
+1,svm,9,800,"{'C': 100, 'output_layer': 'output_embedding'}",0.8370833333333333
+1,svm,9,150,"{'C': 100, 'output_layer': 'output_embedding'}",0.9007407407407408
+1,svm,5,1600,"{'C': 100, 'output_layer': 'output_embedding'}",0.741625
+1,svm,5,800,"{'C': 100, 'output_layer': 'output_embedding'}",0.7725
+1,svm,5,150,"{'C': 100, 'output_layer': 'output_embedding'}",0.836
+1,svm,2,1600,"{'C': 100, 'output_layer': 'output_embedding'}",0.5743750000000001
+1,svm,2,800,"{'C': 100, 'output_layer': 'output_embedding'}",0.6231249999999999
+1,svm,2,150,"{'C': 100, 'output_layer': 'output_embedding'}",0.7166666666666667

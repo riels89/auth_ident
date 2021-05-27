@@ -1,0 +1,19 @@
+combination,model,k_cross_val,max_authors,model_params,accuracy
+0,k_neighbors,9,1600,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'bidirectional'}",0.8940277777777779
+0,k_neighbors,9,800,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'bidirectional'}",0.9184722222222224
+0,k_neighbors,9,150,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'bidirectional'}",0.9503703703703703
+0,k_neighbors,5,1600,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'bidirectional'}",0.8414999999999999
+0,k_neighbors,5,800,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'bidirectional'}",0.8634999999999999
+0,k_neighbors,5,150,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'bidirectional'}",0.9013333333333333
+0,k_neighbors,2,1600,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'bidirectional'}",0.7125
+0,k_neighbors,2,800,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'bidirectional'}",0.739375
+0,k_neighbors,2,150,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'bidirectional'}",0.7933333333333333
+0,svm,9,1600,"{'C': 100, 'output_layer': 'bidirectional'}",0.9032638888888889
+0,svm,9,800,"{'C': 100, 'output_layer': 'bidirectional'}",0.9256944444444444
+0,svm,9,150,"{'C': 100, 'output_layer': 'bidirectional'}",0.9577777777777777
+0,svm,5,1600,"{'C': 100, 'output_layer': 'bidirectional'}",0.85375
+0,svm,5,800,"{'C': 100, 'output_layer': 'bidirectional'}",0.8737499999999999
+0,svm,5,150,"{'C': 100, 'output_layer': 'bidirectional'}",0.9
+0,svm,2,1600,"{'C': 100, 'output_layer': 'bidirectional'}",0.7125
+0,svm,2,800,"{'C': 100, 'output_layer': 'bidirectional'}",0.739375
+0,svm,2,150,"{'C': 100, 'output_layer': 'bidirectional'}",0.7933333333333333

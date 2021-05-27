@@ -1,0 +1,2 @@
+combination,optimizer,loss,temperature,lr,clip,decay,epochs,batch_size,binary_encoding,max_code_length,embedding_size,BN,input_embedding_size,l2,dropout,encoding_type,bias,max_authors,model,spm_model_file,train_data,val_data,test_data,val_loss,train_loss
+0,adam,simclr,0.0005,0.001,1.0,2.5e-06,10,1900,False,1200,256,False,32,0.0,0.0,char,False,1600,contrastive_cnn,data/organized_hdfs/spm_models/c_cpp_h_by_line_cc9995_vs1024,../loaded/char_encoded_data/char_encoding_train.h5,../loaded/char_encoded_data/char_encoding_val.h5,c_cpp_test.h5,3.1345183849334717,2.6057231426239014

@@ -3,7 +3,7 @@
 "contrastive": {
     "optimizer": ["adam"],
     "loss": ["simclr"],
-    "temperature": [0.0005],
+    "temperature": [0.005],
     "lr": [0.001],
     "clip": [1.0],
     "decay": [0.0000025],
@@ -14,6 +14,8 @@
     "embedding_size": [256],
     "BN": [false],
     "input_embedding_size": [32],
+    "l2": [0.0],
+    "dropout": [0.0],
     "encoding_type": ["char"],
     "spm_model_file": ["data/organized_hdfs/spm_models/c_cpp_h_by_line_cc9995_vs1024", "data/organized_hdfs/spm_models/c_cpp_h_by_line_cc9995_vs8000.model","data/organized_hdfs/spm_models/c_cpp_h_by_line_cc9995_vs1024"],
     "bias": [false],

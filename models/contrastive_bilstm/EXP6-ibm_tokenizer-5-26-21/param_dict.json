@@ -1,0 +1,47 @@
+{
+
+"contrastive": {
+    "optimizer": ["adam"],
+    "loss": ["simclr"],
+    "temperature": [0.005],
+    "lr": [0.001],
+    "clip": [1.0],
+    "decay": [0.0000025],
+    "epochs": [20],
+    "batch_size": [1000],
+    "binary_encoding": [false],
+    "max_code_length": [600],
+    "embedding_size": [256],
+    "BN": [false],
+    "input_embedding_size": [32],
+    "encoding_type": ["tokens"],
+    "bias": [false],
+    "dropout": [0.0],
+
+    "train_data":["gcj_tokenized/c_cpp_train_encoded.h5"],
+
+    "val_data":["gcj_tokenized/c_cpp_val_encoded.h5"],
+
+    "test_data":["gcj_tokenized/c_cpp_test_encoded.h5"],
+
+    "model": ["contrastive_bilstm"]
+  },
+
+  "secondary": {
+    "model": ["k_neighbors", "svm"],
+    "model_params": [[{
+	"n_jobs": [-1],
+	"weights": ["distance"],
+	"algorithm": ["brute"],
+	"n_neighbors": [1],
+	"output_layer": ["output_embedding"]
+    },{
+	"C": [100],
+	"output_layer": ["output_embedding"]
+    }]],
+
+    "k_cross_val": [9, 5, 2],
+    "max_authors": [1600, 800, 150]
+  }
+
+}

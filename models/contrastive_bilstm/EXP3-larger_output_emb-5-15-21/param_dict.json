@@ -1,0 +1,48 @@
+{
+
+"contrastive": {
+    "optimizer": ["adam"],
+    "loss": ["simclr"],
+    "temperature": [0.005],
+    "lr": [0.001],
+    "clip": [1.0],
+    "decay": [0.0000025],
+    "epochs": [20],
+    "batch_size": [1000],
+    "binary_encoding": [false],
+    "max_code_length": [600, 500],
+    "embedding_size": [512],
+    "BN": [false],
+    "input_embedding_size": [32],
+    "encoding_type": ["spm"],
+    "spm_model_file": ["data/organized_hdfs/spm_models_fixed/c_cpp_h_program_cc9995_vs4048.model"],
+    "bias": [false],
+    "dropout": [0.0],
+
+    "train_data":["encoded_data_fixed/c_cpp_h_program_cc9995_vs4048_a0.5_l-1_train.h5"],
+
+    "val_data":["encoded_data_fixed/c_cpp_h_program_cc9995_vs4048_a0.5_l-1_val.h5"],
+
+    "test_data":["encoded_data_fixed/c_cpp_h_program_cc9995_vs4048_a0.5_l-1_test.h5"],
+
+    "model": ["contrastive_bilstm"]
+  },
+
+  "secondary": {
+    "model": ["k_neighbors", "svm"],
+    "model_params": [[{
+	"n_jobs": [-1],
+	"weights": ["distance"],
+	"algorithm": ["brute"],
+	"n_neighbors": [1],
+	"output_layer": ["output_embedding"]
+    },{
+	"C": [100],
+	"output_layer": ["output_embedding"]
+    }]],
+
+    "k_cross_val": [9, 5, 2],
+    "max_authors": [1600, 800, 150]
+  }
+
+}
