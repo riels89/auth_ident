@@ -111,13 +111,13 @@ def make_hdf(codenet_root, new_hdf, keep_repeats, languages, val_test_split,
                     with open(full_path, 'rb') as content_file:
                         contents = content_file.read()
                         submission = (frame['problem_id'],
-                                      frame['user_id'],
+				      int(frame['user_id'][1:]),
                                       language,
                                       local_path,
                                       contents)
                 else:
                     submission = (frame['problem_id'],
-                                  frame['user_id'],
+                                  int(frame['user_id'][1:]),
                                   language,
                                   local_path)
 

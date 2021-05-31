@@ -43,9 +43,15 @@ def tokenize(type):
         os.remove(tokenized_path)
         os.mknod(tokenized_path)
 
+    f = pd.read_hdf(type_path + ".h5")
     if args.raw_data_prefix != "False":
-        f = pd.read_hdf(type_path + ".h5")
         f["filepath"] = f["filepath"].apply(lambda x: args.raw_data_prefix + x)
+
+    # Save authors for later use in encoding program
+    np.savetxt(type_path + "_authors.txt", 
+	       f["username"].to_numpy(),
+               fmt="%s",
+               delimiter="\n")
 
     command = [
         "./../Project_CodeNet/tools/tokenizer/tokenize", "-lC++", "-mcsv",
