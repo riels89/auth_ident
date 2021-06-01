@@ -109,7 +109,7 @@ def make_hdf(codenet_root, new_hdf, keep_repeats, languages, val_test_split,
 
                 if include_contents:
                     with open(full_path, 'rb') as content_file:
-                        contents = content_file.read()
+                        contents = content_file.read().decode("utf-8")
                         submission = (frame['problem_id'],
 				      int(frame['user_id'][1:]),
                                       language,
@@ -126,13 +126,13 @@ def make_hdf(codenet_root, new_hdf, keep_repeats, languages, val_test_split,
 
     if include_contents:
         frame = pd.DataFrame({"problem_id": [v[0] for v in submissions],
-                              "user_id": [v[1] for v in submissions],
+                              "username": [v[1] for v in submissions],
                               "language": [v[2] for v in submissions],
                               "filepath": [v[3] for v in submissions],
                               "file_content": [v[4] for v in submissions]})
     else:
         frame = pd.DataFrame({"problem_id": [v[0] for v in submissions],
-                              "user_id": [v[1] for v in submissions],
+                              "username": [v[1] for v in submissions],
                               "language": [v[2] for v in submissions],
                               "filepath": [v[3] for v in submissions]})
 
@@ -163,9 +163,23 @@ def make_hdf(codenet_root, new_hdf, keep_repeats, languages, val_test_split,
         test_frame = frame.loc[test_matches].reset_index(drop=True)
         train_frame = frame.loc[train_matches].reset_index(drop=True)
 
-        val_frame.to_hdf(new_hdf + "_val.h5", key='df', mode='w')
-        test_frame.to_hdf(new_hdf + "_test.h5", key='df', mode='w')
-        train_frame.to_hdf(new_hdf + "_train.h5", key='df', mode='w')
+	
+        if not os.path.exists(new_hdf + "_val.h5"):
+            os.remove(new_hdf + "_val.h5")
+        if not os.path.exists(new_hdf + "_test.h5"):
+            os.remove(new_hdf + "_test.h5")
+        if not os.path.exists(new_hdf + "_train.h5"):
+            os.remove(new_hdf + "_train.h5")
+        print(f"train size: {train_frame.shape[0]}")
+        for i, df_chunk in val_frame.groupby(np.arange(val_frame.shape[0]) // 1000000):
+            df_chunk.to_hdf(new_hdf + "_val.h5", key='df', mode='a')
+        for i, df_chunk in test_frame.groupby(np.arange(test_frame.shape[0]) // 1000000):
+            df_chunk.to_hdf(new_hdf + "_test.h5", key='df', mode='a')
+        for i, df_chunk in train_frame.groupby(np.arange(train_frame.shape[0]) // 1000000):
+            df_chunk.to_hdf(new_hdf + "_train.h5", key='df', mode='a')
+        #val_frame.to_hdf(new_hdf + "_val.h5", key='df', mode='w')
+        #test_frame.to_hdf(new_hdf + "_test.h5", key='df', mode='w')
+        #train_frame.to_hdf(new_hdf + "_train.h5", key='df', mode='w')
     else:
         frame.to_hdf(new_hdf + ".h5", key='df', mode='w')
 
