@@ -10,7 +10,7 @@ from math import ceil
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.model_selection import cross_val_score, train_test_split, KFold
 from auth_ident.models import KNeighborSecondaryClassifier
-from auth_ident.optimizers import LearningRateMultiplier
+#from auth_ident.optimizers import LearningRateMultiplier
 import time
 from tensorflow.keras.layers import Embedding, TimeDistributed, MaxPool1D
 from tensorflow.keras.layers import LSTM, Conv1D, Flatten, BatchNormalization, Lambda, Add

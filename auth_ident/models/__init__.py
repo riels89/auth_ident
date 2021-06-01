@@ -22,6 +22,7 @@ from auth_ident.models.universal_transformer import UniversalTransformer
 from auth_ident.models.transformer import Transformer
 from auth_ident.models.cosknn import CosKNNSecondaryClassifier
 from auth_ident.models.end_to_end_secondary import EndToEndMLP
+from auth_ident.models.histogram_verifier import HistogramVerifier
 
 model_map = {
     "cnn_lstm": CNNLSTM,
@@ -47,5 +48,6 @@ model_map = {
     "k_neighbors": KNeighborSecondaryClassifier,
     "svm": SVMSecondaryClassifier,
     "cosknn": CosKNNSecondaryClassifier,
+    "histogram_verifier": HistogramVerifier,
     "end_to_end_mlp": EndToEndMLP 
 }
