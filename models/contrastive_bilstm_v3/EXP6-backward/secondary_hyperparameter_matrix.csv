@@ -1,0 +1,5 @@
+combination,model,k_cross_val,max_authors,model_params,accuracy
+0,svm,9,1600,"{'C': 100, 'output_layer': 'output_embedding'}",0.9035416666666666
+0,svm,9,800,"{'C': 100, 'output_layer': 'output_embedding'}",0.9275
+0,svm,9,150,"{'C': 100, 'output_layer': 'output_embedding'}",0.9562962962962962
+0,svm,5,1600,"{'C': 100, 'output_layer': 'output_embedding'}",0.8578749999999999

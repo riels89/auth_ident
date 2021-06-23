@@ -1,6 +1,7 @@
 from auth_ident.models.cnn_lstm import CNNLSTM
 from auth_ident.models.contrastive_1D_to_2D import Contrastive1DTo2D
 from auth_ident.models.contrastive_bilstm_v2 import ContrastiveBilstmV2
+from auth_ident.models.contrastive_bilstm_v3 import ContrastiveBilstmV3
 from auth_ident.models.contrastive_bilstm import ContrastiveBiLSTM
 from auth_ident.models.contrastive_by_line_cnn import ContrastiveByLineCNN
 from auth_ident.models.contrastive_cnn import ContrastiveCNN
@@ -18,7 +19,7 @@ from auth_ident.models.generic_secondary_classifier import GenericSecondaryClass
 from auth_ident.models.random_forest import RandomForestSecondaryClassifier
 from auth_ident.models.k_neighbors import KNeighborSecondaryClassifier
 from auth_ident.models.svm import SVMSecondaryClassifier
-from auth_ident.models.universal_transformer import UniversalTransformer
+#from auth_ident.models.universal_transformer import UniversalTransformer
 from auth_ident.models.transformer import Transformer
 from auth_ident.models.cosknn import CosKNNSecondaryClassifier
 from auth_ident.models.end_to_end_secondary import EndToEndMLP
@@ -28,6 +29,7 @@ model_map = {
     "cnn_lstm": CNNLSTM,
     "contrastive_1D_to_2D": Contrastive1DTo2D,
     "contrastive_bilstm_v2": ContrastiveBilstmV2,
+    "contrastive_bilstm_v3": ContrastiveBilstmV3,
     "contrastive_bilstm": ContrastiveBiLSTM,
     "contrastive_by_line_cnn": ContrastiveByLineCNN,
     "contrastive_cnn": ContrastiveCNN,
@@ -41,7 +43,7 @@ model_map = {
     "split_lstm": SplitLSTM,
     "split_NN": SplitNN,
     "large_contrastive_cnn": LargeContrastiveCNN,
-    "universal_transformer": UniversalTransformer,
+#    "universal_transformer": UniversalTransformer,
     "transformer": Transformer,
 
     "random_forest": RandomForestSecondaryClassifier,

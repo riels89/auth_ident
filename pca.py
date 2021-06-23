@@ -1,4 +1,4 @@
-from auth_ident.datasets import ClosedDatset
+from auth_ident.datasets import ClosedDataset
 from auth_ident import GenericExecute, param_mapping
 from auth_ident.utils import get_embeddings
 from sklearn.decomposition import PCA
@@ -9,12 +9,19 @@ import os
 import numpy as np
 import pandas as pd
 
+import matplotlib
+matplotlib.rcParams.update({'font.size': 8})
+matplotlib.rcParams.update({'font.sans-serif':['Arial']})
+
+
 class AuthorPCA(GenericExecute):
 
     def execute_one(self, contrastive_params, combination, logger):
+        file_param = "val_data"
+        self.data_file = contrastive_params[file_param]
 
         train_data, train_labels, file_indicies = get_embeddings(contrastive_params,
-                                                                 ClosedDatset,
+                                                                 ClosedDataset,
                                                                  self.num_authors,
                                                                  self.num_files,
                                                                  "output_embedding",
@@ -25,7 +32,7 @@ class AuthorPCA(GenericExecute):
                                                                  return_file_indicies=True)
 
 
-        f = os.path.join("data/loaded/", self.data_file)
+        f = os.path.join("data/", self.data_file)
         raw_data = pd.read_hdf(f)
 
         authors_per_split = int(train_data.shape[0] / float(self.num_files))
@@ -56,25 +63,31 @@ class AuthorPCA(GenericExecute):
             "PCA Component 1": components[:, 1]
         }
 
+        plt.figure(figsize=(2.0, 2.0), dpi=220)
         plot = sns.scatterplot(data=data,
                                x="PCA Component 0",
                                y="PCA Component 1",
+                               size=1,
                                hue=labels,
                                style=labels,
                                s=100,
                                palette="tab10")
-        plot.set_xlabel("PCA Component 0", fontsize=15)
-        plot.set_ylabel("PCA Component 1", fontsize=15)
-        plot.set_title("PCA of Trained Projections", fontsize=15)
+        plot.set_xlabel("PCA Component 0")#, fontsize=15)
+        plot.set_ylabel("PCA Component 1")#, fontsize=15)
+        ax = plt.gca()
+        ax.axes.yaxis.set_ticks([])
+        ax.axes.xaxis.set_ticks([])
+
+        #plot.set_title("PCA of Trained Projections", fontsize=15)
         #plot.set_title("PCA of Untrained Projections", fontsize=15)
 
-        plot.legend(loc="upper left", fontsize=12)
-        #plot.legend_.remove()
-
+        #plot.legend(loc="upper left", fontsize=12)
+        plot.legend_.remove()
+        plt.tight_layout(pad=0)
         fig = plot.get_figure()
         fig.savefig(
             os.path.join(self.logdir, "combination-" + str(combination),
-                         "pca.png"),
+                         "pca.pdf"),
             bbox_inches='tight')
         print(filepaths)
 

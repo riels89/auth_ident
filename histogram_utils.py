@@ -1,17 +1,7 @@
-from auth_ident.models import GenericSecondaryClassifier 
-from auth_ident.datasets import ClosedDataset
-
-from sklearn.model_selection import cross_val_score, train_test_split, KFold
-
 import numpy as np
 from scipy.spatial.distance import cdist
-import matplotlib.pyplot as plt
-import seaborn as sns
 import scipy
-
-from sklearn.metrics import roc_curve
-from sklearn.metrics import precision_recall_curve
-from sklearn.metrics import PrecisionRecallDisplay
+import sklearn.metrics
 
 def indep_roll(arr, shifts, axis=1):
     """Apply an independent roll for each dimensions of a single axis.
@@ -77,7 +67,7 @@ def log_odds_same_independent(points_a, points_b, same_pdf, diff_pdf, prior_same
 
     #print(np.exp(acc) / (1 + np.exp(acc)))
     
-    return acc
+    return np.exp(acc) / (1 + np.exp(acc))
 
 def calc_scores(X, y, num_authors, set_size, comparison_func,
                 same_pdf, diff_pdf):
@@ -137,93 +127,3 @@ def create_pdfs(points, labels):
     same_distribution = scipy.stats.rv_histogram(same_hist)
 
     return same_distribution, diff_distribution
-
-class HistogramVerifier(GenericSecondaryClassifier):
-    """
-
-    """
-    def __init__(self, params, combination, logger, logdir):
-        super().__init__(params, combination, logger, logdir)
-
-        self.name = "histogram_verifier"
-        self.dataset = ClosedDataset
-
-        self.model = self.params["model_params"]
-
-    def train(self, X, y):
-
-        assert(X.shape[0] == 1600 * 9)
-        print(self.model)
-        X_train = X[0:1600*1 ,...]
-        X_test = X[1600*1::, ...]
-        y_train = y[0:1600*1]
-        y_test = y[1600*1::]
-
-
-        import pickle
-        if False:
-            # Hack... Manually set things up to create the distributions using
-            # the validation split, then change the flag to use
-            # distribution using the test split.
-            same_distribution, diff_distribution = create_pdfs(X, y)
-            pickle.dump(same_distribution, open("same_dist.pkl", "wb" ))
-            pickle.dump(diff_distribution, open("diff_dist.pkl", "wb" ))
-            return
-        else:
-            same_distribution = pickle.load(open("same_dist.pkl", "rb"))
-            diff_distribution = pickle.load(open("diff_dist.pkl", "rb"))
-            
-        # PLOT THE HISTOGRAMS
-        x = np.linspace(same_distribution.support()[0],
-                        same_distribution.support()[1], 100, endpoint=False)
-      
-        plt.plot(x, same_distribution.pdf(x), color='b')
-        plt.fill_between(x, same_distribution.pdf(x), y2=0, color='b', alpha=.2)
-
-        x = np.linspace(diff_distribution.support()[0],
-                        diff_distribution.support()[1], 100, endpoint=False)
-        
-       
-              
-        plt.plot(x, diff_distribution.pdf(x), color='r')
-        plt.fill_between(x, diff_distribution.pdf(x), y2=0, color='r', alpha=.2)
-        plt.legend(['same author', 'different author'])
-        plt.xlabel('cosine similarity')
-        #plt.xlim([-1, 1])
-        plt.show()
-
-        for set_size in range(1,5):
-            #set_size = self.params['model_params']['set_size']
-            scores, true = calc_scores(X, y, 1600, set_size,
-                                       log_odds_same_averaged,
-                                       same_distribution.pdf, diff_distribution.pdf)
-            fpr, tpr, _ = roc_curve(true, scores)
-            plt.figure(1)
-            plt.plot(fpr, tpr, label=str(set_size))
-            plt.xlabel("FPR")
-            plt.ylabel("TPR")
-            plt.xlim([0, .5])
-            plt.ylim([.5, 1])
-
-            
-            plt.figure(2)
-            prec, recall, _ = precision_recall_curve(true, scores)        
-            ax = plt.gca()
-            disp = PrecisionRecallDisplay(precision=prec, recall=recall)
-            disp.plot(ax, name=str(set_size))
-            predictions = np.zeros(scores.shape)
-            predictions[scores > .5] = 1.0
-            print(predictions.shape)
-            print("RESULTS: ", np.sum(predictions == true) / (1600 * 2))
-        plt.figure(1)
-        plt.legend()
-        plt.show()
-        
-
-
-
-        return np.sum(predictions == true) / (1600 * 2)
-
-    def evaluate(self, X, y=None): 
-
-        return -1

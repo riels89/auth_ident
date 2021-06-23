@@ -41,8 +41,10 @@ class DensityPlot(GenericExecute):
 
     def execute_one(self, contrastive_params, combination, logger):
         embedding_size = contrastive_params["embedding_size"]
+
         get_data(contrastive_params, 
                        ClosedDataset,
+                 max_authors=9,
                        k_nieghbors=2,
                        data_file=self.data_file,
                        return_file_indicies=False)
@@ -122,7 +124,6 @@ class DensityPlot(GenericExecute):
             os.path.join(self.logdir, "combination-" + str(combination),
                          "similarity_dist.png"),
             bbox_inches='tight')
-        print(filepaths)
 
     def make_arg_parser(self):
         super().make_arg_parser()
