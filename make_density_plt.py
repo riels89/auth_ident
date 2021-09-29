@@ -19,7 +19,7 @@ class DensityPlot(GenericExecute):
 
     def get_embeddings(self, model, max_code_length):
 
-        f = join("data/organized_hdfs/", self.data_file)
+        f = join("data/", self.data_file)
         embedding_dataframe = pd.read_hdf(f)
         files_by_auth_name = embedding_dataframe.groupby(['username']).indices
 
@@ -78,7 +78,7 @@ class DensityPlot(GenericExecute):
             #diff_sims = diff_sim_matrix[np.triu_indices(diff_sim_matrix.shape[0], k=1)].flatten()
             diff_auth_sim.append(diff_sim_matrix)
 
-            curr_embedding_list_index += len(embeddings)
+            curr_embedding_list_index += embeddings.shape[0]
         print(len(same_auth_sim))
         print(len(diff_auth_sim))
         same_auth_sim = list(itertools.chain.from_iterable(same_auth_sim))
@@ -122,7 +122,6 @@ class DensityPlot(GenericExecute):
             os.path.join(self.logdir, "combination-" + str(combination),
                          "similarity_dist.png"),
             bbox_inches='tight')
-        print(filepaths)
 
     def make_arg_parser(self):
         super().make_arg_parser()
