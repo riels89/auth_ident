@@ -1,1 +1,0 @@
-First testing of models to see if loss will go down with a simpleNN
