@@ -1,0 +1,252 @@
+combination,model,k_cross_val,max_authors,model_params,accuracy
+0,k_neighbors,9,1600,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.7810416666666667
+0,k_neighbors,9,800,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.8236111111111111
+0,k_neighbors,9,150,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.885925925925926
+0,k_neighbors,5,1600,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.726625
+0,k_neighbors,5,800,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.7670000000000001
+0,k_neighbors,5,150,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.8626666666666667
+0,k_neighbors,2,1600,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.568125
+0,k_neighbors,2,800,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.6387499999999999
+0,k_neighbors,2,150,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.7433333333333334
+0,svm,9,1600,"{'C': 100, 'output_layer': 'output_embedding'}",0.8009722222222223
+0,svm,9,800,"{'C': 100, 'output_layer': 'output_embedding'}",0.839861111111111
+0,svm,9,150,"{'C': 100, 'output_layer': 'output_embedding'}",0.8977777777777776
+0,svm,5,1600,"{'C': 100, 'output_layer': 'output_embedding'}",0.745125
+0,svm,5,800,"{'C': 100, 'output_layer': 'output_embedding'}",0.7882499999999999
+0,svm,5,150,"{'C': 100, 'output_layer': 'output_embedding'}",0.8640000000000001
+0,svm,2,1600,"{'C': 100, 'output_layer': 'output_embedding'}",0.568125
+0,svm,2,800,"{'C': 100, 'output_layer': 'output_embedding'}",0.6387499999999999
+0,svm,2,150,"{'C': 100, 'output_layer': 'output_embedding'}",0.7433333333333334
+1,k_neighbors,9,1600,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.8875694444444444
+1,k_neighbors,9,800,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.915
+1,k_neighbors,9,150,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.9429629629629628
+1,k_neighbors,5,1600,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.8472500000000001
+1,k_neighbors,5,800,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.8752500000000001
+1,k_neighbors,5,150,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.9146666666666666
+1,k_neighbors,2,1600,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.6728125
+1,k_neighbors,2,800,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.7275
+1,k_neighbors,2,150,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.8066666666666666
+1,svm,9,1600,"{'C': 100, 'output_layer': 'output_embedding'}",0.8987500000000002
+1,svm,9,800,"{'C': 100, 'output_layer': 'output_embedding'}",0.9206944444444444
+1,svm,9,150,"{'C': 100, 'output_layer': 'output_embedding'}",0.9459259259259256
+1,svm,5,1600,"{'C': 100, 'output_layer': 'output_embedding'}",0.8564999999999999
+1,svm,5,800,"{'C': 100, 'output_layer': 'output_embedding'}",0.88425
+1,svm,5,150,"{'C': 100, 'output_layer': 'output_embedding'}",0.9053333333333332
+1,svm,2,1600,"{'C': 100, 'output_layer': 'output_embedding'}",0.6728125
+1,svm,2,800,"{'C': 100, 'output_layer': 'output_embedding'}",0.7275
+1,svm,2,150,"{'C': 100, 'output_layer': 'output_embedding'}",0.8066666666666666
+2,k_neighbors,9,1600,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.7875694444444444
+2,k_neighbors,9,800,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.8273611111111109
+2,k_neighbors,9,150,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.8837037037037038
+2,k_neighbors,5,1600,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.736125
+2,k_neighbors,5,800,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.7755000000000001
+2,k_neighbors,5,150,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.8520000000000001
+2,k_neighbors,2,1600,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.5803125
+2,k_neighbors,2,800,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.638125
+2,k_neighbors,2,150,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.7133333333333334
+2,svm,9,1600,"{'C': 100, 'output_layer': 'output_embedding'}",0.8090277777777777
+2,svm,9,800,"{'C': 100, 'output_layer': 'output_embedding'}",0.8461111111111111
+2,svm,9,150,"{'C': 100, 'output_layer': 'output_embedding'}",0.8933333333333332
+2,svm,5,1600,"{'C': 100, 'output_layer': 'output_embedding'}",0.756875
+2,svm,5,800,"{'C': 100, 'output_layer': 'output_embedding'}",0.7927500000000001
+2,svm,5,150,"{'C': 100, 'output_layer': 'output_embedding'}",0.8586666666666668
+2,svm,2,1600,"{'C': 100, 'output_layer': 'output_embedding'}",0.5803125
+2,svm,2,800,"{'C': 100, 'output_layer': 'output_embedding'}",0.638125
+2,svm,2,150,"{'C': 100, 'output_layer': 'output_embedding'}",0.7133333333333334
+3,k_neighbors,9,1600,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.8093055555555555
+3,k_neighbors,9,800,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.8500000000000001
+3,k_neighbors,9,150,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.908148148148148
+3,k_neighbors,5,1600,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.753125
+3,k_neighbors,5,800,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.7965
+3,k_neighbors,5,150,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.8693333333333333
+3,k_neighbors,2,1600,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.6046875
+3,k_neighbors,2,800,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.6699999999999999
+3,k_neighbors,2,150,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.7633333333333334
+3,svm,9,1600,"{'C': 100, 'output_layer': 'output_embedding'}",0.8297916666666666
+3,svm,9,800,"{'C': 100, 'output_layer': 'output_embedding'}",0.8608333333333333
+3,svm,9,150,"{'C': 100, 'output_layer': 'output_embedding'}",0.9177777777777778
+3,svm,5,1600,"{'C': 100, 'output_layer': 'output_embedding'}",0.7705
+3,svm,5,800,"{'C': 100, 'output_layer': 'output_embedding'}",0.8137500000000001
+3,svm,5,150,"{'C': 100, 'output_layer': 'output_embedding'}",0.892
+3,svm,2,1600,"{'C': 100, 'output_layer': 'output_embedding'}",0.6046875
+3,svm,2,800,"{'C': 100, 'output_layer': 'output_embedding'}",0.6699999999999999
+3,svm,2,150,"{'C': 100, 'output_layer': 'output_embedding'}",0.7633333333333334
+4,k_neighbors,9,1600,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.90375
+4,k_neighbors,9,800,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.92625
+4,k_neighbors,9,150,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.9503703703703704
+4,k_neighbors,5,1600,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.865875
+4,k_neighbors,5,800,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.8905000000000001
+4,k_neighbors,5,150,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.9213333333333332
+4,k_neighbors,2,1600,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.7221875
+4,k_neighbors,2,800,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.771875
+4,k_neighbors,2,150,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.8300000000000001
+4,svm,9,1600,"{'C': 100, 'output_layer': 'output_embedding'}",0.9107638888888888
+4,svm,9,800,"{'C': 100, 'output_layer': 'output_embedding'}",0.93125
+4,svm,9,150,"{'C': 100, 'output_layer': 'output_embedding'}",0.9585185185185184
+4,svm,5,1600,"{'C': 100, 'output_layer': 'output_embedding'}",0.874125
+4,svm,5,800,"{'C': 100, 'output_layer': 'output_embedding'}",0.8947499999999999
+4,svm,5,150,"{'C': 100, 'output_layer': 'output_embedding'}",0.9173333333333332
+4,svm,2,1600,"{'C': 100, 'output_layer': 'output_embedding'}",0.7221875
+4,svm,2,800,"{'C': 100, 'output_layer': 'output_embedding'}",0.771875
+4,svm,2,150,"{'C': 100, 'output_layer': 'output_embedding'}",0.8300000000000001
+5,k_neighbors,9,1600,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.8914583333333334
+5,k_neighbors,9,800,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.9158333333333332
+5,k_neighbors,9,150,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.9407407407407408
+5,k_neighbors,5,1600,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.8465
+5,k_neighbors,5,800,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.8765000000000001
+5,k_neighbors,5,150,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.908
+5,k_neighbors,2,1600,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.691875
+5,k_neighbors,2,800,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.75
+5,k_neighbors,2,150,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.82
+5,svm,9,1600,"{'C': 100, 'output_layer': 'output_embedding'}",0.8987500000000002
+5,svm,9,800,"{'C': 100, 'output_layer': 'output_embedding'}",0.9208333333333336
+5,svm,9,150,"{'C': 100, 'output_layer': 'output_embedding'}",0.9518518518518518
+5,svm,5,1600,"{'C': 100, 'output_layer': 'output_embedding'}",0.85875
+5,svm,5,800,"{'C': 100, 'output_layer': 'output_embedding'}",0.8870000000000001
+5,svm,5,150,"{'C': 100, 'output_layer': 'output_embedding'}",0.9133333333333332
+5,svm,2,1600,"{'C': 100, 'output_layer': 'output_embedding'}",0.691875
+5,svm,2,800,"{'C': 100, 'output_layer': 'output_embedding'}",0.75
+5,svm,2,150,"{'C': 100, 'output_layer': 'output_embedding'}",0.82
+6,k_neighbors,9,1600,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.7919444444444443
+6,k_neighbors,9,800,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.8349999999999999
+6,k_neighbors,9,150,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.8866666666666666
+6,k_neighbors,5,1600,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.7390000000000001
+6,k_neighbors,5,800,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.7729999999999999
+6,k_neighbors,5,150,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.852
+6,k_neighbors,2,1600,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.5825
+6,k_neighbors,2,800,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.64125
+6,k_neighbors,2,150,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.7066666666666667
+6,svm,9,1600,"{'C': 100, 'output_layer': 'output_embedding'}",0.8023611111111112
+6,svm,9,800,"{'C': 100, 'output_layer': 'output_embedding'}",0.8431944444444445
+6,svm,9,150,"{'C': 100, 'output_layer': 'output_embedding'}",0.8918518518518517
+6,svm,5,1600,"{'C': 100, 'output_layer': 'output_embedding'}",0.749125
+6,svm,5,800,"{'C': 100, 'output_layer': 'output_embedding'}",0.79225
+6,svm,5,150,"{'C': 100, 'output_layer': 'output_embedding'}",0.8546666666666667
+6,svm,2,1600,"{'C': 100, 'output_layer': 'output_embedding'}",0.5825
+6,svm,2,800,"{'C': 100, 'output_layer': 'output_embedding'}",0.64125
+6,svm,2,150,"{'C': 100, 'output_layer': 'output_embedding'}",0.7066666666666667
+7,k_neighbors,9,1600,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.7928472222222224
+7,k_neighbors,9,800,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.8359722222222223
+7,k_neighbors,9,150,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.8896296296296295
+7,k_neighbors,5,1600,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.7423749999999999
+7,k_neighbors,5,800,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.7855000000000001
+7,k_neighbors,5,150,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.86
+7,k_neighbors,2,1600,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.5803125
+7,k_neighbors,2,800,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.6343749999999999
+7,k_neighbors,2,150,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.73
+7,svm,9,1600,"{'C': 100, 'output_layer': 'output_embedding'}",0.8030555555555555
+7,svm,9,800,"{'C': 100, 'output_layer': 'output_embedding'}",0.8380555555555556
+7,svm,9,150,"{'C': 100, 'output_layer': 'output_embedding'}",0.9007407407407408
+7,svm,5,1600,"{'C': 100, 'output_layer': 'output_embedding'}",0.754125
+7,svm,5,800,"{'C': 100, 'output_layer': 'output_embedding'}",0.7939999999999999
+7,svm,5,150,"{'C': 100, 'output_layer': 'output_embedding'}",0.8626666666666667
+7,svm,2,1600,"{'C': 100, 'output_layer': 'output_embedding'}",0.5803125
+7,svm,2,800,"{'C': 100, 'output_layer': 'output_embedding'}",0.6343749999999999
+7,svm,2,150,"{'C': 100, 'output_layer': 'output_embedding'}",0.73
+8,k_neighbors,9,1600,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.9002083333333333
+8,k_neighbors,9,800,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.9216666666666666
+8,k_neighbors,9,150,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.9525925925925928
+8,k_neighbors,5,1600,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.8641249999999999
+8,k_neighbors,5,800,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.89725
+8,k_neighbors,5,150,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.9213333333333334
+8,k_neighbors,2,1600,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.714375
+8,k_neighbors,2,800,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.778125
+8,k_neighbors,2,150,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.8366666666666667
+8,svm,9,1600,"{'C': 100, 'output_layer': 'output_embedding'}",0.9057638888888888
+8,svm,9,800,"{'C': 100, 'output_layer': 'output_embedding'}",0.9279166666666668
+8,svm,9,150,"{'C': 100, 'output_layer': 'output_embedding'}",0.9592592592592591
+8,svm,5,1600,"{'C': 100, 'output_layer': 'output_embedding'}",0.867625
+8,svm,5,800,"{'C': 100, 'output_layer': 'output_embedding'}",0.8957499999999999
+8,svm,5,150,"{'C': 100, 'output_layer': 'output_embedding'}",0.9093333333333332
+8,svm,2,1600,"{'C': 100, 'output_layer': 'output_embedding'}",0.714375
+8,svm,2,800,"{'C': 100, 'output_layer': 'output_embedding'}",0.778125
+8,svm,2,150,"{'C': 100, 'output_layer': 'output_embedding'}",0.8366666666666667
+9,k_neighbors,9,1600,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.8875
+9,k_neighbors,9,800,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.9111111111111108
+9,k_neighbors,9,150,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.945925925925926
+9,k_neighbors,5,1600,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.843875
+9,k_neighbors,5,800,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.8727499999999999
+9,k_neighbors,5,150,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.9
+9,k_neighbors,2,1600,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.699375
+9,k_neighbors,2,800,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.7575000000000001
+9,k_neighbors,2,150,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.8233333333333333
+9,svm,9,1600,"{'C': 100, 'output_layer': 'output_embedding'}",0.8889583333333333
+9,svm,9,800,"{'C': 100, 'output_layer': 'output_embedding'}",0.9134722222222221
+9,svm,9,150,"{'C': 100, 'output_layer': 'output_embedding'}",0.9444444444444444
+9,svm,5,1600,"{'C': 100, 'output_layer': 'output_embedding'}",0.84825
+9,svm,5,800,"{'C': 100, 'output_layer': 'output_embedding'}",0.87775
+9,svm,5,150,"{'C': 100, 'output_layer': 'output_embedding'}",0.9106666666666668
+9,svm,2,1600,"{'C': 100, 'output_layer': 'output_embedding'}",0.699375
+9,svm,2,800,"{'C': 100, 'output_layer': 'output_embedding'}",0.7575000000000001
+9,svm,2,150,"{'C': 100, 'output_layer': 'output_embedding'}",0.8233333333333333
+10,k_neighbors,9,1600,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.7509722222222223
+10,k_neighbors,9,800,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.7961111111111111
+10,k_neighbors,9,150,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.8629629629629629
+10,k_neighbors,5,1600,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.693375
+10,k_neighbors,5,800,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.7355
+10,k_neighbors,5,150,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.828
+10,k_neighbors,2,1600,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.5440625
+10,k_neighbors,2,800,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.6112500000000001
+10,k_neighbors,2,150,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.6766666666666666
+10,svm,9,1600,"{'C': 100, 'output_layer': 'output_embedding'}",0.7052777777777776
+10,svm,9,800,"{'C': 100, 'output_layer': 'output_embedding'}",0.7611111111111112
+10,svm,9,150,"{'C': 100, 'output_layer': 'output_embedding'}",0.8533333333333333
+10,svm,5,1600,"{'C': 100, 'output_layer': 'output_embedding'}",0.6407499999999999
+10,svm,5,800,"{'C': 100, 'output_layer': 'output_embedding'}",0.6955
+10,svm,5,150,"{'C': 100, 'output_layer': 'output_embedding'}",0.7853333333333333
+10,svm,2,1600,"{'C': 100, 'output_layer': 'output_embedding'}",0.5440625
+10,svm,2,800,"{'C': 100, 'output_layer': 'output_embedding'}",0.6112500000000001
+10,svm,2,150,"{'C': 100, 'output_layer': 'output_embedding'}",0.6766666666666666
+11,k_neighbors,9,1600,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.7661805555555556
+11,k_neighbors,9,800,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.8095833333333333
+11,k_neighbors,9,150,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.8814814814814815
+11,k_neighbors,5,1600,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.7170000000000001
+11,k_neighbors,5,800,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.7585
+11,k_neighbors,5,150,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.8493333333333334
+11,k_neighbors,2,1600,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.5609375
+11,k_neighbors,2,800,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.638125
+11,k_neighbors,2,150,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.7066666666666667
+11,svm,9,1600,"{'C': 100, 'output_layer': 'output_embedding'}",0.7321527777777779
+11,svm,9,800,"{'C': 100, 'output_layer': 'output_embedding'}",0.7859722222222222
+11,svm,9,150,"{'C': 100, 'output_layer': 'output_embedding'}",0.8614814814814815
+11,svm,5,1600,"{'C': 100, 'output_layer': 'output_embedding'}",0.6685
+11,svm,5,800,"{'C': 100, 'output_layer': 'output_embedding'}",0.72075
+11,svm,5,150,"{'C': 100, 'output_layer': 'output_embedding'}",0.8213333333333335
+11,svm,2,1600,"{'C': 100, 'output_layer': 'output_embedding'}",0.5609375
+11,svm,2,800,"{'C': 100, 'output_layer': 'output_embedding'}",0.638125
+11,svm,2,150,"{'C': 100, 'output_layer': 'output_embedding'}",0.7066666666666667
+4,k_neighbors,9,1600,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.90375
+4,k_neighbors,9,800,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.92625
+4,k_neighbors,9,150,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.9503703703703704
+4,k_neighbors,5,1600,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.865875
+4,k_neighbors,5,800,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.8905000000000001
+4,k_neighbors,5,150,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.9213333333333332
+4,k_neighbors,2,1600,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.7221875
+4,k_neighbors,2,800,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.771875
+4,k_neighbors,2,150,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.8300000000000001
+4,svm,9,1600,"{'C': 100, 'output_layer': 'output_embedding'}",0.9107638888888888
+4,svm,9,800,"{'C': 100, 'output_layer': 'output_embedding'}",0.93125
+4,svm,9,150,"{'C': 100, 'output_layer': 'output_embedding'}",0.9585185185185184
+4,svm,5,1600,"{'C': 100, 'output_layer': 'output_embedding'}",0.874125
+4,svm,5,800,"{'C': 100, 'output_layer': 'output_embedding'}",0.8947499999999999
+4,svm,5,150,"{'C': 100, 'output_layer': 'output_embedding'}",0.9173333333333332
+4,svm,2,1600,"{'C': 100, 'output_layer': 'output_embedding'}",0.7221875
+4,svm,2,800,"{'C': 100, 'output_layer': 'output_embedding'}",0.771875
+4,svm,2,150,"{'C': 100, 'output_layer': 'output_embedding'}",0.8300000000000001
+4,k_neighbors,9,1600,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.9053472222222221
+4,k_neighbors,9,800,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.9284722222222224
+4,k_neighbors,9,150,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.9659259259259257
+4,k_neighbors,5,1600,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.8686250000000001
+4,k_neighbors,5,800,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.8947499999999999
+4,k_neighbors,5,150,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.9453333333333334
+4,k_neighbors,2,1600,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.734375
+4,k_neighbors,2,800,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.764375
+4,k_neighbors,2,150,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.8366666666666667
+4,svm,9,1600,"{'C': 100, 'output_layer': 'output_embedding'}",0.9149999999999999
+4,svm,9,800,"{'C': 100, 'output_layer': 'output_embedding'}",0.9351388888888891
+4,svm,9,150,"{'C': 100, 'output_layer': 'output_embedding'}",0.9666666666666668
+4,svm,5,1600,"{'C': 100, 'output_layer': 'output_embedding'}",0.87475
+4,svm,5,800,"{'C': 100, 'output_layer': 'output_embedding'}",0.9012499999999999
+4,svm,5,150,"{'C': 100, 'output_layer': 'output_embedding'}",0.9453333333333335
+4,svm,2,1600,"{'C': 100, 'output_layer': 'output_embedding'}",0.734375
+4,svm,2,800,"{'C': 100, 'output_layer': 'output_embedding'}",0.764375

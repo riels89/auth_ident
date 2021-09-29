@@ -1,6 +1,7 @@
 from auth_ident.models.cnn_lstm import CNNLSTM
 from auth_ident.models.contrastive_1D_to_2D import Contrastive1DTo2D
 from auth_ident.models.contrastive_bilstm_v2 import ContrastiveBilstmV2
+from auth_ident.models.contrastive_bilstm_v3 import ContrastiveBilstmV3
 from auth_ident.models.contrastive_bilstm import ContrastiveBiLSTM
 from auth_ident.models.contrastive_by_line_cnn import ContrastiveByLineCNN
 from auth_ident.models.contrastive_cnn import ContrastiveCNN
@@ -22,11 +23,13 @@ from auth_ident.models.universal_transformer import UniversalTransformer
 from auth_ident.models.transformer import Transformer
 from auth_ident.models.cosknn import CosKNNSecondaryClassifier
 from auth_ident.models.end_to_end_secondary import EndToEndMLP
+#from auth_ident.models.histogram_verifier import HistogramVerifier
 
 model_map = {
     "cnn_lstm": CNNLSTM,
     "contrastive_1D_to_2D": Contrastive1DTo2D,
     "contrastive_bilstm_v2": ContrastiveBilstmV2,
+    "contrastive_bilstm_v3": ContrastiveBilstmV3,
     "contrastive_bilstm": ContrastiveBiLSTM,
     "contrastive_by_line_cnn": ContrastiveByLineCNN,
     "contrastive_cnn": ContrastiveCNN,
@@ -47,5 +50,6 @@ model_map = {
     "k_neighbors": KNeighborSecondaryClassifier,
     "svm": SVMSecondaryClassifier,
     "cosknn": CosKNNSecondaryClassifier,
+#    "histogram_verifier": HistogramVerifier,
     "end_to_end_mlp": EndToEndMLP 
 }

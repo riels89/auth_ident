@@ -29,7 +29,7 @@ class SimCLRDataset:
         chars_to_encode = [self.start, self.end] + list(chars_to_encode)
         
         if self.encoding_type == "spm":
-            sp = spm.SentencePieceProcessor(model_file=spm_model_file)
+            sp = spm.SentencePieceProcessor(model_file=join("data/", spm_model_file))
             self.len_encoding = sp.vocab_size()
         elif self.encoding_type == "tokens":
             

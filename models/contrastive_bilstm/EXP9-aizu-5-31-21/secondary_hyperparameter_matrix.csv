@@ -1,0 +1,19 @@
+combination,model,k_cross_val,max_authors,model_params,accuracy
+0,k_neighbors,9,1600,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.7846477970138316
+0,k_neighbors,9,800,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.8166666666666668
+0,k_neighbors,9,150,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.8844444444444445
+0,k_neighbors,5,1600,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.7040774015203871
+0,k_neighbors,5,800,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.7470000000000001
+0,k_neighbors,5,150,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.8320000000000001
+0,k_neighbors,2,1600,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.5534375
+0,k_neighbors,2,800,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.593125
+0,k_neighbors,2,150,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.69
+0,svm,9,1600,"{'C': 100, 'output_layer': 'output_embedding'}",0.8039754511312632
+0,svm,9,800,"{'C': 100, 'output_layer': 'output_embedding'}",0.8325
+0,svm,9,150,"{'C': 100, 'output_layer': 'output_embedding'}",0.8903703703703704
+0,svm,5,1600,"{'C': 100, 'output_layer': 'output_embedding'}",0.7230131306150657
+0,svm,5,800,"{'C': 100, 'output_layer': 'output_embedding'}",0.76825
+0,svm,5,150,"{'C': 100, 'output_layer': 'output_embedding'}",0.844
+0,svm,2,1600,"{'C': 100, 'output_layer': 'output_embedding'}",0.5534375
+0,svm,2,800,"{'C': 100, 'output_layer': 'output_embedding'}",0.593125
+0,svm,2,150,"{'C': 100, 'output_layer': 'output_embedding'}",0.69

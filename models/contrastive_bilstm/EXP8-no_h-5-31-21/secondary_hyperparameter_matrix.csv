@@ -1,0 +1,18 @@
+0,k_neighbors,9,1600,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.8920833333333333
+0,k_neighbors,9,800,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.9152777777777779
+0,k_neighbors,9,150,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.948888888888889
+0,k_neighbors,5,1600,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.85625
+0,k_neighbors,5,800,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.8869999999999999
+0,k_neighbors,5,150,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.924
+0,k_neighbors,2,1600,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.7184375000000001
+0,k_neighbors,2,800,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.7625
+0,k_neighbors,2,150,"{'n_jobs': -1, 'weights': 'distance', 'algorithm': 'brute', 'n_neighbors': 1, 'output_layer': 'output_embedding'}",0.8166666666666667
+0,svm,9,1600,"{'C': 100, 'output_layer': 'output_embedding'}",0.9021527777777778
+0,svm,9,800,"{'C': 100, 'output_layer': 'output_embedding'}",0.9225
+0,svm,9,150,"{'C': 100, 'output_layer': 'output_embedding'}",0.9503703703703703
+0,svm,5,1600,"{'C': 100, 'output_layer': 'output_embedding'}",0.86725
+0,svm,5,800,"{'C': 100, 'output_layer': 'output_embedding'}",0.8952500000000001
+0,svm,5,150,"{'C': 100, 'output_layer': 'output_embedding'}",0.916
+0,svm,2,1600,"{'C': 100, 'output_layer': 'output_embedding'}",0.7184375000000001
+0,svm,2,800,"{'C': 100, 'output_layer': 'output_embedding'}",0.7625
+0,svm,2,150,"{'C': 100, 'output_layer': 'output_embedding'}",0.8166666666666667

@@ -26,6 +26,7 @@ def load_encoder(model, params, combination, logger, logdir):
         if f.endswith(".h5")
     ]
     latest_checkpoint = max(checkpoints, key=os.path.getctime)
+    #latest_checkpoint = sorted(checkpoints, key=os.path.getctime)[-6]
 
     encoder.load_weights(latest_checkpoint)
 

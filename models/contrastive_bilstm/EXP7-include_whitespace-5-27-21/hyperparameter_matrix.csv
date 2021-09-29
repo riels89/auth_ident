@@ -1,0 +1,2 @@
+combination,optimizer,loss,temperature,lr,clip,decay,epochs,batch_size,binary_encoding,max_code_length,embedding_size,BN,input_embedding_size,encoding_type,bias,dropout,model,train_data,val_data,test_data,val_loss,train_loss
+0,adam,simclr,0.005,0.001,1.0,2.5e-06,20,1000,False,600,256,False,32,tokens,False,0.0,contrastive_bilstm,gcj_tokenized/c_cpp_train_encoded.h5,gcj_tokenized/c_cpp_val_encoded.h5,gcj_tokenized/c_cpp_test_encoded.h5,2.8690710067749023,2.4149858951568604

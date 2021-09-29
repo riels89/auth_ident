@@ -15,7 +15,7 @@
     "BN": [false],
     "input_embedding_size": [32],
     "encoding_type": ["spm"],
-    "spm_model_file": ["data/organized_hdfs/spm_models_fixed/c_cpp_h_program_cc9995_vs4048.model"],
+    "spm_model_file": ["organized_hdfs/spm_models_fixed/c_cpp_h_program_cc9995_vs4048.model"],
     "bias": [false],
     "dropout": [0.0],
 
@@ -24,6 +24,7 @@
     "val_data":["encoded_data_fixed/c_cpp_h_program_cc9995_vs4048_a0.5_l-1_val.h5"],
 
     "test_data":["encoded_data_fixed/c_cpp_h_program_cc9995_vs4048_a0.5_l-1_test.h5"],
+    "max_authors": [1600],
 
     "model": ["contrastive_bilstm"]
   },

@@ -11,19 +11,19 @@
     "batch_size": [1000],
     "binary_encoding": [false],
     "max_code_length": [500],
-    "embedding_size": [512],
     "BN": [false],
     "input_embedding_size": [32],
+    "embedding_size": [512],
     "encoding_type": ["spm"],
-    "spm_model_file": ["organized_hdfs/spm_models_fixed/c_cpp_h_program_cc9995_vs4048.model"],
+    "spm_model_file": ["no_h/spm_models/c_cpp_program_cc9995_vs4048.model"],
     "bias": [false],
     "dropout": [0.0],
 
-    "train_data":["encoded_data_fixed/c_cpp_h_program_cc9995_vs4048_a0.5_l-1_train.h5"],
+    "train_data":["no_h/encoded_data/c_cpp_program_cc9995_vs4048_a0.5_l-1_train.h5"],
 
-    "val_data":["encoded_data_fixed/c_cpp_h_program_cc9995_vs4048_a0.5_l-1_val.h5"],
+    "val_data":["codenet/cpp/encoded_data/c_cpp_aizu_program_cc9995_vs4048_a0.5_l-1_val.h5"],
 
-    "test_data":["encoded_data_fixed/c_cpp_h_program_cc9995_vs4048_a0.5_l-1_test.h5"],
+    "test_data":["codenet/cpp/encoded_data/c_cpp_aizu_program_cc9995_vs4048_a0.5_l-1_test.h5"],
     "max_authors": [1600],
 
     "model": ["contrastive_bilstm"]
@@ -36,10 +36,10 @@
 	"weights": ["distance"],
 	"algorithm": ["brute"],
 	"n_neighbors": [1],
-	"output_layer": ["bidirectional"]
+	"output_layer": ["output_embedding"]
     },{
 	"C": [100],
-	"output_layer": ["bidirectional"]
+	"output_layer": ["output_embedding"]
     }]],
 
     "k_cross_val": [9, 5, 2],
