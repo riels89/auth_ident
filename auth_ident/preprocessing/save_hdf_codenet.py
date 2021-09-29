@@ -137,7 +137,7 @@ def make_hdf(codenet_root, new_hdf, keep_repeats, languages, val_test_split,
                               "filepath": [v[3] for v in submissions]})
 
     if val_test_split > 0:
-        authors = frame['user_id'].unique()
+        authors = frame['username'].unique()
         np.random.shuffle(authors)
 
         num_val = int(val_test_split * len(authors))
@@ -155,31 +155,17 @@ def make_hdf(codenet_root, new_hdf, keep_repeats, languages, val_test_split,
 
         # Split into DataFrames according to the selected authors.
         # Unfortunately, this will double memory usage.
-        val_matches = [name in val_authors for name in frame['user_id']]
-        test_matches = [name in test_authors for name in frame['user_id']]
-        train_matches = [name in train_authors for name in frame['user_id']]
+        val_matches = [name in val_authors for name in frame['username']]
+        test_matches = [name in test_authors for name in frame['username']]
+        train_matches = [name in train_authors for name in frame['username']]
 
         val_frame = frame.loc[val_matches].reset_index(drop=True)
         test_frame = frame.loc[test_matches].reset_index(drop=True)
         train_frame = frame.loc[train_matches].reset_index(drop=True)
-
 	
-        if not os.path.exists(new_hdf + "_val.h5"):
-            os.remove(new_hdf + "_val.h5")
-        if not os.path.exists(new_hdf + "_test.h5"):
-            os.remove(new_hdf + "_test.h5")
-        if not os.path.exists(new_hdf + "_train.h5"):
-            os.remove(new_hdf + "_train.h5")
-        print(f"train size: {train_frame.shape[0]}")
-        for i, df_chunk in val_frame.groupby(np.arange(val_frame.shape[0]) // 1000000):
-            df_chunk.to_hdf(new_hdf + "_val.h5", key='df', mode='a')
-        for i, df_chunk in test_frame.groupby(np.arange(test_frame.shape[0]) // 1000000):
-            df_chunk.to_hdf(new_hdf + "_test.h5", key='df', mode='a')
-        for i, df_chunk in train_frame.groupby(np.arange(train_frame.shape[0]) // 1000000):
-            df_chunk.to_hdf(new_hdf + "_train.h5", key='df', mode='a')
-        #val_frame.to_hdf(new_hdf + "_val.h5", key='df', mode='w')
-        #test_frame.to_hdf(new_hdf + "_test.h5", key='df', mode='w')
-        #train_frame.to_hdf(new_hdf + "_train.h5", key='df', mode='w')
+        val_frame.to_hdf(new_hdf + "_val.h5", key='df', mode='w')
+        test_frame.to_hdf(new_hdf + "_test.h5", key='df', mode='w')
+        train_frame.to_hdf(new_hdf + "_train.h5", key='df', mode='w')
     else:
         frame.to_hdf(new_hdf + ".h5", key='df', mode='w')
 
@@ -198,7 +184,7 @@ submissions to create h5 files that can be read by Pandas.
 The columns in the resulting pandas dataframes will be
 
 "problem_id"
-"user_id"
+"username"
 "language"
 "file_content" - The full file contents.
 '''
